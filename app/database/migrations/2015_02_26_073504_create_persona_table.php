@@ -20,6 +20,7 @@ class CreatePersonaTable extends Migration {
 			$table->boolean('email_confirmed');
 			$table->string('password', 50);
 			$table->string('phone', 20)->nullable();
+			$table->string('type', 40);
 			$table->boolean('status');
 			$table->integer('last_login')->nullable();
 			$table->integer('time_created');

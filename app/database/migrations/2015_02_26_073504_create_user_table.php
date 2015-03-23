@@ -19,7 +19,6 @@ class CreateUserTable extends Migration {
 			$table->string('lastname', 40);
 			$table->string('email', 40);
 			$table->string('password', 50);
-			$table->integer('country_id')->nullable();
 			$table->integer('city_id')->nullable();
 			$table->text('address');
 			$table->enum('gender', [ 'm', 'f' ])->default('m');

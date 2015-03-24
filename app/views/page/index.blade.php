@@ -92,7 +92,7 @@
 					</ul>
 				</p>
 				<center>
-				<a href="order.php"><button type="submit" class="btn btn-warning"><i class="mdi-action-shopping-cart"></i> Order Sekarang</button></a>
+				<a href="order.php"><button type="submit" class="btn btn-warning"><i class="fa fa-shopping-cart"></i> Order Sekarang</button></a>
 				</center>
 			</div>
 			<div class="col-lg-6 col-sm-6">
@@ -175,7 +175,7 @@
 				<div class="col-lg-12 col-md-12 col-sm-12 text-center" >
 					<p>
 						<a id="step5" href="order.php" class="btn btn-primary btn-lg">
-							<i class="mdi-action-shopping-cart"></i> <span>Order Sekarang</span>
+							<i class="fa fa-shopping-cart"></i> <span>Order Sekarang</span>
 						</a>
 					</p>
 				</div>
@@ -190,47 +190,4 @@
 	@parent
 
 	@include('partial.modal')
-@show
-
-
-@section('foot')
-	@parent
-
-	<script type="text/javascript">
-	function startIntro()
-	{
-		var intro = introJs();
-		intro.setOption('showProgress', 'true');
-		
-		intro.setOptions({
-			steps: [
-				{
-					element: '#step1',
-					intro: "Hai, Selamat datang di ThankSpace, layanan on-demand storage yang melayani kebutuhan Space sesuai kebutuhan. Saya Adam, Tour Guide tampan dari Galaxy Far Far Away! Untuk melanjutkan tour ini, Anda bisa klik Next!",
-					position: 'right'
-				},
-				{
-					element: '#step2',
-					intro: "Untuk lebih memahami layanan ThankSpace, Anda bisa mencoba melihat explanation video dari kami. <i>wasn't</i> that fun?",
-					position: 'left'
-				},
-				{
-					element: '#step3',
-					intro: 'Saat ini, layanan on-demand storage ThankSpace melayani dua kota besar di Indonesia',
-				},
-				{
-					element: '#step4',
-					intro: 'Harga jakdakdak'
-				},
-				{
-					element: '#step5',
-					intro: 'Satu langkah lagi untuk membuat. Klik Done dan Klik Order'
-				}
-			]
-		});
-		
-		intro.setOption('showBullets', 'true');
-		intro.start();
-	}
-	</script>
 @stop

@@ -27,9 +27,9 @@
 				<li>
 					<center>
 						<a href="order.php">
-							<button type="submit" class="btn btn-warning btn-sm"><i class="mdi-action-shopping-cart"></i> Order</button>
+							<button type="submit" class="btn btn-warning btn-sm"><i class="fa fa-shopping-cart"></i> Order</button>
 						</a>
-					<center>
+					</center>
 				</li>
 			</ul>
 		</div>

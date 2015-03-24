@@ -110,7 +110,7 @@
 						<div class="form-group">
 							<div class="col-lg-12">
 								<a href="customer-items.php">
-									<button type="submit" class="btn btn-primary" id="check" disabled><i class="mdi-social-person-add"></i> Sign Up</button>
+									<button type="submit" class="btn btn-primary" id="check" disabled><i class="fa fa-user-plus"></i> Sign Up</button>
 								</a>
 							</div>
 						</div>
@@ -148,7 +148,7 @@
 						</div>
 						<div class="form-group">
 							<div class="col-lg-12">
-								<button type="submit" class="btn btn-primary"><i class="mdi-notification-sync"></i> Abracadabra</button>
+								<button type="submit" class="btn btn-primary"><i class="fa fa-refresh"></i> Abracadabra</button>
 							</div>
 						</div>
 					</fieldset>

@@ -800,13 +800,14 @@
         var innerLi    = document.createElement('li');
         var anchorLink = document.createElement('a');
 
-        anchorLink.onclick = function() {
-          self.goToStep(this.getAttribute('data-stepnumber'));
+        anchorLink.onclick = function(e) {
+			e.preventDefault();
+			self.goToStep(this.getAttribute('data-stepnumber'));
         };
 
         if (i === (targetElement.step-1)) anchorLink.className = 'active';
 
-        anchorLink.href = 'javascript:void(0);';
+        anchorLink.href = '#';
         anchorLink.innerHTML = "&nbsp;";
         anchorLink.setAttribute('data-stepnumber', this._introItems[i].step);
 
@@ -851,34 +852,37 @@
       //next button
       var nextTooltipButton = document.createElement('a');
 
-      nextTooltipButton.onclick = function() {
+      nextTooltipButton.onclick = function(e) {
+		e.preventDefault();
         if (self._introItems.length - 1 != self._currentStep) {
           _nextStep.call(self);
         }
       };
 
-      nextTooltipButton.href = 'javascript:void(0);';
+      nextTooltipButton.href = '#';
       nextTooltipButton.innerHTML = this._options.nextLabel;
 
       //previous button
       var prevTooltipButton = document.createElement('a');
 
-      prevTooltipButton.onclick = function() {
+      prevTooltipButton.onclick = function(e) {
+		e.preventDefault();
         if (self._currentStep != 0) {
           _previousStep.call(self);
         }
       };
 
-      prevTooltipButton.href = 'javascript:void(0);';
+      prevTooltipButton.href = '#';
       prevTooltipButton.innerHTML = this._options.prevLabel;
 
       //skip button
       var skipTooltipButton = document.createElement('a');
       skipTooltipButton.className = 'introjs-button introjs-skipbutton';
-      skipTooltipButton.href = 'javascript:void(0);';
+      skipTooltipButton.href = '#';
       skipTooltipButton.innerHTML = this._options.skipLabel;
 
-      skipTooltipButton.onclick = function() {
+      skipTooltipButton.onclick = function(e) {
+		e.preventDefault();
         if (self._introItems.length - 1 == self._currentStep && typeof (self._introCompleteCallback) === 'function') {
           self._introCompleteCallback.call(self);
         }

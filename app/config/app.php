@@ -124,7 +124,8 @@ return array(
 		
 		// Externals
 		'Way\Generators\GeneratorsServiceProvider',
-		'Intervention\Image\ImageServiceProvider'
+		'Intervention\Image\ImageServiceProvider',
+		'CeesVanEgmond\Minify\MinifyServiceProvider'
 
 	),
 

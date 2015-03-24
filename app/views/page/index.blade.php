@@ -184,3 +184,53 @@
 	</div>
 
 @stop
+
+
+@section('footer')
+	@parent
+
+	@include('partial.modal')
+@show
+
+
+@section('foot')
+	@parent
+
+	<script type="text/javascript">
+	function startIntro()
+	{
+		var intro = introJs();
+		intro.setOption('showProgress', 'true');
+		
+		intro.setOptions({
+			steps: [
+				{
+					element: '#step1',
+					intro: "Hai, Selamat datang di ThankSpace, layanan on-demand storage yang melayani kebutuhan Space sesuai kebutuhan. Saya Adam, Tour Guide tampan dari Galaxy Far Far Away! Untuk melanjutkan tour ini, Anda bisa klik Next!",
+					position: 'right'
+				},
+				{
+					element: '#step2',
+					intro: "Untuk lebih memahami layanan ThankSpace, Anda bisa mencoba melihat explanation video dari kami. <i>wasn't</i> that fun?",
+					position: 'left'
+				},
+				{
+					element: '#step3',
+					intro: 'Saat ini, layanan on-demand storage ThankSpace melayani dua kota besar di Indonesia',
+				},
+				{
+					element: '#step4',
+					intro: 'Harga jakdakdak'
+				},
+				{
+					element: '#step5',
+					intro: 'Satu langkah lagi untuk membuat. Klik Done dan Klik Order'
+				}
+			]
+		});
+		
+		intro.setOption('showBullets', 'true');
+		intro.start();
+	}
+	</script>
+@stop

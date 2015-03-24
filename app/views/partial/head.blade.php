@@ -1,9 +1,3 @@
-<meta charset="utf-8">
-<title>ThankSpace - More space for you | On-Demand Storage in Indonesia</title>
-<link href='favicon.ico' rel="icon" type="image/x-icon" />
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
 <!-- style bootstrap-social  
 <link href="{{ asset('assets/css/bootstrap-social.css') }}" rel="stylesheet" type="text/css">-->
 

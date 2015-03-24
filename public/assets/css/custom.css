@@ -52,7 +52,7 @@ footer p { clear:left; margin-bottom:0; }
 		padding:4em 0 2em;
 		text-align:center;
 		background-color:#000;
-		background-image:url(../assets/img/bg2.jpg);
+		background-image:url(../../assets/img/bg-2.jpg);
 	}
 	.splash .sponsor { margin:10em 0 0; }
 }

@@ -61,7 +61,7 @@
 				<div class="col-lg-6 col-md-6 col-sm-6">
 					<div class="preview">
 						<div class="image">
-							<div class="img-responsive" id='thabkspacebali'></div>
+							<div class="img-responsive" id='thankspacebali'></div>
 						</div>
 						<div class="options">
 							<h3>Denpasar</h3>

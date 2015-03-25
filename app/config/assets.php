@@ -8,17 +8,14 @@ return array(
 	|--------------------------------------------------------------------------
 	*/
 	'style' => [
-		'/assets/css/font-awesome.min.css',
 		'/assets/css/bootstrap.min.css',
-		'/assets/css/ripples.min.css',
 		'/assets/css/material-wfont.min.css',
+		'/assets/css/font-awesome.css',
+		'/assets/css/ripples.min.css',
 		'/assets/css/snackbar.min.css',
-		'/assets/css/orderstep.css',
-		'/assets/css/custom.css',
 		'/assets/css/sweet-alert.css',
 		'/assets/css/introjs.css',
-		'/assets/css/custommap.css',
-		'/assets/css/orderstep.css',
+		'/assets/css/custom.css',
 	],
 	
 	'script' => [

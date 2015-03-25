@@ -23,6 +23,7 @@ return array(
 		'/assets/js/bootstrap.min.js',
 		'/assets/js/sweet-alert.js',
 		'/assets/js/intro.js',
+		'/assets/js/material.min.js',
 		'/assets/js/ripples.min.js',
 		'/assets/js/snackbar.min.js',
 		'/assets/js/jquery.nouislider.min.js',

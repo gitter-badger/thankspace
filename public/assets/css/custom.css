@@ -162,6 +162,9 @@ footer a { background-color: transparent; }
 .footer-social li { float:left; list-style:none; margin-left:-10px;}
 .footer-social span { float:left; }
 
+.error-alert { color: #a50a0a; }
+.success-alert { color: #5b870f; }
+
 /* Custom CSS for Maps */
 #thankspacesby {
 	height:400px;

@@ -44,6 +44,8 @@ $(function() {
 		$(this).after("<br><br><code>" + $(this).attr("class").replace("icon ", "") + "</code>");
 	});
 	
+	$.material.init();
+	
 	$(".shor").noUiSlider({
 		start: 40,
 		connect: "lower",

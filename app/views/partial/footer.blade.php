@@ -14,9 +14,21 @@
 			<div class="col-lg-4">
 				<div class="footer-social">
 					<ul>
-						<li><a href="http://www.facebook.com/Thankspace" target="_blank"><img src='assets/img/social-fb.png' /></a></li>
-						<li><a href="http://www.twitter.com/Thankspace" target="_blank"><img src='assets/img/social-tw.png' /></a></li>
-						<li><a href="http://www.google.com/+Thankspace" target="_blank"><img src='assets/img/social-g+.png' /></a></li>
+						<li>
+							<a href="http://www.facebook.com/Thankspace" target="_blank">
+								<img src="{{ url('assets/img/social-fb.png') }}" />
+							</a>
+						</li>
+						<li>
+							<a href="http://www.twitter.com/Thankspace" target="_blank">
+								<img src="{{ url('assets/img/social-tw.png') }}" />
+							</a>
+						</li>
+						<li>
+							<a href="http://www.google.com/+Thankspace" target="_blank">
+								<img src="{{ url('assets/img/social-g+.png') }}" />
+							</a>
+						</li>
 					</ul>
 				</div>
 			</div>

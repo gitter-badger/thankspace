@@ -9,13 +9,29 @@ include_once(app_path('helpers.php'));
 Route::get('/', [ 'as' => 'page.index', 'uses' => 'PageController@index' ]);
 
 
-/* Order Pages */
-Route::get('/order', [ 'as' => 'page.order', 'uses' => 'HomeController@index' ]);
-Route::get('/order-schedule', [ 'as' => 'page.order_schedule', 'uses' => 'HomeController@index' ]);
-Route::get('/order-payment', [ 'as' => 'page.order_payment', 'uses' => 'HomeController@index' ]);
-Route::get('/order-review', [ 'as' => 'page.order_review', 'uses' => 'HomeController@index' ]);
-Route::get('/order-completed', [ 'as' => 'page.order_completed', 'uses' => 'HomeController@index' ]);
-/* End Order Pages */
+/* Page that Require Authentication */
+Route::group(['before' => ''], function() {
+
+	Route::group(['prefix' => 'user'], function() {
+
+		Route::get('/index', [ 'as' => 'user.index', 'uses' => 'UserController@index' ]);
+		Route::get('/storage', [ 'as' => 'user.storage', 'uses' => 'UserController@storage' ]);
+		Route::get('/invoice', [ 'as' => 'user.invoice', 'uses' => 'UserController@invoice' ]);
+		Route::get('/setting', [ 'as' => 'user.setting', 'uses' => 'UserController@setting' ]);
+		Route::get('/signout', [ 'as' => 'user.signout', 'uses' => 'UserController@signout' ]);
+
+	});
+
+	/* Order Pages */
+	Route::get('/order', [ 'as' => 'order.index', 'uses' => 'OrderController@index' ]);
+	Route::get('/order/schedule', [ 'as' => 'order.schedule', 'uses' => 'OrderController@schedule' ]);
+	Route::get('/order/payment', [ 'as' => 'order.payment', 'uses' => 'OrderController@payment' ]);
+	Route::get('/order/review', [ 'as' => 'order.review', 'uses' => 'OrderController@review' ]);
+	Route::get('/order/completed', [ 'as' => 'order.completed', 'uses' => 'OrderController@completed' ]);
+	/* End Order Pages */
+
+});
+
 
 /* Static Pages */
 Route::get('/page/faq', [ 'as' => 'page.faq', 'uses' => 'HomeController@index' ]);

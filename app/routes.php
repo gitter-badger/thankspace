@@ -18,6 +18,7 @@ Route::group(['before' => ''], function() {
 		Route::get('/storage', [ 'as' => 'user.storage', 'uses' => 'UserController@storage' ]);
 		Route::get('/invoice', [ 'as' => 'user.invoice', 'uses' => 'UserController@invoice' ]);
 		Route::get('/setting', [ 'as' => 'user.setting', 'uses' => 'UserController@setting' ]);
+		Route::get('/signout', [ 'as' => 'user.signout', 'uses' => 'UserController@signout' ]);
 
 	});
 

@@ -1,7 +1,7 @@
 <div class="navbar navbar-default navbar-fixed-top navbar-transparent">
 	<div class="container">
 		<div class="navbar-header">
-			<a href="index.php" class="navbar-brand"><img src="{{ asset('assets/img/logo-nav.png') }}"></a>          
+			<a href="{{ route('page.index') }}" class="navbar-brand"><img src="{{ asset('assets/img/logo-nav.png') }}"></a>          
 			<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
@@ -44,7 +44,7 @@
 								</a>
 							</li>
 							<li>
-								<a href="order.php">
+								<a href="{{ route('order.index') }}">
 									<i class="fa fa-shopping-cart fa-fw"></i>
 									Order Storage Box
 								</a>
@@ -57,7 +57,7 @@
 							</li>
 							<li class="divider"></li>
 							<li>
-								<a href="logout.php">
+								<a href="{{ route('user.signout') }}">
 									<i class="fa fa-sign-out fa-fw"></i>
 									Sign Out
 								</a>
@@ -69,7 +69,7 @@
 				<ul class="nav navbar-nav navbar-right" >
 					<li>
 						<center>
-							<a href="order.php">
+							<a href="{{ route('order.index') }}">
 								<button type="submit" class="btn btn-warning btn-sm"><i class="fa fa-shopping-cart"></i> Order</button>
 							</a>
 						</center>

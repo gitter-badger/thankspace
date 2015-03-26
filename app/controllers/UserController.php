@@ -22,6 +22,21 @@ class UserController extends BaseController {
 
 	public function invoice()
 	{
+		$data = [
+
+		];
+		return View::make('user.invoice', $data);
+	}
+
+
+	public function setting()
+	{
+		return __FUNCTION__;
+	}
+
+
+	public function signout()
+	{
 		return __FUNCTION__;
 	}
 

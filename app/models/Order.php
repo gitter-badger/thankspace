@@ -24,9 +24,9 @@ class Order extends \Eloquent {
 		return $this->hasOne('OrderSchedule', 'order_id');
 	}
 	
-	public function otherStuff()
+	public function orderStuff()
 	{
-		return $this->belongsTo('OtherStuff');
+		return $this->hasMany('OrderStuff', 'order_id');
 	}
 	
 	public function returnSchedule()
@@ -34,19 +34,13 @@ class Order extends \Eloquent {
 		return $this->hasOne('ReturnSchedule', 'order_id');
 	}
 	
-	public function stuff()
-	{
-		return $this->hasMany('Stuff', 'order_id');
-	}
-	
 	public static function validate($input, $customrules = '')
 	{
 		$rules = [
-			'user_id'			=>	'exists:user,id',
-			'box'				=>	'sometimes|numeric',
-			'other_stuff_id'	=>	'sometimes|exists:other_stuff,id',
-			'other'				=>	'sometimes|min:5',
-			'status'			=>	'between:0,1,2',
+			'user_id'		=>	'exists:user,id',
+			'type'			=>	'min:3|max:10',
+			'quantity'		=>	'required|numeric',
+			'description'	=>	'sometimes|min:3',
 		];
 		
 		if (!empty($customrules)) $rules = $rules + $customrules;

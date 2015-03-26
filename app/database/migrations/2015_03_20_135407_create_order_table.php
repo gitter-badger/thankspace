@@ -15,10 +15,9 @@ class CreateOrderTable extends Migration {
 		Schema::create('order', function(Blueprint $table) {
 			$table->increments('id');
 			$table->integer('user_id');
-			$table->integer('box')->nullable();
-			$table->integer('other_stuff_id')->nullable();
-			$table->text('other')->nullable();
-			$table->enum('status', [ 0, 1, 2 ])->default(0);
+			$table->string('type', 10)->default('box');
+			$table->integer('quantity');
+			$table->text('description')->nullable();
 			$table->timestamps();
 		});
 	}

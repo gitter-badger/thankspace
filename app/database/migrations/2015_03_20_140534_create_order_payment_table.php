@@ -18,7 +18,7 @@ class CreateOrderPaymentTable extends Migration {
 			$table->string('code', 20);
 			$table->string('method', 20)->default('bank');
 			$table->text('message')->nullable();
-			$table->enum('status', [ 0, 1 ])->default(0);
+			$table->enum('status', [ 0, 1, 2 ])->default(0);
 			$table->timestamps();
 		});
 	}

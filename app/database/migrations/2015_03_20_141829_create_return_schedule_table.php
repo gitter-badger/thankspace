@@ -17,6 +17,7 @@ class CreateReturnScheduleTable extends Migration {
 			$table->integer('order_id');
 			$table->date('return_date');
 			$table->string('return_time', 40);
+			$table->enum('status', [ 0, 1 ])->default(0);
 			$table->timestamps();
 		});
 	}

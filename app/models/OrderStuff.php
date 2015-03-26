@@ -12,8 +12,8 @@ class Stuff extends \Eloquent {
 	public static function validate($input, $customrules = '')
 	{
 		$rules = [
-			'order_id'	=>	'exists:order,id',
-			'name'		=>	'required|min:5|max:40',
+			'order_id'		=>	'exists:order,id',
+			'description'	=>	'required|min:3',
 		];
 		
 		if (!empty($customrules)) $rules = $rules + $customrules;

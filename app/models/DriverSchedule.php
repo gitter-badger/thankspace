@@ -19,6 +19,7 @@ class DriverSchedule extends \Eloquent {
 		$rules = [
 			'user_id'	=>	'exists:user,id',
 			'order_id'	=>	'exists:order,id',
+			'type'		=>	'min:3|max:10',
 		];
 		
 		if (!empty($customrules)) $rules = $rules + $customrules;

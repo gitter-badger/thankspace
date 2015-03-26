@@ -15,6 +15,7 @@ class ReturnSchedule extends \Eloquent {
 			'order_id'		=>	'exists:order,id',
 			'return_date'	=>	'required|date_format:Y-m-d',
 			'return_time'	=>	'required|min:5|max:40',
+			'status'		=>	'between:0,1',
 		];
 		
 		if (!empty($customrules)) $rules = $rules + $customrules;

@@ -15,7 +15,7 @@ class OrderPayment extends \Eloquent {
 			'order_id'	=>	'exists:order,id',
 			'code'		=>	'min:3|max:20',
 			'method'	=>	'min:3|max:20',
-			'status'	=>	'between:0,1',
+			'status'	=>	'between:0,1,2',
 		];
 		
 		if (!empty($customrules)) $rules = $rules + $customrules;

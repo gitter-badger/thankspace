@@ -16,6 +16,7 @@ class CreateDriverScheduleTable extends Migration {
 			$table->increments('id');
 			$table->integer('user_id');
 			$table->integer('order_id');
+			$table->string('type', 10)->default('store');
 			$table->timestamps();
 		});
 	}

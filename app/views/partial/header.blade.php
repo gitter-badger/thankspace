@@ -23,15 +23,60 @@
 					<a href="#myModal" data-toggle="modal" data-target=".bs-example-modal-sm">Customer Area</a>
 				</li>
 			</ul>
-			<ul class="nav navbar-nav navbar-right" >
-				<li>
-					<center>
-						<a href="order.php">
-							<button type="submit" class="btn btn-warning btn-sm"><i class="fa fa-shopping-cart"></i> Order</button>
+			
+			@if(Auth::check())
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a href="{{ route('user.storage') }}" class="dropdown-toggle" data-toggle="dropdown" >
+							<i class="fa fa-user" style="font-size: 14pt;"></i> {{ Auth::user()->fullname }}
 						</a>
-					</center>
-				</li>
-			</ul>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="{{ route('user.storage') }}">
+									<i class="fa fa-archive fa-fw"></i>
+									Storage saya
+								</a>
+							</li>
+							<li>
+								<a href="{{ route('user.invoice') }}">
+									<i class="fa fa-archive fa-fw"></i>
+									Riwayat Invoice
+								</a>
+							</li>
+							<li>
+								<a href="order.php">
+									<i class="fa fa-shopping-cart fa-fw"></i>
+									Order Storage Box
+								</a>
+							</li>
+							<li>
+								<a href="{{ route('user.setting') }}">
+									<i class="fa fa-gear fa-fw"></i>
+									Pengaturan Akun
+								</a>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<a href="logout.php">
+									<i class="fa fa-sign-out fa-fw"></i>
+									Sign Out
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			@else
+				<ul class="nav navbar-nav navbar-right" >
+					<li>
+						<center>
+							<a href="order.php">
+								<button type="submit" class="btn btn-warning btn-sm"><i class="fa fa-shopping-cart"></i> Order</button>
+							</a>
+						</center>
+					</li>
+				</ul>
+			@endif
+
 		</div>
 	</div>
 </div>

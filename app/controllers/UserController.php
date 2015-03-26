@@ -31,7 +31,10 @@ class UserController extends BaseController {
 
 	public function setting()
 	{
-		return __FUNCTION__;
+		$data = [
+
+		];
+		return View::make('user.setting', $data);
 	}
 
 

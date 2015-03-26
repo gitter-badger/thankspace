@@ -18,7 +18,7 @@
 			</div>
 
 			<div class="col-lg-9">
-				@if( isset($jancok))
+				@if( !isset($jancok))
 
 					<div class="panel panel-default text-center">
 						<div class="panel-body">

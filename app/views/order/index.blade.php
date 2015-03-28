@@ -38,7 +38,7 @@
 							<h3>STANDARD BOX: Rp.50.000/bulan per box</h3>
 							<p>Our average customer stores 7 boxes</p>
 						</center>
-						
+
 						{{ Form::open(['method' => 'POST', 'class' => 'form-horizontal']) }}
 							<fieldset>
 								<div class="form-group">
@@ -53,7 +53,7 @@
 										Jumlah
 									</label>
 									<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-										{{ Form::number('quantity_custom', null, ['class' => 'form-control']) }}
+										{{ Form::number('quantity_custom', null, ['class' => 'form-control', 'min' => 21]) }}
 										<span class="help-block"><i>Sales representative</i> kami akan menghubungi Anda untuk ketersediaan box</span>
 									</div>
 								</div>

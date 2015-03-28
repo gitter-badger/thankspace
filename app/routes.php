@@ -28,6 +28,7 @@ Route::group(['before' => ''], function() {
 	Route::get('/order/payment', [ 'as' => 'order.payment', 'uses' => 'OrderController@payment' ]);
 	Route::get('/order/review', [ 'as' => 'order.review', 'uses' => 'OrderController@review' ]);
 	Route::get('/order/completed', [ 'as' => 'order.completed', 'uses' => 'OrderController@completed' ]);
+	Route::post('/order/progress', [ 'as' => 'order.progress', 'uses' => 'OrderController@progress' ]);
 	/* End Order Pages */
 
 });

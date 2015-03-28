@@ -5,7 +5,7 @@
 				<ul class="list-unstyled">
 					<li><a href="about-us.php">Tentang Kami</a></li>
 					<li><a href="careers.php">Careers</a></li>
-					<li><a href="terms-and-conditions.php">Syarat dan Ketentuan</a></li>
+					<li><a href="{{ route('page.tos') }}">Syarat dan Ketentuan</a></li>
 					<li><a href="storage-rules.php">Aturan Penyimpanan</a></li>
 					<li><a href="contact-us.php">Kontak Kami</a></li>
 				</ul>

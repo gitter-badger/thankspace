@@ -25,3 +25,22 @@
 		</div>
 	</div>
 </div>
+@section('footer')
+	@parent
+	
+	<!-- Modal video  - Mulai -->
+	<div class="modal fade text-center" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="myModalLabel">Introduction Thankspace</h4><hr>
+				</div>
+				<div class="modal-body">
+					<iframe width="520" height="415" src="//www.youtube.com/embed/rHMsOpZnt6c" frameborder="0" allowfullscreen></iframe>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal video - Selesai -->
+@stop

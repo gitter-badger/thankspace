@@ -34,10 +34,10 @@ Route::group(['before' => ''], function() {
 
 
 /* Static Pages */
-Route::get('/page/faq', [ 'as' => 'page.faq', 'uses' => 'HomeController@index' ]);
+Route::get('/page/faq', [ 'as' => 'page.faq', 'uses' => 'PageController@faq' ]);
 Route::get('/page/about-us', [ 'as' => 'page.about_us', 'uses' => 'HomeController@index' ]);
 Route::get('/page/careers', [ 'as' => 'page.careers', 'uses' => 'HomeController@index' ]);
-Route::get('/page/terms-and-conditions', [ 'as' => 'page.tos', 'uses' => 'HomeController@index' ]);
+Route::get('/page/terms-and-conditions', [ 'as' => 'page.tos', 'uses' => 'PageController@tos' ]);
 Route::get('/page/storage-rules', [ 'as' => 'page.storage_rules', 'uses' => 'HomeController@index' ]);
 Route::get('/page/contact-us', [ 'as' => 'page.contact_us', 'uses' => 'HomeController@index' ]);
 /* End Static Pages */

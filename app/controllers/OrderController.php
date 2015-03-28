@@ -4,7 +4,8 @@ class OrderController extends BaseController {
 
 	public function index()
 	{
-		return __FUNCTION__;
+		$data = [];
+		return View::make('order.index', $data);
 	}
 
 

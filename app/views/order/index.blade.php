@@ -32,7 +32,7 @@
 										Jumlah
 									</label>
 									<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-										{{ Form::number('quantity_custom', null, ['class' => 'form-control', 'min' => 21]) }}
+										{{ Form::number('quantity_custom', 21, [ 'class' => 'form-control', 'min' => 21 ]) }}
 										<span class="help-block"><i>Sales representative</i> kami akan menghubungi Anda untuk ketersediaan box</span>
 									</div>
 								</div>
@@ -69,7 +69,7 @@
 									<div class="form-group">
 										<label for="select" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 control-label">Detail barang</label>
 										<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-											{{ Form::textarea('description', null, ['class' => 'form-control', 'placeholder' => 'Sebutkan dengan detail barang lainnya yang ingin Anda simpan']) }}
+											{{ Form::textarea('description', null, ['class' => 'form-control', 'placeholder' => 'Sebutkan dengan detail barang lainnya yang ingin Anda simpan', 'rows' => '5' ]) }}
 										</div>
 									</div>
 								</div>

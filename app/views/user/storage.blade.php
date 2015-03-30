@@ -65,7 +65,7 @@
 													<li>
 														<a href="javascript:void(0)">"Kirimkan kembali barang Saya"</a>
 													</li>
-													<!--<li><a href="javascript:void(0)">Ikutkan Storage War (soon)</a></li>-->
+													{{--<li><a href="javascript:void(0)">Ikutkan Storage War (soon)</a></li>--}}
 												</ul>
 											</div>
 										</td>

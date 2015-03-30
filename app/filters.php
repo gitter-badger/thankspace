@@ -19,7 +19,21 @@ App::before(function($request)
 
 App::after(function($request, $response)
 {
-	//
+	// HTML Minification
+	if($response instanceof Illuminate\Http\Response)
+	{
+		$output = $response->getOriginalContent();
+		if($response->headers->get('content-type') == 'text/html; charset=UTF-8')
+		{
+			// Clean comments
+			$output = preg_replace('/<!--([^\[|(<!)].*)/', '', $output);
+			$output = preg_replace('/(?<!\S)\/\/\s*[^\r\n]*/', '', $output);
+			// Clean Whitespace
+			$output = preg_replace('/\s{2,}/', '', $output);
+			$output = preg_replace('/(\r?\n)/', '', $output);
+			$response->setContent($output);
+		}
+	}
 });
 
 /*

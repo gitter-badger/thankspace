@@ -66,9 +66,9 @@
 										<td>452000</td>
 										<td><span class="label label-info">Menunggu Konfirmasi</span></td>
 										<td>
-											<!--<div class="checkbox">
+											{{--<div class="checkbox">
 												<label><input type="checkbox"></label>
-											</div>-->
+											</div>--}}
 										</td>
 									</tr>
 									<tr class="success">
@@ -80,9 +80,9 @@
 										<td>250000</td>
 										<td><span class="label label-success">Completed Payment</span> </td>
 										<td>
-											<!--<div class="checkbox">
+											{{--<div class="checkbox">
 												<label><input type="checkbox"></label>
-											</div>-->
+											</div>--}}
 										</td>
 									</tr>
 									<tr class="success">
@@ -94,9 +94,9 @@
 										<td>250000</td>
 										<td><span class="label label-success">Completed Payment</span> </td>
 										<td>
-											<!--<div class="checkbox">
+											{{--<div class="checkbox">
 												<label><input type="checkbox"></label>
-											</div>-->
+											</div>--}}
 										</td>
 									</tr>
 									<tr class="success">
@@ -108,9 +108,9 @@
 										<td>250000</td>
 										<td><span class="label label-success">Completed Payment</span> </td>
 										<td>
-											<!--<div class="checkbox">
+											{{--<div class="checkbox">
 												<label><input type="checkbox"></label>
-											</div>-->
+											</div>--}}
 										</td>
 									</tr>
 									<tr class="success">
@@ -122,9 +122,9 @@
 										<td>250000</td>
 										<td><span class="label label-success">Completed Payment</span> </td>
 										<td>
-											<!--<div class="checkbox">
+											{{--<div class="checkbox">
 												<label><input type="checkbox"></label>
-											</div>-->
+											</div>--}}
 										</td>
 									</tr>
 									<tr>

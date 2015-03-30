@@ -36,6 +36,12 @@ class UserController extends BaseController {
 		];
 		return View::make('user.setting', $data);
 	}
+	
+	
+	public function signup()
+	{
+		return Input::get();
+	}
 
 
 	public function signout()

@@ -1,5 +1,5 @@
-<!-- Modal Log In - Mulai -->
-<div class="modal fade text-center  bs-example-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+{{-- Modal Log In - Mulai --}}
+<div class="modal fade text-center  bs-example-modal-sm" id="sign-in-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-sm">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -35,17 +35,17 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				Lupa password? klik <a href="#myModal3" data-toggle="modal" data-dismiss="modal">di sini</a><br>
-				Customer baru? Hooree, Sign Up <a href="#myModal2" data-toggle="modal" data-dismiss="modal">di sini</a>
+				Lupa password? klik <a href="#forgot-modal" data-toggle="modal" data-dismiss="modal">di sini</a><br>
+				Customer baru? Horee, Sign Up <a href="#sign-up-modal" data-toggle="modal" data-dismiss="modal">di sini</a>
 			</div>
 		</div>
 	</div>
 </div>
-<!-- Modal Log In - Selesai -->
+{{-- Modal Log In - Selesai --}}
 
 
-<!-- Modal Sign Up - Mulai -->
-<div class="modal fade text-center  " id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+{{-- Modal Sign Up - Mulai --}}
+<div class="modal fade text-center  " id="sign-up-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -53,20 +53,20 @@
 				<h4 class="modal-title" id="myModalLabel">Pendaftaran Customer</h4><hr>
 			</div>
 			<div class="modal-body">
-				<form class="form-horizontal">
+				{{ Form::open([ 'method' => 'POST', 'route' => 'user.signup', 'class' => 'form-horizontal sign-up-form' ]) }}
 					<fieldset>
 						<p>Isi data Anda untuk pendaftaran </p>
 						<div class="form-group">                    
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding-bottom:20px;">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-edit fa-fw"></i></span>
-									<input class="form-control floating-label" data-hint="Masukkan nama asli Anda" type="fname" placeholder="Nama Depan">
+									<input class="form-control floating-label" data-hint="Masukkan nama asli Anda" name="firstname" type="fname" placeholder="Nama Depan" required>
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-edit fa-fw"></i></span>
-									<input class="form-control floating-label" type="lname" placeholder="Nama Belakang">
+									<input class="form-control floating-label" name="lastname" type="lname" placeholder="Nama Belakang" required>
 								</div>
 							</div>
 						</div>
@@ -74,13 +74,13 @@
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding-bottom:20px;">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-									<input type="email" class="form-control floating-label" data-hint="Masukkan email yang valid" placeholder="Email">
+									<input type="email" class="form-control floating-label" data-hint="Masukkan email yang valid" name="email" placeholder="Email" required>
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-phone fa-fw"></i></span>
-									<input type="number" class="form-control floating-label" data-hint="Masukkan nomor yang valid" placeholder="Nomor telepon">
+									<input type="number" class="form-control floating-label" data-hint="Masukkan nomor yang valid" name="phone" placeholder="Nomor telepon" required>
 								</div>
 							</div>
 						</div>
@@ -88,13 +88,13 @@
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding-bottom:20px;">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-									<input class="form-control floating-label" data-hint="Buat password yang tidak mudah di tebak. Minimal 6 karakter. " type="password" placeholder="Password">
+									<input class="form-control floating-label pwd" data-hint="Buat password yang tidak mudah di tebak. Minimal 6 karakter." minlength="6" name="password" type="password" placeholder="Password" required>
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-									<input class="form-control floating-label" data-hint="Ingat password Anda?" type="password" placeholder="Ulangi Password">
+									<input class="form-control floating-label re-pwd" data-hint="Ingat password Anda?" type="password" placeholder="Ulangi Password" required>
 								</div>
 							</div>
 						</div>
@@ -102,32 +102,30 @@
 							<div class="col-lg-12">
 								<div class="checkbox">
 									<label>	
-										<input type="checkbox" onchange="document.getElementById('check').disabled = !this.checked;" /> Saya telah membaca dan menyetujui <a href="terms-and-conditions.php" target="_blank">Syarat & Ketentuan Thankspace</a>.
+										<input type="checkbox" onchange="document.getElementById('check').disabled = !this.checked;" /> Saya telah membaca dan menyetujui <a href="{{ route('page.tos') }}" target="_blank">Syarat & Ketentuan Thankspace</a>.
 									</label>
 								</div>
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="col-lg-12">
-								<a href="customer-items.php">
-									<button type="submit" class="btn btn-primary" id="check" disabled><i class="fa fa-user-plus"></i> Sign Up</button>
-								</a>
+								<button type="submit" class="btn btn-primary regis" data-loading-text="Registering..." id="check" disabled><i class="fa fa-user-plus"></i> Sign Up</button>
 							</div>
 						</div>
 					</fieldset>
-				</form>
+				{{ Form::close() }}
 			</div>
 			<div class="modal-footer">
-			Sudah mempunyai akun? <a href="#myModal" data-toggle="modal" data-dismiss="modal">Sign In</a>
+				Sudah mempunyai akun? <a href="#sign-in-modal" data-toggle="modal" data-dismiss="modal">Sign In</a>
 			</div>
 		</div>
 	</div>
 </div>
-<!-- Modal Sign Up - Selesai -->
+{{-- Modal Sign Up - Selesai --}}
 
 
-<!-- Modal Forgot Password  - Mulai -->
-<div class="modal fade text-center" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+{{-- Modal Forgot Password  - Mulai --}}
+<div class="modal fade text-center" id="forgot-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -155,9 +153,9 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				Sudah ingat password Anda? coba <a href="#myModal" data-toggle="modal" data-dismiss="modal">Sign In</a>
+				Sudah ingat password Anda? coba <a href="#sign-in-modal" data-toggle="modal" data-dismiss="modal">Sign In</a>
 			</div>
 		</div>
 	</div>
 </div>
-<!-- Modal Forgot Password - Selesai -->
+{{-- Modal Forgot Password - Selesai --}}

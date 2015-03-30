@@ -124,4 +124,25 @@ $(function() {
 		intro.setOption('showBullets', 'true');
 		intro.start();
 	});
+
+	$(document).on('change', '.re-pwd', function(){
+		if ($('.re-pwd').val() != $('.pwd').val()) {
+			this.setCustomValidity('Passwords must match.');
+		} else {
+			this.setCustomValidity('');
+		}
+	});
+	
+	$(document).on('submit', '.sign-up-form', function(e){
+		e.preventDefault();
+		$('.regis').button('loading');
+		$.ajax({
+			url: $(this).attr('action'),
+			type: "POST",
+			data: $(this).serialize(),
+			success: function (result) {
+				console.log(result);
+			},
+		});
+	});
 });

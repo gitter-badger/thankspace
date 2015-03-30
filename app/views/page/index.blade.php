@@ -30,7 +30,7 @@
 			</div>
 		</div>
 	</div>
-	<!-- section-tout - end -->
+	{{-- section-tout - end --}}
 
 
 	<div class="section-preview" id="location">

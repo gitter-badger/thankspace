@@ -1,5 +1,5 @@
-<!-- style bootstrap-social  
-<link href="{{ asset('assets/css/bootstrap-social.css') }}" rel="stylesheet" type="text/css">-->
+{{-- style bootstrap-social  
+<link href="{{ asset('assets/css/bootstrap-social.css') }}" rel="stylesheet" type="text/css">--}}
 
-<!-- styles -->
+{{-- styles --}}
 {{ Minify::stylesheet( Config::get('assets.style') ) }}

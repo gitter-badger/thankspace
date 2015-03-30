@@ -73,8 +73,6 @@
 										</div>
 									</div>
 								</div>
-								<!-- div ya -->
-								<!-- div tidak -->
 								<div id="div2"></div>
 							</fieldset>
 							<center>
@@ -83,7 +81,6 @@
 								</button>
 							</center>
 						{{ Form::close() }}
-
 					</div>
 				</div>
 			</div>

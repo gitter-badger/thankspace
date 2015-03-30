@@ -86,11 +86,9 @@
 										<span class="help-block"><i>Thankspace office hours:</i> mon-fri, 08:00am - 06:00pm</span>
 									</div>
 								</div>
-								<!-- div ya -->
-							  <!-- div tidak -->
-							  <div id="div2"></div>
+								<div id="div2"></div>
 							</fieldset>
-						</form>
+						{{ Form::close() }}
 						<center><a class="btn btn-primary" href="order-profile.php">Lanjutkan</a></center>
 					</div>
 				</div>

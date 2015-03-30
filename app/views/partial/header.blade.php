@@ -20,7 +20,7 @@
 					</ul>
 				</li>
 				<li>
-					<a href="#myModal" data-toggle="modal" data-target=".bs-example-modal-sm">Customer Area</a>
+					<a href="#sign-in-modal" data-toggle="modal" data-dismiss="modal">Customer Area</a>
 				</li>
 			</ul>
 			

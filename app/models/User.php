@@ -8,6 +8,8 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 class User extends Eloquent implements UserInterface, RemindableInterface {
 
 	use UserTrait, RemindableTrait;
+	
+	protected $guarded = [];
 
 	/**
 	 * The database table used by the model.
@@ -59,7 +61,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 			'email'		=>	'required|email|max:40',
 			'password'	=>	'required|min:6',
 			'city_id'	=>	'sometimes|exists:cities,id',
-			'address'	=>	'required|min:10',
+			'address'	=>	'sometimes|required|min:10',
 			'gender'	=>	'sometimes|in:m,f',
 			'phone'		=>	'required|max:20',
 			'status'	=>	'between:0,1',

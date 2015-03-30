@@ -50,6 +50,6 @@ Route::post('/signin', [ 'as' => 'user.signin', 'uses' => 'HomeController@index'
 Route::post('/signup', [ 'as' => 'user.signup', 'uses' => 'UserController@signup' ]);
 Route::post('/forgot-password', [ 'as' => 'user.forgot_password', 'uses' => 'HomeController@index' ]);
 
-Route::get('/dashboard', [ 'as' => 'user.dashboard', 'uses' => 'HomeController@index' ]);
+Route::get('/dashboard', [ 'as' => 'user.dashboard', 'uses' => 'UserController@dashboard' ]);
 Route::get('/my-storage', [ 'as' => 'user.my_storage', 'uses' => 'HomeController@index' ]);
 /* End user */

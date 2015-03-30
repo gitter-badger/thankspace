@@ -38,15 +38,39 @@ class UserController extends BaseController {
 	}
 	
 	
+	public function signin()
+	{
+		return __FUNCTION__;
+	}
+	
+	
 	public function signup()
 	{
-		return Input::get();
+		$customrules = [
+			'email'	=>	'required|unique:user,email',
+		];
+
+		$validation = User::validate(Input::get(), $customrules);
+		
+		if ( $validation->passes() ) {
+			$user = User::create(Input::get());
+			Session::put('userdata', User::where('id', $user->id)->first());
+			return [ 'status' => 200, 'redirect' => URL::route('user.dashboard') ];
+		} else {
+			return [ 'status' => 200, 'message' => $validation->messages()->all(':message') ];
+		}
 	}
 
 
 	public function signout()
 	{
 		return __FUNCTION__;
+	}
+	
+	
+	public function dashboard()
+	{
+		return Session::get('userdata');
 	}
 
 }

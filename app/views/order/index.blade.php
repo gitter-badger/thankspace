@@ -3,29 +3,7 @@
 
 @section('content')
 
-	<div class="board">
-		<div class="board-inner">
-			<ul class="nav nav-tabs" style="background:#fff;" id="myTab">
-			<div class="liner"></div>
-				<li class="active">
-					<a><span class="round-tabs one"><i class="glyphicon glyphicon-gift"></i></span></a>
-				</li>
-				<li>
-					<a><span class="round-tabs two"><i class="glyphicon glyphicon-time"></i></span></a>
-				</li>
-				<li>
-					<a><span class="round-tabs three"><i class="glyphicon glyphicon-user"></i></span></a>
-				</li>
-				<li>
-					<a><span class="round-tabs four"><i class="glyphicon glyphicon-eye-open"></i></span></a>
-				</li>
-				<li>
-					<a><span class="round-tabs five"><i class="glyphicon glyphicon-ok"></i></span></a>
-				</li>
-			</ul>
-		</div>
-	</div>
-
+	@include('order._board')
 
 	<div class="container">
 		<div class="row">
@@ -39,7 +17,8 @@
 							<p>Our average customer stores 7 boxes</p>
 						</center>
 
-						{{ Form::open(['method' => 'POST', 'class' => 'form-horizontal']) }}
+						{{ Form::open(['method' => 'POST', 'route' => 'order.progress', 'class' => 'form-horizontal']) }}
+							{{ Form::hidden('redirect_to', route('order.schedule')) }}
 							<fieldset>
 								<div class="form-group">
 									<label for="select" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 control-label">Jumlah box</label>
@@ -98,11 +77,13 @@
 								<!-- div tidak -->
 								<div id="div2"></div>
 							</fieldset>
+							<center>
+								<button type="submit" class="btn btn-primary">
+									Lanjutkan
+								</button>
+							</center>
 						{{ Form::close() }}
 
-						<center>
-							<a class="btn btn-primary" href="order-schedule.php">Lanjutkan</a>
-						</center>
 					</div>
 				</div>
 			</div>

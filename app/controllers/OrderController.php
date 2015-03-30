@@ -11,7 +11,9 @@ class OrderController extends BaseController {
 
 	public function schedule()
 	{
-		return __FUNCTION__;
+		$data = [];
+		return View::make('order.schedule', $data);
+
 	}
 
 
@@ -30,6 +32,19 @@ class OrderController extends BaseController {
 	public function completed()
 	{
 		return __FUNCTION__;
+	}
+
+
+	/**
+	 * For handle order step by step
+	 * 
+	 * @return Redirect
+	 */
+	public function progress()
+	{
+		$redirectTo = Input::get('redirect_to');
+
+		return Redirect::to($redirectTo);
 	}
 
 }

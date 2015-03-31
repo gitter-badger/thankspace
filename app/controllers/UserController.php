@@ -63,7 +63,17 @@ class UserController extends BaseController {
 	
 	public function signin()
 	{
-		return __FUNCTION__;
+		if ( ! Request::ajax()) {
+			return App::abort(404);
+		}
+
+		$userRepo = app('UserRepo');
+		$input = Input::get();
+		if ( $userRepo->login($input) )
+		{
+			return ['status' => 200, 'redirect' => route('user.dashboard')];
+		}
+		return $userRepo->getErrors();
 	}
 	
 	
@@ -80,11 +90,6 @@ class UserController extends BaseController {
 			return ['status' => 200, 'redirect' => route('user.dashboard')];
 		}
 		return $userRepo->getErrors();
-		
-		/*return [
-			'status' => 400,
-			'message' => $validation->messages()->all(':message')
-		];*/
 	}
 
 

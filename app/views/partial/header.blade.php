@@ -24,7 +24,7 @@
 				</li>
 			</ul>
 			
-			@if(Auth::check())
+			@if( Auth::check() )
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
 						<a href="{{ route('user.dashboard') }}" class="dropdown-toggle" data-toggle="dropdown" >

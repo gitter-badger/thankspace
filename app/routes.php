@@ -41,7 +41,7 @@ Route::get('/page/contact-us', [ 'as' => 'page.contact_us', 'uses' => 'HomeContr
 /* User */
 Route::get('/signout', [ 'as' => 'user.signout', 'uses' => 'UserController@signout' ]);
 
-Route::post('/signin', [ 'as' => 'user.signin', 'uses' => 'HomeController@index' ]);
+Route::post('/signin', [ 'as' => 'user.signin', 'uses' => 'UserController@signin' ]);
 Route::post('/signup', [ 'as' => 'user.signup', 'uses' => 'UserController@signup' ]);
-Route::post('/forgot-password', [ 'as' => 'user.forgot_password', 'uses' => 'HomeController@index' ]);
+Route::post('/forgot-password', [ 'as' => 'user.forgot_password', 'uses' => 'UserController@index' ]);
 /* End user */

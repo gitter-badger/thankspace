@@ -27,6 +27,18 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
 
 	/**
+	 * Set user password encryption accessor
+	 * 
+	 * @param string $value
+	 * @return void
+	 */
+	public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = \Hash::make($value);
+    }
+
+
+	/**
      * Get fullname attribute mutators
      * 
      * @return string

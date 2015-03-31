@@ -141,6 +141,7 @@ $(function() {
 			type: "POST",
 			data: $(this).serialize(),
 			success: function (result) {
+				console.log(result);
 				if ( result['status'] == 200 ) {
 					window.location.href = result['redirect'];
 				} else {

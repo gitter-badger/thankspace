@@ -24,6 +24,7 @@ class CreateUserTable extends Migration {
 			$table->text('address');
 			$table->enum('gender', [ 'm', 'f' ])->default('m');
 			$table->string('phone', 20)->nullable();
+			$table->string('remember_token')->nullable();
 			$table->enum('status', [ 0, 1 ])->default(1);
 			$table->timestamps();
 		});

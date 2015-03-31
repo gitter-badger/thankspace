@@ -1,6 +1,6 @@
 <ul class="nav nav-pills nav-stacked">
-	<li @if(Route::currentRouteName() == 'user.storage') class="active" @endif >
-		<a href="{{ route('user.storage') }}">
+	<li @if(Route::currentRouteName() == 'user.dashboard') class="active" @endif >
+		<a href="{{ route('user.dashboard') }}">
 			Storage Saya
 		</a>
 	</li>

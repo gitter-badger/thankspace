@@ -7,14 +7,14 @@
 				<h4 class="modal-title" id="myModalLabel">Selamat Datang Kembali!</h4><hr>
 			</div>
 			<div class="modal-body">
-				<form class="form-horizontal">
+				{{ Form::open([ 'method' => 'POST', 'route' => 'user.signin', 'class' => 'form-horizontal sign-in-form' ]) }}
 					<fieldset>
 						<p>Silahkan Sign In dengan akun Anda</p>
 						<div class="form-group">
 							<div class="col-lg-12">
 								<div class="input-group margin-bottom-sm">
 									<span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-									<input type="email" class="form-control " placeholder="Email">
+									<input type="email" name="email" class="form-control" placeholder="Email" required="1">
 								</div>
 							</div>
 						</div>
@@ -22,17 +22,19 @@
 							<div class="col-lg-12">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
-									<input class="form-control " id="passwordfield" type="password" placeholder="Password">
+									<input class="form-control" name="password" id="passwordfield" type="password" placeholder="Password" required="1">
 								</div>				
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="col-lg-12">
-								<a class="btn btn-primary" style="width:100%;" href="customer-items.php"><i class="fa fa-sign-in"></i> Sign In</a>
+								<button type="submit" class="btn btn-primary login" data-loading-text="Authenticating..." style="width:100%;">
+									<i class="fa fa-sign-in"></i> Sign In
+								</button>
 							</div>
 						</div>
 					</fieldset>
-				</form>
+				{{ Form::close() }}
 			</div>
 			<div class="modal-footer">
 				Lupa password? klik <a href="#forgot-modal" data-toggle="modal" data-dismiss="modal">di sini</a><br>

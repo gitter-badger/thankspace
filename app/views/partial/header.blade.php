@@ -24,15 +24,15 @@
 				</li>
 			</ul>
 			
-			@if(Auth::check())
+			@if( Auth::check() )
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
-						<a href="{{ route('user.storage') }}" class="dropdown-toggle" data-toggle="dropdown" >
+						<a href="{{ route('user.dashboard') }}" class="dropdown-toggle" data-toggle="dropdown" >
 							<i class="fa fa-user" style="font-size: 14pt;"></i> {{ Auth::user()->fullname }}
 						</a>
 						<ul class="dropdown-menu">
 							<li>
-								<a href="{{ route('user.storage') }}">
+								<a href="{{ route('user.dashboard') }}">
 									<i class="fa fa-archive fa-fw"></i>
 									Storage saya
 								</a>

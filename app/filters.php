@@ -57,7 +57,7 @@ Route::filter('auth', function()
 		}
 		else
 		{
-			return Redirect::guest('login');
+			return Redirect::route('page.index', ['modal' => 'sign-in-modal']);
 		}
 	}
 });

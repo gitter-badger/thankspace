@@ -149,4 +149,22 @@ $(function() {
 			},
 		});
 	});
+
+
+	$(document).on('submit', '.sign-in-form', function(e){
+		e.preventDefault();
+		$('.login').button('loading');
+		$.ajax({
+			url: $(this).attr('action'),
+			type: "POST",
+			data: $(this).serialize(),
+			success: function (result) {
+				if ( result['status'] == 200 ) {
+					window.location.href = result['redirect'];
+				} else {
+					$('.login').button('reset');
+				}
+			},
+		});
+	});
 });

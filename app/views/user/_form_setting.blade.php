@@ -17,8 +17,7 @@
 			<span class="success-alert"> <i class="fa fa-smile-o"></i> 
 			Jangan sampai lupa dengan Password Anda.</span>
 		@endif
-
-		<br><br>
+		
 		<p>Lengkapi detail data diri anda untuk mempermudah kami memberikan layanan terbaik untuk Anda.</p>
 
 		<div class="form-group">                    

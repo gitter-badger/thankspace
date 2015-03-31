@@ -29,6 +29,7 @@
 	@show
 	
 	@section('foot')
+		@include('partial.modal')
 		@include('partial.foot')
 	@show
 

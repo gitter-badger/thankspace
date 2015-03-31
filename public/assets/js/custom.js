@@ -144,6 +144,9 @@ $(function() {
 				if ( result['status'] == 200 ) {
 					window.location.href = result['redirect'];
 				} else {
+					for (var i = 0; i < result.length; i++ ) {
+						$('.regis-err').append('<i class="fa fa-meh-o fa-4"></i> '+result[i]+'<br>');
+					};
 					$('.regis').button('reset');
 				}
 			},
@@ -162,6 +165,7 @@ $(function() {
 				if ( result['status'] == 200 ) {
 					window.location.href = result['redirect'];
 				} else {
+					$('.login-err').html(result);
 					$('.login').button('reset');
 				}
 			},

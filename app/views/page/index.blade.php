@@ -184,10 +184,3 @@
 	</div>
 
 @stop
-
-
-@section('footer')
-	@parent
-
-	@include('partial.modal')
-@stop

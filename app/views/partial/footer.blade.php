@@ -9,7 +9,6 @@
 					<li><a href="storage-rules.php">Aturan Penyimpanan</a></li>
 					<li><a href="contact-us.php">Kontak Kami</a></li>
 				</ul>
-				<p>Copyright  &copy; 2015 <a href="index.php" rel="nofollow">Thankspace.com</a></p>
 			</div>
 			<div class="col-lg-4">
 				<div class="footer-social">
@@ -33,5 +32,6 @@
 				</div>
 			</div>
 		</div>
+		<p>Copyright  &copy; 2015 <a href="index.php" rel="nofollow">Thankspace.com</a></p>
 	</div>
 </footer>

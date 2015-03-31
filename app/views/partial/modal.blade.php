@@ -1,14 +1,15 @@
 {{-- Modal Log In - Mulai --}}
-<div class="modal fade text-center  bs-example-modal-sm" id="sign-in-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+<div class="modal fade text-center bs-example-modal-sm" id="sign-in-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-sm">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 				<h4 class="modal-title" id="myModalLabel">Selamat Datang Kembali!</h4><hr>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" style="padding:0px 24px;">
 				{{ Form::open([ 'method' => 'POST', 'route' => 'user.signin', 'class' => 'form-horizontal sign-in-form' ]) }}
 					<fieldset>
+						<span class="error-alert login-err"></span>
 						<p>Silahkan Sign In dengan akun Anda</p>
 						<div class="form-group">
 							<div class="col-lg-12">
@@ -47,16 +48,17 @@
 
 
 {{-- Modal Sign Up - Mulai --}}
-<div class="modal fade text-center  " id="sign-up-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade text-center" id="sign-up-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 				<h4 class="modal-title" id="myModalLabel">Pendaftaran Customer</h4><hr>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" style="padding:0px 24px;">
 				{{ Form::open([ 'method' => 'POST', 'route' => 'user.signup', 'class' => 'form-horizontal sign-up-form' ]) }}
 					<fieldset>
+						<span class="error-alert regis-err"></span>
 						<p>Isi data Anda untuk pendaftaran </p>
 						<div class="form-group">                    
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding-bottom:20px;">

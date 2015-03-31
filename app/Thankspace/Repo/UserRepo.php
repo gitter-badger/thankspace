@@ -37,7 +37,7 @@ class UserRepo extends BaseRepo
 		{
 		    return true;
 		}
-		$this->setErrors(['Kombinasi email dan password']);
+		$this->setErrors([ '<i class="fa fa-meh-o fa-4"></i> Maaf, kombinasi email dan password Anda salah.' ]);
 		return false;
 	}
 

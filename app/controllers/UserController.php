@@ -71,7 +71,7 @@ class UserController extends BaseController {
 		$input = Input::get();
 		if ( $userRepo->login($input) )
 		{
-			return ['status' => 200, 'redirect' => route('user.dashboard')];
+			return [ 'status' => 200, 'redirect' => route('user.dashboard') ];
 		}
 		return $userRepo->getErrors();
 	}
@@ -87,7 +87,7 @@ class UserController extends BaseController {
 		$input = Input::get();
 		if ( $userRepo->register($input) )
 		{
-			return ['status' => 200, 'redirect' => route('user.dashboard')];
+			return [ 'status' => 200, 'redirect' => route('user.dashboard') ];
 		}
 		return $userRepo->getErrors();
 	}

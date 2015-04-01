@@ -19,7 +19,7 @@
 			<div class="col-lg-9">
 				
 				<div class="panel panel-default">
-					<div class="panel-body">
+					<div class="panel-body setting-board">
 						<ul class="nav nav-tabs text-center">
 							<li class="active"><a href="#profile" id="profile-tab" data-toggle="tab">Profile</a></li>
 							<li><a href="#password" id="password-tab" data-toggle="tab">Password</a></li>

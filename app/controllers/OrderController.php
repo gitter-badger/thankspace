@@ -33,7 +33,8 @@ class OrderController extends BaseController {
 
 	public function completed()
 	{
-		return __FUNCTION__;
+		$data = [];
+		return View::make('order.completed', $data);
 	}
 
 

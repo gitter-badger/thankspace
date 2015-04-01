@@ -88,8 +88,12 @@
 								</div>
 								<div id="div2"></div>
 							</fieldset>
+							<center>
+								<button type="submit" class="btn btn-primary">
+									Lanjutkan
+								</button>
+							</center>
 						{{ Form::close() }}
-						<center><a class="btn btn-primary" href="order-profile.php">Lanjutkan</a></center>
 					</div>
 				</div>
 			</div>

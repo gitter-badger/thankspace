@@ -19,7 +19,8 @@ class OrderController extends BaseController {
 
 	public function payment()
 	{
-		return __FUNCTION__;
+		$data = [];
+		return View::make('order.payment', $data);
 	}
 
 

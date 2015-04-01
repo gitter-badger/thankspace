@@ -26,7 +26,8 @@ class OrderController extends BaseController {
 
 	public function review()
 	{
-		return __FUNCTION__;
+		$data = [];
+		return View::make('order.review', $data);
 	}
 
 
@@ -46,6 +47,17 @@ class OrderController extends BaseController {
 		$redirectTo = Input::get('redirect_to');
 
 		return Redirect::to($redirectTo);
+	}
+
+
+	/**
+	 * Reset order
+	 *
+	 * @return Redirect
+	 */
+	public function reset()
+	{
+
 	}
 
 }

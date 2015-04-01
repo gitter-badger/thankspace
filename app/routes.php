@@ -26,6 +26,7 @@ Route::get('/order/payment', [ 'as' => 'order.payment', 'uses' => 'OrderControll
 Route::get('/order/review', [ 'as' => 'order.review', 'uses' => 'OrderController@review' ]);
 Route::get('/order/completed', [ 'as' => 'order.completed', 'uses' => 'OrderController@completed' ]);
 Route::post('/order/progress', [ 'as' => 'order.progress', 'uses' => 'OrderController@progress' ]);
+Route::get('/order/reset', [ 'as' => 'order.reset', 'uses' => 'OrderController@reset' ]);
 /* End Order Pages */
 
 

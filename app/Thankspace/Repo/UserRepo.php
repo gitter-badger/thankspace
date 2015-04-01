@@ -7,12 +7,34 @@ class UserRepo extends BaseRepo
 	{
 		$this->model = $user;
 	}
+	
+	
+	public function updateProfile(array $input = array())
+	{
+		$id = ( isset($input['user_id']) ? $input['user_id'] : \Auth::user()->id );
+		
+		$customrules = [
+			'email'		=>	'required|email|unique:user,email,'.$id,
+			'password'	=>	'sometimes'
+		];
+
+		$validation = $this->model->validate($input, $customrules);
+		
+		if ( $validation->passes() ) {
+			$user = $this->_getUserById($id);
+			$user->fill($input)->save();
+			return $user;
+		} else {
+			$this->setErrors($validation->messages()->all(':message'));
+			return false;
+		}
+	}
 
 
 	public function register(array $input = array())
 	{
 		$customrules = [
-			'email'	=>	'required|unique:user,email',
+			'email'	=>	'required|email|unique:user,email',
 		];
 
 		$validation = $this->model->validate($input, $customrules);
@@ -50,6 +72,13 @@ class UserRepo extends BaseRepo
 		}
 
 		return false;
+	}
+	
+	
+	public function _getUserById($id)
+	{
+		$user = $this->model->find($id);
+		return ( $user ? : \App::abort(404) );
 	}
 
 

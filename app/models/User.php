@@ -9,7 +9,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
 	use UserTrait, RemindableTrait;
 	
-	protected $guarded = [];
+	protected $guarded = [ 'remember_token', 'created_at', 'updated_at' ];
 
 	/**
 	 * The database table used by the model.
@@ -23,7 +23,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 *
 	 * @var array
 	 */
-	protected $hidden = array('password', 'remember_token');
+	protected $hidden = [ 'password', 'remember_token' ];
 
 
 	/**
@@ -79,7 +79,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 			'status'	=>	'between:0,1',
 		];
 		
-		if (!empty($customrules)) $rules = $rules + $customrules;
+		if (!empty($customrules)) $rules = $customrules + $rules;
 		
 		return Validator::make($input, $rules);
 	}

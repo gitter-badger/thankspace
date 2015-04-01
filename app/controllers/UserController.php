@@ -98,5 +98,17 @@ class UserController extends BaseController {
 		Auth::logout();
 		return Redirect::route('page.index');
 	}
+	
+	
+	public function updateProfile()
+	{
+		$userRepo = app('UserRepo');
+		$input = Input::get();
+		if ( $userRepo->updateProfile($input) )
+		{
+			return [ 'status' => 200, 'message' => 'Profile Anda berhasil diperbarui' ];
+		}
+		return $userRepo->getErrors();
+	}
 
 }

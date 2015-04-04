@@ -33,18 +33,22 @@
 								<tbody>
 									@foreach( $storages as $storage )
 										<tr>
-											<td>
+											<td align="center">
 												<img class="img-responsive" src="{{ url('assets/img/box.png') }}">
 											</td>
-											<td>        
+											<td>
 												<h2>Order #{{ $storage->id }}</h2>
 												<h4>
 													@if( $storage->type == 'item' )
-													Item : {{ $storage->description }}
+														Item : {{ $storage->description }}
 													@else
-													Box 1: Buku 2 Dus<br />
-													Box 2: Lampu Meja
-													Item: Kipas Angin
+														{{--*/ $i = 1 /*--}}
+														@foreach( $storage->order_stuff as $stuff )
+														@if( $stuff->description )
+														Box {{ $i }} : {{ $stuff->description }}<br>
+														{{--*/ $i++ /*--}}
+														@endif
+														@endforeach
 													@endif
 												</h4>
 											</td>
@@ -57,24 +61,26 @@
 											</td>
 											<td>
 												<div class="checkbox">
-													<label><input type="checkbox"></label>
+													<label><input name="order_id[]" type="checkbox" value="{{ $storage->id }}" /></label>
 												</div>
 											</td>
 										</tr>
 									@endforeach
 										
 									<tr>
-										<td class="text-right" colspan="4">
+										<td class="text-left" colspan="2">
+											{{ $storages->links() }}
+										</td>
+										<td class="text-right" colspan="2" style="vertical-align:middle;">
 											<div class="btn-group">
-												<a href="javascript:void(0)" class="btn btn-primary">
-													Action
-												</a>
-												<a href="bootstrap-elements.html" data-target="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+												<button type="button" class="btn btn-primary">Action</button>
+												<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
 													<span class="caret"></span>
-												</a>
-												<ul class="dropdown-menu">
+													<span class="sr-only">Toggle Dropdown</span>
+												</button>
+												<ul class="dropdown-menu pull-right">
 													<li>
-														<a href="javascript:void(0)">"Kirimkan kembali barang Saya"</a>
+														<a href="javascript:void(0)">Kirimkan kembali barang Saya</a>
 													</li>
 													{{--<li><a href="javascript:void(0)">Ikutkan Storage War (soon)</a></li>--}}
 												</ul>

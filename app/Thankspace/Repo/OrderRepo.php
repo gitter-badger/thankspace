@@ -13,7 +13,7 @@ class OrderRepo extends BaseRepo
 	{
 		$user_id = ( isset($input['user_id']) ? $input['user_id'] : \Auth::user()->id );
 		
-		$order = \Order::with('OrderSchedule', 'ReturnSchedule')
+		$order = \Order::with('OrderSchedule', 'OrderStuff', 'ReturnSchedule')
 					->join('order_payment', 'order_payment.order_id', '=', 'order.id')
 					->where('order_payment.status', 2)
 					->where('order.user_id', $user_id)

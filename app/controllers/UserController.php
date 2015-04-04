@@ -24,8 +24,9 @@ class UserController extends BaseController {
 
 	public function _userDashboard()
 	{
+		$orderRepo = app('OrderRepo');
 		$data = [
-
+			'storages' => $orderRepo->getStorageList()
 		];
 		return View::make('user.storage', $data);
 	}

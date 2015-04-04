@@ -23,4 +23,17 @@ class OrderRepo extends BaseRepo
 			return false;
 		}
 	}
+	
+	public function confirmPayment(array $input = array())
+	{
+		$status = ( \Auth::user()->type == 'admin' ? 2 : 1 );
+		$confirm = \OrderPayment::whereIn('id', $input['order_payment_id'])->update([ 'status' => $status ]);
+		if ( $confirm )
+		{
+			return $confirm;
+		} else {
+			$this->setErrors('No invoice selected');
+			return false;
+		}
+	}
 }

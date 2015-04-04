@@ -19,6 +19,7 @@ Route::group(['before' => 'auth'], function() {
 	Route::put('/update-profile', [ 'as' => 'user.update_profile', 'uses' => 'UserController@updateProfile' ]);
 	Route::put('/update-password', [ 'as' => 'user.update_password', 'uses' => 'UserController@updatePassword' ]);
 	Route::post('/check-password', [ 'as' => 'user.check_password', 'uses' => 'UserController@checkPassword' ]);
+	Route::post('/confirm-payment', [ 'as' => 'user.confirm_payment', 'uses' => 'UserController@confirmPayment' ]);
 
 });
 

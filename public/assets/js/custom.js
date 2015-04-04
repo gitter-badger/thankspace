@@ -238,4 +238,10 @@ $(function() {
 			},
 		});
 	});
+	
+	$(document).on('click', '.konfirmPayment', function(e){
+		e.preventDefault();
+		$('.invoice-form-list').attr('action', $('.konfirmRoute').val());
+		$('.invoice-form-list').submit();
+	});
 });

@@ -51,6 +51,22 @@ class UserController extends BaseController {
 		];
 		return View::make('user.invoice', $data);
 	}
+	
+	
+	public function confirmPayment()
+	{
+		if ( !Input::has('order_payment_id') ) {
+			return Redirect::route('user.invoice')->with('message', 'No invoice selected');
+		}
+		
+		$orderRepo = app('OrderRepo');
+		$input = Input::get();
+		if ( $orderRepo->confirmPayment($input) )
+		{
+			return Redirect::route('user.invoice')->with('message', 'success');
+		}
+		return Redirect::route('user.invoice')->with('message', $userRepo->getErrors());
+	}
 
 
 	public function setting()
@@ -101,6 +117,10 @@ class UserController extends BaseController {
 	
 	public function updateProfile()
 	{
+		if ( ! Request::ajax()) {
+			return App::abort(404);
+		}
+		
 		$userRepo = app('UserRepo');
 		$input = Input::get();
 		if ( $userRepo->updateProfile($input) )
@@ -113,6 +133,10 @@ class UserController extends BaseController {
 	
 	public function updatePassword()
 	{
+		if ( ! Request::ajax()) {
+			return App::abort(404);
+		}
+		
 		$userRepo = app('UserRepo');
 		$input = Input::get();
 		if ( $userRepo->updatePassword($input) )
@@ -125,6 +149,10 @@ class UserController extends BaseController {
 	
 	public function checkPassword()
 	{
+		if ( ! Request::ajax()) {
+			return App::abort(404);
+		}
+		
 		$userRepo = app('UserRepo');
 		$input = Input::get();
 		if ( $userRepo->checkPassword($input) )

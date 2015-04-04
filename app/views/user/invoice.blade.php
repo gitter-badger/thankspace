@@ -24,11 +24,20 @@
 						<div class="panel-body">
 
 							<h3>Riwayat Order Terbaru</h3>
+							@if ( Session::has('message') )
 							<p>
+								@if ( Session::get('message') == 'success' )
 								<span class="success-alert">
 									<i class="fa fa-smile-o"></i> Konfirmasi pembayaran sudah dilakukan. Tim Customer Service kami akan melakukan proses verifikasi dan akan memberikan informasi terbaru kepada Anda.
 								</span>
+								@else
+								<span class="error-alert">
+									<i class="fa fa-meh-o"></i> {{ Session::get('message') }}
+								</span>
+								@endif
 							</p>
+							@endif
+							{{ Form::open([ 'method' => 'POST', 'class' => 'invoice-form-list' ]) }}
 							<table class="table table-striped table-hover">
 								<thead>
 									<tr>
@@ -81,7 +90,7 @@
 										<td>
 											@if( $invoice->order_payment->status == 0 )
 											<div class="checkbox">
-												<label><input type="checkbox" /></label>
+												<label><input name="order_payment_id[]" type="checkbox" value="{{ $invoice->order_payment->id }}" /></label>
 											</div>
 											@endif
 										</td>
@@ -93,16 +102,21 @@
 										</td>
 										<td class="text-right" colspan="3" style="vertical-align:middle;">
 											<div class="btn-group">
-												<a href="javascript:void(0)" class="btn btn-primary">Action</a>
-												<a href="bootstrap-elements.html" data-target="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
-												<ul class="dropdown-menu">
-													<li><a href="javascript:void(0)">Konfirmasi pembayaran</a></li>
+												<button type="button" class="btn btn-primary">Action</button>
+												<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+													<span class="caret"></span>
+													<span class="sr-only">Toggle Dropdown</span>
+												</button>
+												<ul class="dropdown-menu pull-right">
+													<li><a href="#" class="konfirmPayment">Konfirmasi pembayaran</a></li>
 												</ul>
 											</div>
 										</td>
 									</tr>
 								</tbody>
 							</table>
+							{{ Form::close() }}
+							<input type="hidden" class="konfirmRoute" value="{{ route('user.confirm_payment') }}" />
 						</div>
 					</div>
 

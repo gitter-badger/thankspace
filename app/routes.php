@@ -4,9 +4,7 @@
  * Include helpers
  */
 include_once(app_path('helpers.php'));
-Route::get('test', function() {
-	return Order::where('user_id', 1)->with('OrderSchedule', 'OrderPayment', 'ReturnSchedule')->get();
-});
+
 
 Route::get('/', [ 'as' => 'page.index', 'uses' => 'PageController@index' ]);
 

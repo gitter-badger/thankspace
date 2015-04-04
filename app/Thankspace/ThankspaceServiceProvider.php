@@ -36,6 +36,13 @@ class ThankspaceServiceProvider extends ServiceProvider
             	new \User
         	);
         });
+		
+		$this->app->bind('OrderRepo', function($app)
+        {
+            return new \Thankspace\Repo\OrderRepo(
+            	new \Order
+        	);
+        });
     }
 
 

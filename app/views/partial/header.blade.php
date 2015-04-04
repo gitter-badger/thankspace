@@ -9,6 +9,7 @@
 			</button>
 		</div>
 		<div class="navbar-collapse collapse" id="navbar-main">
+			@if( !Auth::check() )
 			<ul class="nav navbar-nav">
 				<li><a href="#location">Location</a></li>
 				<li><a href="#pricing">Pricing</a></li>
@@ -23,6 +24,7 @@
 					<a href="#sign-in-modal" data-toggle="modal" data-dismiss="modal">Customer Area</a>
 				</li>
 			</ul>
+			@endif
 			
 			@if( Auth::check() )
 				<ul class="nav navbar-nav navbar-right">

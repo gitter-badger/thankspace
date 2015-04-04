@@ -18,7 +18,7 @@
 			</div>
 
 			<div class="col-lg-9">
-				@if( !isset($jancok))
+				@if( $invoices )
 
 					<div class="panel panel-default text-center">
 						<div class="panel-body">
@@ -29,7 +29,7 @@
 									<i class="fa fa-smile-o"></i> Konfirmasi pembayaran sudah dilakukan. Tim Customer Service kami akan melakukan proses verifikasi dan akan memberikan informasi terbaru kepada Anda.
 								</span>
 							</p>
-							<table class="table table-striped table-hover ">
+							<table class="table table-striped table-hover">
 								<thead>
 									<tr>
 										<th>Invoice Number</th>
@@ -43,92 +43,55 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr class="danger">
-										<td>2354</td>
-										<td>10</td>
-										<td>Kulkas</td>
-										<td>25-12-2015</td>
-										<td>25-12-2015</td>
-										<td>650000</td>
-										<td><span class="label label-danger">Pending Payment</span></td>
-										<td>
-											<div class="checkbox">
-											<label><input type="checkbox"></label>
-											</div>
-										</td>
-									</tr>
+									@foreach( $invoices as $invoice )
+									@if( $invoice->order_payment->status == 2 )
+									<tr class="success">
+									@elseif( $invoice->order_payment->status == 1 )
 									<tr class="info">
-										<td>2354</td>
-										<td>5</td>
-										<td>Sofa, Meja, Lemari</td>
-										<td>25-12-2015</td>
-										<td>25-12-2015</td>
-										<td>452000</td>
-										<td><span class="label label-info">Menunggu Konfirmasi</span></td>
+									@else
+									<tr class="danger">
+									@endif
+										<td>{{ $invoice->id }}</td>
+										<td>{{ $invoice->quantity }}</td>
+										<td>{{ $invoice->description ? : 'Tidak Ada' }}</td>
+										<td>{{ $invoice->order_schedule->delivery_date }}</td>
 										<td>
-											{{--<div class="checkbox">
-												<label><input type="checkbox"></label>
-											</div>--}}
+											@if( !$invoice->order_schedule->pickup_date )
+											{{ $invoice->order_schedule->delivery_date }}
+											@else
+											{{ $invoice->order_schedule->pickup_date }}
+											@endif
+										</td>
+										<td>
+											@if( $invoice->type == 'item' )
+											{{ $invoice->quantity * 150000 }}
+											@else
+											{{ $invoice->quantity * 50000 }}
+											@endif
+										</td>
+										<td>
+											@if( $invoice->order_payment->status == 2 )
+											<span class="label label-success">Completed Payment</span>
+											@elseif( $invoice->order_payment->status == 1 )
+											<span class="label label-info">Waiting Confirmation</span>
+											@else
+											<span class="label label-danger">Pending Payment</span>
+											@endif
+										</td>
+										<td>
+											@if( $invoice->order_payment->status == 0 )
+											<div class="checkbox">
+												<label><input type="checkbox" /></label>
+											</div>
+											@endif
 										</td>
 									</tr>
-									<tr class="success">
-										<td>3217</td>
-										<td>8</td>
-										<td>0</td>
-										<td>01-05-2015</td>
-										<td>01-05-2015</td>
-										<td>250000</td>
-										<td><span class="label label-success">Completed Payment</span> </td>
-										<td>
-											{{--<div class="checkbox">
-												<label><input type="checkbox"></label>
-											</div>--}}
-										</td>
-									</tr>
-									<tr class="success">
-										<td>4412</td>
-										<td>12</td>
-										<td>0</td>
-										<td>01-05-2015</td>
-										<td>01-05-2015</td>
-										<td>250000</td>
-										<td><span class="label label-success">Completed Payment</span> </td>
-										<td>
-											{{--<div class="checkbox">
-												<label><input type="checkbox"></label>
-											</div>--}}
-										</td>
-									</tr>
-									<tr class="success">
-										<td>4412</td>
-										<td>12</td>
-										<td>0</td>
-										<td>01-05-2015</td>
-										<td>01-05-2015</td>
-										<td>250000</td>
-										<td><span class="label label-success">Completed Payment</span> </td>
-										<td>
-											{{--<div class="checkbox">
-												<label><input type="checkbox"></label>
-											</div>--}}
-										</td>
-									</tr>
-									<tr class="success">
-										<td>4412</td>
-										<td>12</td>
-										<td>0</td>
-										<td>01-05-2015</td>
-										<td>01-05-2015</td>
-										<td>250000</td>
-										<td><span class="label label-success">Completed Payment</span> </td>
-										<td>
-											{{--<div class="checkbox">
-												<label><input type="checkbox"></label>
-											</div>--}}
-										</td>
-									</tr>
+									@endforeach
 									<tr>
-										<td class="text-right" colspan="9">
+										<td class="text-left" colspan="5">
+											{{ $invoices->links() }}
+										</td>
+										<td class="text-right" colspan="3" style="vertical-align:middle;">
 											<div class="btn-group">
 												<a href="javascript:void(0)" class="btn btn-primary">Action</a>
 												<a href="bootstrap-elements.html" data-target="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>

@@ -45,8 +45,9 @@ class UserController extends BaseController {
 
 	public function invoice()
 	{
+		$orderRepo = app('OrderRepo');
 		$data = [
-
+			'invoices' => $orderRepo->getInvoiceList()
 		];
 		return View::make('user.invoice', $data);
 	}

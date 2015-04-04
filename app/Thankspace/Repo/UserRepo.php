@@ -29,6 +29,40 @@ class UserRepo extends BaseRepo
 			return false;
 		}
 	}
+	
+	
+	public function checkPassword(array $input = array())
+	{
+		$id = ( isset($input['user_id']) ? $input['user_id'] : \Auth::user()->id );
+		$user = $this->_getUserById($id);
+		return ( \Hash::check( $input['old_password'], $user->password ) ? true : false );
+	}
+	
+	
+	public function updatePassword(array $input = array())
+	{
+		$id = ( isset($input['user_id']) ? $input['user_id'] : \Auth::user()->id );
+		
+		$customrules = [
+			'firstname'			=>	'sometimes',
+			'lastname'			=>	'sometimes',
+			'email'				=>	'sometimes',
+			'phone'				=>	'sometimes',
+			'password'			=>	'required|min:6',
+			'password_confirm'	=>	'required|min:6|same:password',
+		];
+
+		$validation = $this->model->validate($input, $customrules);
+		
+		if ( $validation->passes() ) {
+			$user = $this->_getUserById($id);
+			$user->fill($input)->save();
+			return $user;
+		} else {
+			$this->setErrors($validation->messages()->all(':message'));
+			return false;
+		}
+	}
 
 
 	public function register(array $input = array())

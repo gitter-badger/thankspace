@@ -197,4 +197,45 @@ $(function() {
 			},
 		});
 	});
+	
+	$(document).on('change', '.old-pwd', function(){
+		var olpwd = this;
+		$.ajax({
+			url: '/check-password',
+			type: "POST",
+			data: { old_password : $('.old-pwd').val() },
+			success: function (result) {
+				if ( result['status'] == 200 ) {
+					olpwd.setCustomValidity('');
+				} else {
+					olpwd.setCustomValidity('Old Password does not match.');
+				}
+			},
+		});
+	});
+	
+	$(document).on('submit', '.update-password-form', function(e){
+		var err = '';
+		e.preventDefault();
+		$('.update-password').button('loading');
+		$.ajax({
+			url: $(this).attr('action'),
+			type: "POST",
+			data: $(this).serialize(),
+			success: function (result) {
+				if ( result['status'] == 200 ) {
+					$('.update-password-scs').html('<i class="fa fa-smile-o"></i> '+result['message']+'<br>');
+					$('.update-password-err').html('');
+					$('.update-password-form').trigger('reset');
+				} else {
+					$('.update-password-scs').html('');
+					for (var i = 0; i < result.length; i++ ) {
+						err += '<i class="fa fa-meh-o fa-4"></i> '+result[i]+'<br>';
+					};
+					$('.update-password-err').html(err);
+				}
+				$('.update-password').button('reset');
+			},
+		});
+	});
 });

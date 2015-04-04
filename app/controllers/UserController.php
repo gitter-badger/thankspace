@@ -110,5 +110,29 @@ class UserController extends BaseController {
 		}
 		return $userRepo->getErrors();
 	}
+	
+	
+	public function updatePassword()
+	{
+		$userRepo = app('UserRepo');
+		$input = Input::get();
+		if ( $userRepo->updatePassword($input) )
+		{
+			return [ 'status' => 200, 'message' => 'Kata Sandi Anda berhasil diperbarui' ];
+		}
+		return $userRepo->getErrors();
+	}
+	
+	
+	public function checkPassword()
+	{
+		$userRepo = app('UserRepo');
+		$input = Input::get();
+		if ( $userRepo->checkPassword($input) )
+		{
+			return [ 'status' => 200 ];
+		}
+		return $userRepo->getErrors();
+	}
 
 }

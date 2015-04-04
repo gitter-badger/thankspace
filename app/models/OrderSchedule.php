@@ -4,6 +4,8 @@ class OrderSchedule extends \Eloquent {
 
 	protected $fillable = [];
 	
+	protected $table = 'order_schedule';
+	
 	public function order()
 	{
 		return $this->belongsTo('Order');

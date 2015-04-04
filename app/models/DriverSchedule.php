@@ -4,6 +4,8 @@ class DriverSchedule extends \Eloquent {
 
 	protected $fillable = [];
 	
+	protected $table = 'driver_schedule';
+	
 	public function user()
 	{
 		return $this->belongsTo('User');

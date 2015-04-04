@@ -4,6 +4,8 @@ class OrderPayment extends \Eloquent {
 
 	protected $fillable = [];
 	
+	protected $table = 'order_payment';
+	
 	public function order()
 	{
 		return $this->belongsTo('Order');

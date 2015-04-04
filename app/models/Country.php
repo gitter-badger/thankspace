@@ -4,6 +4,8 @@ class Country extends \Eloquent {
 
 	protected $fillable = [];
 	
+	protected $table = 'countries';
+	
 	public function city()
 	{
 		return $this->hasMany('City', 'country_id');

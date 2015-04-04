@@ -54,9 +54,7 @@ class UserController extends BaseController {
 
 	public function setting()
 	{
-		$data = [
-
-		];
+		$data = [];
 		return View::make('user.setting', $data);
 	}
 	

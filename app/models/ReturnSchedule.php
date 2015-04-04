@@ -4,6 +4,8 @@ class ReturnSchedule extends \Eloquent {
 
 	protected $fillable = [];
 	
+	protected $table = 'return_schedule';
+	
 	public function order()
 	{
 		return $this->belongsTo('Order');

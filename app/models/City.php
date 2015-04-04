@@ -4,6 +4,8 @@ class City extends \Eloquent {
 
 	protected $fillable = [];
 	
+	protected $table = 'cities';
+	
 	public function country()
 	{
 		return $this->belongsTo('Country');

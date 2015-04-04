@@ -1,8 +1,10 @@
 <?php
 
-class Stuff extends \Eloquent {
+class OrderStuff extends \Eloquent {
 
 	protected $fillable = [];
+	
+	protected $table = 'order_stuff';
 	
 	public function order()
 	{

@@ -4,6 +4,8 @@ class Order extends \Eloquent {
 
 	protected $fillable = [];
 	
+	protected $table = 'order';
+	
 	public function user()
 	{
 		return $this->belongsTo('User');

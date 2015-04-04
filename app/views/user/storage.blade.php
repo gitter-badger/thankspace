@@ -9,7 +9,6 @@
 		</div>
 	</div>
 
-
 	<div class="container">
 		<div class="row">
 			
@@ -18,7 +17,7 @@
 			</div>
 
 			<div class="col-lg-9">
-				@if( !isset($jancok))
+				@if( $storages )
 
 					<div class="panel panel-default">
 						<div class="panel-body">
@@ -32,25 +31,37 @@
 									</tr>
 								</thead>
 								<tbody>
-									@for($i = 1; $i <= 4; $i++)
+									@foreach( $storages as $storage )
 										<tr>
 											<td>
 												<img class="img-responsive" src="{{ url('assets/img/box.png') }}">
 											</td>
 											<td>        
-												<h2>Order #1321</h2>
-												<h4>Box 1: Buku 2 Dus<br />
-												Box 2: Lampu Meja
-												Item: Kipas Angin</h4>
+												<h2>Order #{{ $storage->id }}</h2>
+												<h4>
+													@if( $storage->type == 'item' )
+													Item : {{ $storage->description }}
+													@else
+													Box 1: Buku 2 Dus<br />
+													Box 2: Lampu Meja
+													Item: Kipas Angin
+													@endif
+												</h4>
 											</td>
-											<td><span class="label label-success">Stored</span></td>
+											<td>
+												@if( $storage->order_schedule->status == 1 )
+												<span class="label label-success">Stored</span>
+												@else
+												<span class="label label-warning">On Delivery</span>
+												@endif
+											</td>
 											<td>
 												<div class="checkbox">
 													<label><input type="checkbox"></label>
 												</div>
 											</td>
 										</tr>
-									@endfor
+									@endforeach
 										
 									<tr>
 										<td class="text-right" colspan="4">

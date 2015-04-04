@@ -9,12 +9,30 @@ class OrderRepo extends BaseRepo
 	}
 	
 	
+	public function getStorageList(array $input = array())
+	{
+		$user_id = ( isset($input['user_id']) ? $input['user_id'] : \Auth::user()->id );
+		
+		$order = \Order::with('OrderSchedule', 'ReturnSchedule')
+					->join('order_payment', 'order_payment.order_id', '=', 'order.id')
+					->where('order_payment.status', 2)
+					->where('order.user_id', $user_id)
+					->paginate(20);
+		
+		if ( $order ) {
+			return $order;
+		} else {
+			return false;
+		}
+	}
+	
+	
 	public function getInvoiceList(array $input = array())
 	{
 		$user_id = ( isset($input['user_id']) ? $input['user_id'] : \Auth::user()->id );
 		
-		$order = \Order::where('user_id', $user_id)
-					->with('OrderSchedule', 'OrderPayment', 'ReturnSchedule')
+		$order = \Order::with('OrderSchedule', 'OrderPayment', 'ReturnSchedule')
+					->where('user_id', $user_id)
 					->paginate(20);
 		
 		if ( $order ) {

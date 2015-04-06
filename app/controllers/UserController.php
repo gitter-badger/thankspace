@@ -11,7 +11,7 @@ class UserController extends BaseController {
 			break;
 
 			case 'admin':
-				$this->_adminDashboard();
+				return $this->_adminDashboard();
 			break;
 			
 			// default for user
@@ -40,7 +40,11 @@ class UserController extends BaseController {
 
 	public function _adminDashboard()
 	{
-		return __FUNCTION__;
+		$orderRepo = app('OrderRepo');
+		$data = [
+			'invoices' => $orderRepo->getInvoiceList()
+		];
+		return View::make('admin.history', $data);
 	}
 
 
@@ -57,16 +61,16 @@ class UserController extends BaseController {
 	public function confirmPayment()
 	{
 		if ( !Input::has('order_payment_id') ) {
-			return Redirect::route('user.invoice')->with('message', 'No invoice selected');
+			return Redirect::back()->with('message', 'No invoice selected');
 		}
 		
 		$orderRepo = app('OrderRepo');
 		$input = Input::get();
 		if ( $orderRepo->confirmPayment($input) )
 		{
-			return Redirect::route('user.invoice')->with('message', 'success');
+			return Redirect::back()->with('message', 'success');
 		}
-		return Redirect::route('user.invoice')->with('message', $userRepo->getErrors());
+		return Redirect::back()->with('message', $userRepo->getErrors());
 	}
 
 

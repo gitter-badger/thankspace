@@ -17,7 +17,7 @@
 			</div>
 
 			<div class="col-lg-9">
-				@if( $storages )
+				@if( count($storages) > 0 )
 
 					<div class="panel panel-default">
 						<div class="panel-body">
@@ -96,7 +96,7 @@
 					<div class="panel panel-default">
 						<div class="panel-body">
 							<div class="text-center">
-								<h3>Saat ini Anda belum menyimpan sesuatu pada tempat penyimpanan/<i>Warehouse</i> kami.</h3>
+								<h3>Saat ini Anda belum menyimpan sesuatu pada tempat penyimpanan / <i>Warehouse</i> kami.</h3>
 								<p>Pesan storage box sesuai dengan kebutuhan Anda</p>
 								<p>
 									<a class="btn btn-primary" href="{{ route('order.index') }}">Order Storage Box</a>

@@ -33,35 +33,44 @@
 							<i class="fa fa-user" style="font-size: 14pt;"></i> {{ Auth::user()->fullname }}
 						</a>
 						<ul class="dropdown-menu">
+							@if( Auth::user()->type == 'user' )
 							<li>
 								<a href="{{ route('user.dashboard') }}">
-									<i class="fa fa-archive fa-fw"></i>
-									Storage saya
+									<i class="fa fa-archive fa-fw"></i> Storage saya
 								</a>
 							</li>
 							<li>
 								<a href="{{ route('user.invoice') }}">
-									<i class="fa fa-archive fa-fw"></i>
-									Riwayat Invoice
+									<i class="fa fa-archive fa-fw"></i> Riwayat Invoice
 								</a>
 							</li>
 							<li>
 								<a href="{{ route('order.index') }}">
-									<i class="fa fa-shopping-cart fa-fw"></i>
-									Order Storage Box
+									<i class="fa fa-shopping-cart fa-fw"></i> Order Storage Box
 								</a>
 							</li>
 							<li>
 								<a href="{{ route('user.setting') }}">
-									<i class="fa fa-gear fa-fw"></i>
-									Pengaturan Akun
+									<i class="fa fa-gear fa-fw"></i> Pengaturan Akun
 								</a>
 							</li>
 							<li class="divider"></li>
+							@elseif( Auth::user()->type == 'admin' )
+							<li>
+								<a href="#">
+									<i class="fa fa-users"></i> Member List
+								</a>
+							</li>
+							<li>
+								<a href="{{ route('user.dashboard') }}">
+									<i class="fa fa-archive"></i> Order History
+								</a>
+							</li>
+							<li class="divider"></li>
+							@endif
 							<li>
 								<a href="{{ route('user.signout') }}">
-									<i class="fa fa-sign-out fa-fw"></i>
-									Sign Out
+									<i class="fa fa-sign-out fa-fw"></i> Sign Out
 								</a>
 							</li>
 						</ul>

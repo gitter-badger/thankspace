@@ -18,12 +18,13 @@
 			</div>
 
 			<div class="col-lg-9">
-				@if( $invoices )
+				@if( count($invoices) > 0 )
 
 					<div class="panel panel-default text-center">
 						<div class="panel-body">
 
 							<h3>Riwayat Order Terbaru</h3>
+							
 							@if ( Session::has('message') )
 							<p>
 								@if ( Session::get('message') == 'success' )
@@ -37,6 +38,7 @@
 								@endif
 							</p>
 							@endif
+							
 							{{ Form::open([ 'method' => 'POST', 'class' => 'invoice-form-list' ]) }}
 							<table class="table table-striped table-hover">
 								<thead>
@@ -124,7 +126,7 @@
 					<div class="panel panel-default">
 						<div class="panel-body">
 							<div class="text-center">
-								<h3>Saat ini Anda belum menyimpan sesuatu pada tempat penyimpanan/<i>Warehouse</i> kami.</h3>
+								<h3>Saat ini Anda belum menyimpan sesuatu pada tempat penyimpanan / <i>Warehouse</i> kami.</h3>
 								<p>Pesan storage box sesuai dengan kebutuhan Anda</p>
 								<p>
 									<a class="btn btn-primary" href="{{ route('order.index') }}">Order Storage Box</a>

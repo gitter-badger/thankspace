@@ -15,9 +15,16 @@ class OrderRepo extends BaseRepo
 		
 		$order = \Order::with('OrderSchedule', 'OrderStuff', 'ReturnSchedule')
 					->join('order_payment', 'order_payment.order_id', '=', 'order.id')
-					->where('order_payment.status', 2)
-					->where('order.user_id', $user_id)
-					->paginate(20);
+					->where('order_payment.status', 2);
+		
+		if( \Auth::user()->type == 'user' )
+		{
+			$order = $order->where('order.user_id', $user_id);
+		} else {
+			$order = $order->with('User');
+		}
+		
+		$order = $order->paginate(20);
 		
 		if ( $order ) {
 			return $order;
@@ -31,9 +38,16 @@ class OrderRepo extends BaseRepo
 	{
 		$user_id = ( isset($input['user_id']) ? $input['user_id'] : \Auth::user()->id );
 		
-		$order = \Order::with('OrderSchedule', 'OrderPayment', 'ReturnSchedule')
-					->where('user_id', $user_id)
-					->paginate(20);
+		$order = \Order::with('OrderSchedule', 'OrderPayment', 'ReturnSchedule');
+		
+		if( \Auth::user()->type == 'user' )
+		{
+			$order = $order->where('user_id', $user_id);
+		} else {
+			$order = $order->with('User');
+		}
+		
+		$order = $order->paginate(20);
 		
 		if ( $order ) {
 			return $order;

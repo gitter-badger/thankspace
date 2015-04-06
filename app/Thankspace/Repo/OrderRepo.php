@@ -68,4 +68,15 @@ class OrderRepo extends BaseRepo
 			return false;
 		}
 	}
+
+
+	public function quantity_box_dropdown()
+	{
+		$list = array();
+		for ($i=1; $i <= 20; $i++) { 
+			$list[$i] = $i;
+		}
+		$list[21] = 'saya butuh lebih 20';
+		return $list;
+	}
 }

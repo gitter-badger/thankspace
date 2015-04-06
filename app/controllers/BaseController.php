@@ -15,4 +15,34 @@ class BaseController extends Controller {
 		}
 	}
 
+
+	public function getFormCalendar()
+	{
+		$result = [];
+
+		// get date
+		for ($i=1; $i <= 30 ; $i++) { 
+			$result['date'][$i] = $i;
+		}
+
+		// get month
+		$result['month']['01'] = 'Januari';
+		$result['month']['02'] = 'Februari';
+		$result['month']['03'] = 'Maret';
+		$result['month']['04'] = 'April';
+		$result['month']['05'] = 'Mei';
+		$result['month']['06'] = 'Juni';
+		$result['month']['07'] = 'Juli';
+		$result['month']['08'] = 'Agustus';
+		$result['month']['09'] = 'September';
+		$result['month']['10'] = 'Oktober';
+		$result['month']['11'] = 'November';
+		$result['month']['12'] = 'Desember';
+
+		// get year
+		$result['year'][2015] = 2015;
+
+		return $result;
+	}
+
 }

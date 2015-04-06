@@ -18,12 +18,13 @@
 						</center>
 
 						{{ Form::open(['method' => 'POST', 'route' => 'order.progress', 'class' => 'form-horizontal']) }}
+							{{ Form::hidden('step', 'index') }}
 							{{ Form::hidden('redirect_to', route('order.schedule')) }}
 							<fieldset>
 								<div class="form-group">
 									<label for="select" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 control-label">Jumlah box</label>
 									<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
-										{{ Form::select('quantity_box', [4,5,6, 21 => 'saya butuh lebih 20'], null, ['class' => 'form-control', 'id' => 'jumlahbox']) }}
+										{{ Form::select('quantity_box', $qty_box_list, null, ['class' => 'form-control', 'id' => 'jumlahbox']) }}
 									</div>
 								</div>
 

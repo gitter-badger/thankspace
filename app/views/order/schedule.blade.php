@@ -18,24 +18,25 @@
 						</center>
 						<br><br>
 						{{ Form::open(['method' => 'POST', 'route' => 'order.progress', 'class' => 'form-horizontal']) }}
+							{{ Form::hidden('step', 'schedule') }}
 							{{ Form::hidden('redirect_to', route('order.payment')) }}
 							<fieldset>
 								<div class="form-group">
 									<label for="select" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 control-label">Tanggal pengiriman</label>
 									<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-										{{ Form::select('delivery_day', [4,5,6], null, ['class' => 'form-control', 'id' => 'deliveryday']) }}
+										{{ Form::select('delivery_day', $calendar['date'], null, ['class' => 'form-control', 'id' => 'deliveryday']) }}
 									</div>
 									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-										{{ Form::select('delivery_month', ['januari', 'februari'], null, ['class' => 'form-control', 'id' => 'deliverymonth']) }}
+										{{ Form::select('delivery_month', $calendar['month'], null, ['class' => 'form-control', 'id' => 'deliverymonth']) }}
 									</div>
 									<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-										{{ Form::select('delivery_year', [2011, 2012], null, ['class' => 'form-control', 'id' => 'deliveryyear']) }}
+										{{ Form::select('delivery_year', $calendar['year'], null, ['class' => 'form-control', 'id' => 'deliveryyear']) }}
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="select" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 control-label">Waktu pengiriman</label>
 									<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
-										{{ Form::select('delivery_time', ['08:00am - 10:00am', '11:00am - 14:00am'], null, ['class' => 'form-control', 'id' => 'deliverytime']) }} 
+										{{ Form::select('delivery_time', Config::get('thankspace.office_hours'), null, ['class' => 'form-control', 'id' => 'deliverytime']) }} 
 									</div>
 									<span class="help-block"><i>Thankspace office hours:</i> mon-fri, 08:00am - 06:00pm</span>
 								</div>
@@ -69,19 +70,19 @@
 										<label for="select" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 control-label">Tanggal Pengambilan</label>
 
 										<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 ">
-											{{ Form::select('pickup_day', [4,5,6], null, ['class' => 'form-control']) }}
+											{{ Form::select('pickup_day', $calendar['date'], null, ['class' => 'form-control']) }}
 										</div>
 										<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-											{{ Form::select('pickup_month', ['januari', 'februari'], null, ['class' => 'form-control', 'id' => 'pickupmonth']) }}
+											{{ Form::select('pickup_month', $calendar['month'], null, ['class' => 'form-control', 'id' => 'pickupmonth']) }}
 										</div>
 										<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-											{{ Form::select('pickup_year', [2011, 2012], null, ['class' => 'form-control', 'id' => 'pickupyear']) }}
+											{{ Form::select('pickup_year', $calendar['year'], null, ['class' => 'form-control', 'id' => 'pickupyear']) }}
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="select" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 control-label">Waktu Pengambilan</label>
 										<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
-											{{ Form::select('pickup_time', ['08:00am - 10:00am', '11:00am - 14:00am'], null, ['class' => 'form-control', 'id' => 'pickuptime']) }} 
+											{{ Form::select('pickup_time', Config::get('thankspace.office_hours'), null, ['class' => 'form-control', 'id' => 'pickuptime']) }} 
 										</div>
 										<span class="help-block"><i>Thankspace office hours:</i> mon-fri, 08:00am - 06:00pm</span>
 									</div>

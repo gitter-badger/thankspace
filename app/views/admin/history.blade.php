@@ -1,5 +1,12 @@
 @extends('layout.default')
 
+@section('after_header')
+<style>
+	.table > tbody > tr > td {
+		vertical-align: middle;
+	}
+</style>
+@stop
 
 @section('content')
 
@@ -65,13 +72,13 @@
 								<td>{{ $invoice->id }}</td>
 								<td><a href="">{{ $invoice->user->fullname }}</a></td>
 								<td>{{ $invoice->quantity }}</td>
-								<td>{{ $invoice->description ? : 'Tidak Ada' }}</td>
-								<td>{{ $invoice->order_schedule->delivery_date }}</td>
+								<td>{{ $invoice->description ? : '---' }}</td>
+								<td>{{ date('d-m-Y', strtotime($invoice->order_schedule->delivery_date)) }}</td>
 								<td>
 									@if( !$invoice->order_schedule->pickup_date )
-									{{ $invoice->order_schedule->delivery_date }}
+									{{ date('d-m-Y', strtotime($invoice->order_schedule->delivery_date)) }}
 									@else
-									{{ $invoice->order_schedule->pickup_date }}
+									{{ date('d-m-Y', strtotime($invoice->order_schedule->pickup_date)) }}
 									@endif
 								</td>
 								<td>

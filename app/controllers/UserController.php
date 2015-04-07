@@ -46,6 +46,16 @@ class UserController extends BaseController {
 		];
 		return View::make('admin.history', $data);
 	}
+	
+	
+	public function memberList()
+	{
+		$userRepo = app('UserRepo');
+		$data = [
+			'members' => $userRepo->getMemberList()
+		];
+		return View::make('admin.member', $data);
+	}
 
 
 	public function invoice()

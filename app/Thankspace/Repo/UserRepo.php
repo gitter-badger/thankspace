@@ -9,6 +9,18 @@ class UserRepo extends BaseRepo
 	}
 	
 	
+	public function getMemberList()
+	{
+		$user = $this->model->paginate(20);
+		
+		if ( $user ) {
+			return $user;
+		} else {
+			return false;
+		}
+	}
+	
+	
 	public function updateProfile(array $input = array())
 	{
 		$id = ( isset($input['user_id']) ? $input['user_id'] : \Auth::user()->id );

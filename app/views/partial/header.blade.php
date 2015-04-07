@@ -57,7 +57,7 @@
 							<li class="divider"></li>
 							@elseif( Auth::user()->type == 'admin' )
 							<li>
-								<a href="#">
+								<a href="{{ route('user.member_list') }}">
 									<i class="fa fa-users"></i> Member List
 								</a>
 							</li>

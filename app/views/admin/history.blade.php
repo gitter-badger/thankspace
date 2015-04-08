@@ -27,7 +27,7 @@
 						<hr>
 					</div>
 					
-					<div class="col-lg-12">
+					<div class="col-lg-12 text-center">
 						<h3>Riwayat Order Terbaru</h3>
 						
 						@if ( Session::has('message') )

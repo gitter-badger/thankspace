@@ -34,7 +34,7 @@
 						<hr>
 					</div>
 					
-					<div class="col-lg-12">
+					<div class="col-lg-12 text-center">
 						<h3>Daftar Member Terdaftar</h3>
 						<div class="table-responsive">
 							<table class="table table-striped table-hover text-center">

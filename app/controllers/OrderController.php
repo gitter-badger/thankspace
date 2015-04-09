@@ -48,6 +48,10 @@ class OrderController extends BaseController {
 
 	public function completed()
 	{
+		
+		// delete order data
+		Session::forget('order');
+		
 		$data = [
 			'title' => __FUNCTION__,
 		];

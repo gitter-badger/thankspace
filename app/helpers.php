@@ -37,3 +37,9 @@ function getTotalTransactions() {
 				
 	return number_format($box + $item, 0, '', '.');
 }
+
+
+function makeFormatTime($y, $m, $d)
+{
+	return \Carbon\Carbon::createFromDate($y, $m, $d)->format('l, jS F Y');
+}

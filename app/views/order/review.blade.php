@@ -19,22 +19,25 @@
 							<div class="col-lg-4">
 								<h3>Address</h3>
 								<hr>
-								<p class="text-left">Deny Setiawan<br>
-								Phone: 085732649156<br>
-								Address: Jl. Arif Rahman Hakim No.23 Surabaya</p>
+								<p class="text-left">{{ $user['fullname'] }}<br>
+								Phone: {{ $user['phone'] }}<br>
+								Address: {{ $user['address'] }}</p>
 							</div>
 
 							<div class="col-lg-4">
 								<h3>Jadwal Pengantaran</h3>
 								<hr>
-								<p class="text-left">Date: Kamis, 31 Maret 2015<br>
-								Time: 10:00am - 12:00pm</p>
+								<p class="text-left">Date: {{ makeFormatTime($review['schedule']['delivery_year'], $review['schedule']['delivery_month'], $review['schedule']['delivery_day']) }}
+								<br>
+								Time: {{ $review['schedule']['delivery_time'] }}</p>
 							</div>
 
 							<div class="col-lg-4">
 								<h3>Jadwal Pengambilan</h3>
 								<hr>
-								<p class="text-left">Saat itu Juga</p>
+								<p class="text-left">
+									{{ $review['schedule']['type'] }}
+								</p>
 							</div>
 						</div>
 
@@ -42,8 +45,9 @@
 							<div class="col-lg-4">
 								<h3>Comment</h3>
 								<hr>
-								<p class="text-left">Anda bisa me-review kembali rincian pesanan yang telah anda lakukan. 
-								Apabila tidak ada perubahan pilih "Checkout"</p>
+								<p class="text-left">
+									{{ $review['payment']['message'] }}
+								</p>
 							</div>
 
 							<div class="col-lg-4">
@@ -54,8 +58,8 @@
 									item:
 								</div>
 								<div class="col-lg-2 text-left">
-									20<br>
-									-
+									{{ $review['index']['quantity_box'] }}<br>
+									{{ $review['index']['quantity_item'] }}
 								</div>
 								<div class="col-lg-5 text-left">
 									Rp 1000000<br>
@@ -68,7 +72,7 @@
 							<div class="col-lg-4">
 								<h3>Billing</h3>
 								<hr>
-								<p class="text-left">Payment Method: Bank Trasnfer</p>
+								<p class="text-left">Payment Method: {{ $review['payment']['method'] }}</p>
 							</div>
 						</div>
 						<!-- end row -->

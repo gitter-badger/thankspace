@@ -10,6 +10,13 @@
 			<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-centered">
 				<div class="panel panel-default">
 					<div class="panel-body">
+						
+						@if( Session::has('errors'))
+							<div class="alert alert-danger">
+								{{ Session::get('errors') }}
+							</div>
+						@endif
+
 						<center>
 							<h4>Berapa banyak storage box/item yang Anda butuhkan?</h4>
 							<hr><img class="img-responsive" src="{{ asset('assets/img/standardBox.png') }}">
@@ -17,7 +24,7 @@
 							<p>Our average customer stores 7 boxes</p>
 						</center>
 
-						{{ Form::open(['method' => 'POST', 'route' => 'order.progress', 'class' => 'form-horizontal']) }}
+						{{ Form::model($form_data, ['method' => 'POST', 'route' => 'order.progress', 'class' => 'form-horizontal']) }}
 							{{ Form::hidden('step', 'index') }}
 							{{ Form::hidden('redirect_to', route('order.schedule')) }}
 							<fieldset>

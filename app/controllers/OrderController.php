@@ -97,7 +97,9 @@ class OrderController extends BaseController {
 					elseif (Input::get('user_action') == 'signup')
 					{
 						// if fails register redirect back with errors and input
-						if ( ! $userRepo->register(Input::get()) )
+						if ( ! $userRepo->register(Input::only([
+								'firstname', 'lastname', 'email', 'phone', 'address', 'password'
+							])) )
 						{
 							return Redirect::back()
 								->withErrors()

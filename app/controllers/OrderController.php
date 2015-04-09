@@ -7,6 +7,7 @@ class OrderController extends BaseController {
 		$data = [
 			'title' => 'Order index',
 			'qty_box_list' => app('OrderRepo')->quantity_box_dropdown(),
+			'form_data' => Session::get('order.index'),
 		];
 		return View::make('order.index', $data);
 	}
@@ -17,6 +18,7 @@ class OrderController extends BaseController {
 		$data = [
 			'title' => __FUNCTION__,
 			'calendar' => $this->getFormCalendar(),
+			'form_data' => Session::get('order.schedule'),
 		];
 		return View::make('order.schedule', $data);
 
@@ -27,6 +29,7 @@ class OrderController extends BaseController {
 	{
 		$data = [
 			'title' => __FUNCTION__,
+			'form_data' => Session::get('order.payment'),
 		];
 		return View::make('order.payment', $data);
 	}
@@ -36,6 +39,8 @@ class OrderController extends BaseController {
 	{
 		$data = [
 			'title' => __FUNCTION__,
+			'review' => Session::get('order'),
+			'user' => Auth::user(),
 		];
 		return View::make('order.review', $data);
 	}
@@ -57,7 +62,7 @@ class OrderController extends BaseController {
 	 */
 	public function progress()
 	{
-		$order_session = Session::get('order');
+		$order_session = Session::all();
 
 		switch (Input::get('step'))
 		{
@@ -75,7 +80,36 @@ class OrderController extends BaseController {
 			break;
 			
 			case 'payment':
-				# code...
+				
+				if ( ! Auth::check())
+				{
+					$userRepo = app('UserRepo');
+					if (Input::get('user_action') == 'signin')
+					{
+						// if fails login redirect back with errors and input
+						if ( ! $userRepo->login(Input::get('credentials')) )
+						{
+							return Redirect::back()
+								->withErrors()
+								->withInput();
+						}
+					}
+					elseif (Input::get('user_action') == 'signup')
+					{
+						// if fails register redirect back with errors and input
+						if ( ! $userRepo->register(Input::get()) )
+						{
+							return Redirect::back()
+								->withErrors()
+								->withInput();
+						}
+					}
+				}
+
+				Session::put('order.payment', Input::only([
+					'method', 'message'
+				]));
+
 			break;
 			
 			case 'review':
@@ -95,7 +129,9 @@ class OrderController extends BaseController {
 	 */
 	public function reset()
 	{
+		Session::forget('order');
 
+		return Redirect::route('order.index');
 	}
 
 }

@@ -10,6 +10,13 @@
 			<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-centered">
 				<div class="panel panel-default">
 					<div class="panel-body">
+
+						@if( Session::has('errors'))
+							<div class="alert alert-danger">
+								{{ Session::get('errors') }}
+							</div>
+						@endif
+
 						<center>
 							<h4>Jadwal pengantaran/pengambilan storage box/item</h4>
 							<hr>
@@ -17,7 +24,8 @@
 							<p>Jadwalkan tanggal pengiriman storage box sesuai dengan waktu Anda</p>
 						</center>
 						<br><br>
-						{{ Form::open(['method' => 'POST', 'route' => 'order.progress', 'class' => 'form-horizontal']) }}
+
+						{{ Form::model($form_data, ['method' => 'POST', 'route' => 'order.progress', 'class' => 'form-horizontal']) }}
 							{{ Form::hidden('step', 'schedule') }}
 							{{ Form::hidden('redirect_to', route('order.payment')) }}
 							<fieldset>

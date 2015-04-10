@@ -2,7 +2,7 @@
 
 class OrderPayment extends \Eloquent {
 
-	protected $fillable = [];
+	protected $fillable = ['order_id', 'code', 'method', 'message', 'status'];
 	
 	protected $table = 'order_payment';
 	

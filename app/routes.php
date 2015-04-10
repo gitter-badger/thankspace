@@ -14,6 +14,7 @@ Route::group(['before' => 'auth'], function() {
 
 	Route::get('/dashboard', [ 'as' => 'user.dashboard', 'uses' => 'UserController@dashboard' ]);
 	Route::get('/member-list', [ 'as' => 'user.member_list', 'uses' => 'UserController@memberList' ]);
+	Route::get('/add-member', [ 'as' => 'user.member_add', 'uses' => 'UserController@memberAdd' ]);
 	// Route::get('/storage', [ 'as' => 'user.storage', 'uses' => 'UserController@storage' ]);
 	Route::get('/invoice', [ 'as' => 'user.invoice', 'uses' => 'UserController@invoice' ]);
 	Route::get('/setting', [ 'as' => 'user.setting', 'uses' => 'UserController@setting' ]);

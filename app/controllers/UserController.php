@@ -56,6 +56,13 @@ class UserController extends BaseController {
 		];
 		return View::make('admin.member', $data);
 	}
+	
+	
+	public function memberAdd()
+	{
+		$data = [];
+		return View::make('admin.member-add', $data);
+	}
 
 
 	public function invoice()

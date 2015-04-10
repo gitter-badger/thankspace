@@ -21,7 +21,7 @@
 			<div class="panel panel-default">
 				<div class="panel-body">
 					<div class="col-lg-12">
-						<a href="#" class="btn btn-info">
+						<a href="{{ route('user.member_add') }}" class="btn btn-info">
 							<i class="fa fa-user-plus"></i> Add New Member
 						</a>
 					</div>

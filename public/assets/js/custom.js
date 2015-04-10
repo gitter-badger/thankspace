@@ -124,6 +124,8 @@ $(function() {
 		intro.setOption('showBullets', 'true');
 		intro.start();
 	});
+	
+	$('[data-toggle="tooltip"]').tooltip();
 
 	$(document).on('change', '.re-pwd', function(){
 		if ($('.re-pwd').val() != $('.pwd').val()) {
@@ -154,8 +156,7 @@ $(function() {
 			},
 		});
 	});
-
-
+	
 	$(document).on('submit', '.sign-in-form', function(e){
 		e.preventDefault();
 		$('.login').button('loading');

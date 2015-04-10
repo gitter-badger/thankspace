@@ -94,7 +94,7 @@ class OrderController extends BaseController {
 						if ( ! $userRepo->login(Input::get('credentials')) )
 						{
 							return Redirect::back()
-								->withErrors()
+								->withMessages($userRepo->getErrors())
 								->withInput();
 						}
 					}
@@ -106,7 +106,7 @@ class OrderController extends BaseController {
 							])) )
 						{
 							return Redirect::back()
-								->withErrors()
+								->withMessages($userRepo->getErrors())
 								->withInput();
 						}
 					}

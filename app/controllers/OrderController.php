@@ -48,7 +48,10 @@ class OrderController extends BaseController {
 
 	public function completed()
 	{
-		
+		$orderData = Session::get('order');
+
+		app('OrderRepo')->save($orderData);
+
 		// delete order data
 		Session::forget('order');
 		

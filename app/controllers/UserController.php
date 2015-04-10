@@ -63,6 +63,12 @@ class UserController extends BaseController {
 		$data = [];
 		return View::make('admin.member-add', $data);
 	}
+	
+	
+	public function memberAddPost()
+	{
+		return Redirect::back()->withInput();
+	}
 
 
 	public function invoice()

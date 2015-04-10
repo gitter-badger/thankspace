@@ -35,19 +35,19 @@
 						
 						<p>Isi data keanggotaan baru dengan cermat.</p>
 						
-						<form class="form-horizontal">
+						{{ Form::open([ 'route' => 'user.member_add.post', 'method' => 'POST', 'class' => 'form-horizontal' ]) }}
 							<fieldset>
 								<div class="form-group">                    
 									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding-bottom:20px;">
 										<div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-edit fa-fw"></i></span>
-											<input class="form-control floating-label" data-hint="Masukkan nama depan Anda" name="firstname" type="text" placeholder="Nama Depan" required>
+											{{ Form::text('firstname', null, [ 'class' => 'form-control floating-label', 'data-hint' => 'Masukkan nama depan Anda', 'placeholder' => 'Nama Depan', 'required' => true ]) }}
 										</div>
 									</div>
 									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 										<div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-edit fa-fw"></i></span>
-											<input class="form-control floating-label" data-hint="Masukkan nama belakang Anda" name="lastname" type="text" placeholder="Nama Belakang" required>
+											{{ Form::text('lastname', null, [ 'class' => 'form-control floating-label', 'data-hint' => 'Masukkan nama belakang Anda', 'placeholder' => 'Nama Belakang', 'required' => true ]) }}
 										</div>
 									</div>
 								</div>
@@ -55,13 +55,13 @@
 									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding-bottom:20px;">
 										<div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-											<input type="email" class="form-control floating-label" name="email" data-hint="Masukkan email yang valid" type="email" placeholder="Email" required>
+											{{ Form::email('email', null, [ 'class' => 'form-control floating-label', 'data-hint' => 'Masukan email yang valid', 'placeholder' => 'Email', 'required' => true ]) }}
 										</div>
 									</div>
 									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 										<div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-phone fa-fw"></i></span>
-											<input type="number" class="form-control floating-label" name="phone" data-hint="Masukkan nomor yang valid" type="text" placeholder="Nomor telepon" required>
+											{{ Form::number('phone', null, [ 'class' => 'form-control floating-label', 'data-hint' => 'Masukkan nomor yang valid', 'placeholder' => 'Nomor telepon', 'required' => true ]) }}
 										</div>
 									</div>
 								</div>
@@ -69,7 +69,7 @@
 									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding-bottom:20px;">
 										<div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-edit fa-fw"></i></span>
-											<input class="form-control floating-label" data-hint="Masukkan Alamat" name="address" type="text" placeholder="Alamat" required>
+											{{ Form::text('address', null, [ 'class' => 'form-control floating-label', 'data-hint' => 'Masukkan Alamat', 'placeholder' => 'Alamat', 'required' => true ]) }}
 										</div>
 									</div>
 									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -101,7 +101,7 @@
 									</div>
 								</div>
 							</fieldset>
-						</form>
+						{{ Form::close() }}
 					</div>
 				</div>
 			</div>

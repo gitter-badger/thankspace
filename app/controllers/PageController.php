@@ -10,6 +10,12 @@ class PageController extends BaseController {
 		return View::make('page.index', $data);
 	}
 	
+	public function about()
+	{
+		$data = [];
+		return View::make('page.about_us', $data);
+	}
+
 	public function faq()
 	{
 		$data = [];

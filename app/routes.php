@@ -39,7 +39,7 @@ Route::get('/order/reset', [ 'as' => 'order.reset', 'uses' => 'OrderController@r
 
 /* Static Pages */
 Route::get('/page/faq', [ 'as' => 'page.faq', 'uses' => 'PageController@faq' ]);
-Route::get('/page/about-us', [ 'as' => 'page.about_us', 'uses' => 'HomeController@index' ]);
+Route::get('/page/about-us', [ 'as' => 'page.about_us', 'uses' => 'PageController@about' ]);
 Route::get('/page/careers', [ 'as' => 'page.careers', 'uses' => 'HomeController@index' ]);
 Route::get('/page/terms-and-conditions', [ 'as' => 'page.tos', 'uses' => 'PageController@tos' ]);
 Route::get('/page/storage-rules', [ 'as' => 'page.storage_rules', 'uses' => 'HomeController@index' ]);

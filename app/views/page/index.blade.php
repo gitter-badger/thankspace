@@ -174,7 +174,7 @@
 				</div>
 				<div class="col-lg-12 col-md-12 col-sm-12 text-center" >
 					<p>
-						<a id="step5" href="order.php" class="btn btn-primary btn-lg">
+						<a id="step5" href="{{ route('order.index') }}" class="btn btn-primary btn-lg">
 							<i class="fa fa-shopping-cart"></i> <span>Order Sekarang</span>
 						</a>
 					</p>

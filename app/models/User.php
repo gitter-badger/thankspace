@@ -68,8 +68,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	{
 		$rules = [
 			'type'		=>	'sometimes|in:admin,driver,user',
-			'firstname'	=>	'required|min:5|max:40',
-			'lastname'	=>	'required|min:5|max:40',
+			'firstname'	=>	'required|min:2|max:40',
+			'lastname'	=>	'required|min:2|max:40',
 			'email'		=>	'required|email|max:40',
 			'password'	=>	'required|min:6',
 			'city_id'	=>	'sometimes|exists:cities,id',

@@ -16,7 +16,7 @@
 				<li class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Help<span class="caret"></span></a>
 					<ul class="dropdown-menu" aria-labelledby="themes">
-						<li><a href="#">About Us</a></li>
+						<li><a href="{{ route('page.about_us') }}">About Us</a></li>
 						<li><a href="{{ route('page.faq') }}">FAQ</a></li>
 					</ul>
 				</li>

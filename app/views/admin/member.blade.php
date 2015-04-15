@@ -87,7 +87,7 @@
 											</button>
 											<ul class="dropdown-menu pull-right">
 												<li>
-													<a href="#"><i class="fa fa-edit"></i> Edit Detail</a>
+													<a href="{{ route('user.member_edit', [ $member->id ]) }}"><i class="fa fa-edit"></i> Edit Detail</a>
 												</li>
 												@if( Auth::user()->id != $member->id )
 												<li>

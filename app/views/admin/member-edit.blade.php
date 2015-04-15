@@ -21,7 +21,7 @@
 					</div>
 					
 					<div class="col-lg-12 text-center">
-						<h3>Tambahkan Member</h3>
+						<h3>Edit Member {{ $user->fullname }}</h3>
 						
 						@if( Session::has('messages') )
 						<p>
@@ -34,21 +34,21 @@
 						</p>
 						@endif
 						
-						<p>Isi data keanggotaan baru dengan cermat.</p>
+						<br>
 						
-						{{ Form::open([ 'route' => 'user.member_add.post', 'method' => 'POST', 'class' => 'form-horizontal' ]) }}
+						{{ Form::open([ 'route' => [ 'user.member_edit.put', $user->id ], 'method' => 'PUT', 'class' => 'form-horizontal' ]) }}
 							<fieldset>
 								<div class="form-group">                    
 									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding-bottom:20px;">
 										<div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-edit fa-fw"></i></span>
-											{{ Form::text('firstname', null, [ 'class' => 'form-control floating-label', 'data-hint' => 'Masukkan nama depan Anda', 'placeholder' => 'Nama Depan', 'required' => true ]) }}
+											{{ Form::text('firstname', $user->firstname, [ 'class' => 'form-control floating-label', 'data-hint' => 'Masukkan nama depan Anda', 'placeholder' => 'Nama Depan', 'required' => true ]) }}
 										</div>
 									</div>
 									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 										<div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-edit fa-fw"></i></span>
-											{{ Form::text('lastname', null, [ 'class' => 'form-control floating-label', 'data-hint' => 'Masukkan nama belakang Anda', 'placeholder' => 'Nama Belakang', 'required' => true ]) }}
+											{{ Form::text('lastname', $user->lastname, [ 'class' => 'form-control floating-label', 'data-hint' => 'Masukkan nama belakang Anda', 'placeholder' => 'Nama Belakang', 'required' => true ]) }}
 										</div>
 									</div>
 								</div>
@@ -56,13 +56,13 @@
 									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding-bottom:20px;">
 										<div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-											{{ Form::email('email', null, [ 'class' => 'form-control floating-label', 'data-hint' => 'Masukan email yang valid', 'placeholder' => 'Email', 'required' => true ]) }}
+											{{ Form::email('email', $user->email, [ 'class' => 'form-control floating-label', 'data-hint' => 'Masukan email yang valid', 'placeholder' => 'Email', 'required' => true ]) }}
 										</div>
 									</div>
 									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 										<div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-phone fa-fw"></i></span>
-											{{ Form::number('phone', null, [ 'class' => 'form-control floating-label', 'data-hint' => 'Masukkan nomor yang valid', 'placeholder' => 'Nomor telepon', 'required' => true ]) }}
+											{{ Form::number('phone', $user->phone, [ 'class' => 'form-control floating-label', 'data-hint' => 'Masukkan nomor yang valid', 'placeholder' => 'Nomor telepon', 'required' => true ]) }}
 										</div>
 									</div>
 								</div>
@@ -70,7 +70,7 @@
 									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding-bottom:20px;">
 										<div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-edit fa-fw"></i></span>
-											{{ Form::text('address', null, [ 'class' => 'form-control floating-label', 'data-hint' => 'Masukkan Alamat', 'placeholder' => 'Alamat', 'required' => true ]) }}
+											{{ Form::text('address', $user->address, [ 'class' => 'form-control floating-label', 'data-hint' => 'Masukkan Alamat', 'placeholder' => 'Alamat', 'required' => true ]) }}
 										</div>
 									</div>
 									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -80,7 +80,7 @@
 												Form::select('gender', [
 													'm'	=> 'Male',
 													'f'	=> 'Female',
-												], null, [ 'class' => 'form-control' ])
+												], $user->gender, [ 'class' => 'form-control' ])
 											}}
 										</div>
 									</div>
@@ -95,14 +95,14 @@
 													'admin'		=> 'Admin',
 													'user'		=> 'Customer',
 													'driver'	=> 'Delivery Team',
-												], null, [ 'class' => 'form-control' ])
+												], $user->type, [ 'class' => 'form-control' ])
 											}}
 										</div>
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="col-lg-12 text-center">
-										<button type="submit" class="btn btn-primary"><i class="mdi-social-person-add"></i> Tambahkan</button>
+										<button type="submit" class="btn btn-primary"><i class="mdi-social-person-add"></i> Edit</button>
 										<a href="{{ route('user.member_list') }}" class="btn btn-warning">Batalkan</a>
 									</div>
 								</div>

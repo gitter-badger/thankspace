@@ -79,6 +79,30 @@ class UserController extends BaseController {
 			->withInput()
 			->with([ 'alert' => 'error', 'messages' => $userRepo->getErrors() ]);
 	}
+	
+	
+	public function memberEdit($id)
+	{
+		$user = app('UserRepo')->_getUserById($id);
+		$data = [ 'user' => $user ];
+		return View::make('admin.member-edit', $data);
+	}
+	
+	
+	public function memberEditPut($id)
+	{
+		$userRepo = app('UserRepo');
+		$input = Input::get();
+		$input += [ 'user_id' => $id ];
+		if ( $userRepo->updateProfile($input) )
+		{
+			return Redirect::route('user.member_list')
+				->with([ 'alert' => 'success', 'messages' => [ 'Member data successfully updated' ] ]);
+		}
+		return Redirect::back()
+			->withInput()
+			->with([ 'alert' => 'error', 'messages' => $userRepo->getErrors() ]);
+	}
 
 
 	public function invoice()

@@ -9,7 +9,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
 	use UserTrait, RemindableTrait;
 	
-	protected $guarded = [ 'password_confirm', 'remember_token', 'created_at', 'updated_at', 'via' ];
+	protected $guarded = [ 'password_confirm', 'remember_token', 'created_at', 'updated_at', 'user_id', 'via' ];
 
 	/**
 	 * The database table used by the model.

@@ -87,11 +87,15 @@ class UserRepo extends BaseRepo
 		
 		if ( $validation->passes() ) {
 			$user = $this->model->create($input);
-			$auth = $this->_handleLogin($user->id);
-
+			
 			$this->_sendWelcomeMail();
-
-			return $auth;
+			
+			if ( $input['via'] != 'admin' ) {
+				$auth = $this->_handleLogin($user->id);
+				return $auth;
+			} else {
+				return true;
+			}
 		} else {
 			$this->setErrors($validation->messages()->all(':message'));
 			return false;

@@ -43,3 +43,9 @@ function makeFormatTime($y, $m, $d)
 {
 	return \Carbon\Carbon::createFromDate($y, $m, $d)->format('l, jS F Y');
 }
+
+function generate_password( $length = 8 ) {
+	$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	$password = substr( str_shuffle( $chars ), 0, $length );
+	return $password;
+}

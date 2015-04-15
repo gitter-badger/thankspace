@@ -23,13 +23,14 @@
 					<div class="col-lg-12 text-center">
 						<h3>Tambahkan Member</h3>
 						
-						@if ( Session::has('message') )
+						@if( Session::has('messages') )
 						<p>
-							@if ( Session::get('message') == 'success' )
-							<span class="error-alert">
-								<i class="fa fa-meh-o"></i> {{ Session::get('message') }}
-							</span>
-							@endif
+							@foreach( Session::get('messages') as $m )
+								<span class="error-alert">
+									<i class="fa fa-meh-o"></i> {{ $m }}
+								</span>
+								<br>
+							@endforeach
 						</p>
 						@endif
 						
@@ -101,6 +102,7 @@
 									</div>
 								</div>
 							</fieldset>
+							{{ Form::hidden('via', 'admin') }}
 						{{ Form::close() }}
 					</div>
 				</div>

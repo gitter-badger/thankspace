@@ -66,8 +66,18 @@ class UserController extends BaseController {
 	
 	
 	public function memberAddPost()
-	{
-		return Redirect::back()->withInput();
+	{	
+		$userRepo = app('UserRepo');
+		$input = Input::get();
+		$input += [ 'password' => generate_password(6) ];
+		if ( $userRepo->register($input) )
+		{
+			return Redirect::route('user.member_list')
+				->with([ 'alert' => 'success', 'messages' => [ 'A new member successfully created' ] ]);
+		}
+		return Redirect::back()
+			->withInput()
+			->with([ 'alert' => 'error', 'messages' => $userRepo->getErrors() ]);
 	}
 
 

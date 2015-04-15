@@ -36,6 +36,18 @@
 					
 					<div class="col-lg-12 text-center">
 						<h3>Daftar Member Terdaftar</h3>
+						
+						@if( Session::has('messages') )
+						<p>
+							@foreach( Session::get('messages') as $m )
+								<span class="success-alert">
+									<i class="fa fa-smile-o"></i> {{ $m }}
+								</span>
+								<br>
+							@endforeach
+						</p>
+						@endif
+						
 						<div class="table-responsive">
 							<table class="table table-striped table-hover text-center">
 								<thead>

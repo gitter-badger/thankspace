@@ -18,6 +18,7 @@ class CreateOrderTable extends Migration {
 			$table->string('type', 10)->default('box');
 			$table->integer('quantity');
 			$table->text('description')->nullable();
+			$table->enum('status', [ 0, 1 ])->default(1);
 			$table->timestamps();
 		});
 	}

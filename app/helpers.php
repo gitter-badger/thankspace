@@ -49,3 +49,21 @@ function generate_password( $length = 8 ) {
 	$password = substr( str_shuffle( $chars ), 0, $length );
 	return $password;
 }
+
+
+/**
+ * Calculating price by type
+ * 
+ * @param  string $type [box|item]
+ * @param  numeric $qty  [description]
+ * @param  bool $withCurrency
+ * @return string
+ */
+function calcPrice($type, $qty, $withCurrency = false)
+{
+	$price = Config::get("thankspace.$type.price") * $qty;
+	if ($withCurrency) {
+		return 'Rp. '. number_format($price) .',-';
+	}
+	return $price;
+}

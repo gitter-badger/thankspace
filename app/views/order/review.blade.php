@@ -53,7 +53,31 @@
 							<div class="col-lg-4">
 								<h3>Details</h3>
 								<hr>
-								<div class="col-lg-5 text-left">
+
+								<table class="table">
+									<tbody>
+										<tr>
+											<th>Storage Box</th>
+											<td>{{ $review['index']['quantity_box'] }}</td>
+											<td style="text-align:left;">{{ calcPrice('box', $review['index']['quantity_box'], true) }}</td>
+										</tr>
+										<tr>
+											<th>Item</th>
+											<td>{{ $review['index']['quantity_item'] }}</td>
+											<td style="text-align:left;">{{ calcPrice('item', $review['index']['quantity_item'], true) }}</td>
+										</tr>
+										<tr>
+											<td colspan="3">
+												<h3>
+													Total:
+													Rp. {{ number_format(calcPrice('box', $review['index']['quantity_box']) + calcPrice('item', $review['index']['quantity_item'])) }},-
+												</h3>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+
+								{{-- <div class="col-lg-5 text-left">
 									Storage box: <br>
 									item:
 								</div>
@@ -62,11 +86,15 @@
 									{{ $review['index']['quantity_item'] }}
 								</div>
 								<div class="col-lg-5 text-left">
-									Rp 1000000<br>
-									-
+									{{ calcPrice('box', $review['index']['quantity_box'], true) }}
+									<br>
+									{{ calcPrice('item', $review['index']['quantity_item'], true) }}
 								</div>
 
-								<br><br><h3>Total: Rp 1.000.000,-</h3>
+								<br><br>
+								<h3>Total: 
+
+								</h3> --}}
 							</div>
 
 							<div class="col-lg-4">

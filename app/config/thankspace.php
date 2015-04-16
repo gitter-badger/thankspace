@@ -12,4 +12,12 @@ return array(
 		'14:00am - 16:00am' => '14:00am - 16:00am',
 	),
 
+	'box' => array(
+		'price' => '50000',
+	),
+
+	'item' => array(
+		'price' => '150000',
+	),
+
 );

@@ -17,7 +17,8 @@ Route::group(['before' => 'auth'], function() {
 	Route::get('/add-member', [ 'as' => 'user.member_add', 'uses' => 'UserController@memberAdd' ]);
 	Route::post('/add-member', [ 'as' => 'user.member_add.post', 'uses' => 'UserController@memberAddPost' ]);
 	Route::get('/edit-member/{num}', [ 'as' => 'user.member_edit', 'uses' => 'UserController@memberEdit' ]);
-	Route::put('/edit-member/{num}', [ 'as' => 'user.member_edit.put', 'uses' => 'UserController@memberEditPut' ]);
+	Route::get('/edit-member/{num}', [ 'as' => 'user.member_edit', 'uses' => 'UserController@memberEdit' ]);
+	Route::get('/delete-member/{num}', [ 'as' => 'user.member_delete', 'uses' => 'UserController@memberDelete' ]);
 	// Route::get('/storage', [ 'as' => 'user.storage', 'uses' => 'UserController@storage' ]);
 	Route::get('/invoice', [ 'as' => 'user.invoice', 'uses' => 'UserController@invoice' ]);
 	Route::get('/setting', [ 'as' => 'user.setting', 'uses' => 'UserController@setting' ]);
@@ -50,7 +51,6 @@ Route::get('/page/contact-us', [ 'as' => 'page.contact_us', 'uses' => 'HomeContr
 
 /* User */
 Route::get('/signout', [ 'as' => 'user.signout', 'uses' => 'UserController@signout' ]);
-
 Route::post('/signin', [ 'as' => 'user.signin', 'uses' => 'UserController@signin' ]);
 Route::post('/signup', [ 'as' => 'user.signup', 'uses' => 'UserController@signup' ]);
 Route::post('/forgot-password', [ 'as' => 'user.forgot_password', 'uses' => 'UserController@index' ]);

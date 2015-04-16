@@ -103,6 +103,19 @@ class UserController extends BaseController {
 			->withInput()
 			->with([ 'alert' => 'error', 'messages' => $userRepo->getErrors() ]);
 	}
+	
+	
+	public function memberDelete($id)
+	{
+		$userRepo = app('UserRepo');
+		if ( $userRepo->deleteUser($id) )
+		{
+			return Redirect::back()
+				->with([ 'alert' => 'success', 'messages' => [ 'Selected member has been deleted' ] ]);
+		}
+		return Redirect::back()
+			->with([ 'alert' => 'error', 'messages' => $userRepo->getErrors() ]);
+	}
 
 
 	public function invoice()

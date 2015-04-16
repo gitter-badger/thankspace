@@ -38,10 +38,11 @@
 						<h3>Daftar Member Terdaftar</h3>
 						
 						@if( Session::has('messages') )
+						{{--*/ $icon = ( Session::get('alert') == 'success' ? 'smile' : 'meh' ) /*--}}
 						<p>
 							@foreach( Session::get('messages') as $m )
-								<span class="success-alert">
-									<i class="fa fa-smile-o"></i> {{ $m }}
+								<span class="{{ Session::get('alert') }}-alert">
+									<i class="fa fa-{{ $icon }}-o"></i> {{ $m }}
 								</span>
 								<br>
 							@endforeach
@@ -91,7 +92,7 @@
 												</li>
 												@if( Auth::user()->id != $member->id )
 												<li>
-													<a href="#"><i class="fa fa-user-times"></i> Hapus</a>
+													<a href="{{ route('user.member_delete', [ $member->id ]) }}" onclick="return confirm('Are you sure ?');"><i class="fa fa-user-times"></i> Hapus</a>
 												</li>
 												@endif
 											</ul>

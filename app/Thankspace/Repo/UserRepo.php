@@ -11,11 +11,26 @@ class UserRepo extends BaseRepo
 	
 	public function getMemberList()
 	{
-		$user = $this->model->paginate(20);
+		$user = $this->model->where('status', 1)->paginate(20);
 		
 		if ( $user ) {
 			return $user;
 		} else {
+			return false;
+		}
+	}
+	
+	
+	public function deleteUser($id)
+	{
+		$user = $this->_getUserById($id);
+		
+		if ( $user ) {
+			\Order::where('user_id', $user->id)->update([ 'status' => 0 ]);
+			$user->update([ 'status' => 0 ]);
+			return true;
+		} else {
+			$this->setErrors([ 'Whoops, something went wrong. Please try again' ]);
 			return false;
 		}
 	}
@@ -105,7 +120,7 @@ class UserRepo extends BaseRepo
 
 	public function login(array $input = array())
 	{
-		if (\Auth::attempt(array('email' => $input['email'], 'password' => $input['password']), true))
+		if (\Auth::attempt([ 'email' => $input['email'], 'password' => $input['password'], 'status' => 1 ], true))
 		{
 		    return true;
 		}

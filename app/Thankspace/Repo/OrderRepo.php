@@ -24,7 +24,7 @@ class OrderRepo extends BaseRepo
 			$order = $order->with('User');
 		}
 		
-		$order = $order->paginate(20);
+		$order = $order->where('order.status', 1)->paginate(20);
 		
 		if ( $order ) {
 			return $order;
@@ -47,7 +47,7 @@ class OrderRepo extends BaseRepo
 			$order = $order->with('User');
 		}
 		
-		$order = $order->paginate(20);
+		$order = $order->where('order.status', 1)->paginate(20);
 		
 		if ( $order ) {
 			return $order;

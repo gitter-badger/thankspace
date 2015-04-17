@@ -117,6 +117,7 @@
 							</div>
 						</div>
 					</fieldset>
+					{{ Form::hidden('via', 'register') }}
 				{{ Form::close() }}
 			</div>
 			<div class="modal-footer">

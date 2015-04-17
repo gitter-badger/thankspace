@@ -7,7 +7,7 @@ class UserController extends BaseController {
 		// logic type user
 		switch (Auth::user()->type) {
 			case 'driver':
-				$this->_driverDashboard();
+				return $this->_driverDashboard();
 			break;
 
 			case 'admin':
@@ -34,7 +34,11 @@ class UserController extends BaseController {
 
 	public function _driverDashboard()
 	{
-		return __FUNCTION__;
+		// $orderRepo = app('OrderRepo');
+		$data = [
+			// 'invoices' => $orderRepo->getInvoiceList()
+		];
+		return View::make('driver.index', $data);
 	}
 
 

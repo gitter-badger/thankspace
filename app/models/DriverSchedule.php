@@ -15,6 +15,11 @@ class DriverSchedule extends \Eloquent {
 	{
 		return $this->belongsTo('Order');
 	}
+
+	public function orderSchedule()
+	{
+		return $this->belongsTo('OrderSchedule');
+	}
 	
 	public static function validate($input, $customrules = '')
 	{

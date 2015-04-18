@@ -5,6 +5,12 @@ class OrderPayment extends \Eloquent {
 	protected $fillable = ['order_id', 'code', 'method', 'message', 'status'];
 	
 	protected $table = 'order_payment';
+
+
+	public function setCodeAttribute($value)
+	{
+		$this->attributes['code'] = 'TH'. substr(date('Y'), 2) . $this->attributes['order_id'];
+	}
 	
 	public function order()
 	{

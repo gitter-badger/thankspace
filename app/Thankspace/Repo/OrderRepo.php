@@ -9,22 +9,50 @@ class OrderRepo extends BaseRepo
 	}
 	
 	
-	public function getStorageList(array $input = array())
+	/**
+	 * Get user available storage on warehouse
+	 * 
+	 * @param  array  $option
+	 * @return \Illuminate\Database\Eloquent\Model
+	 */
+	public function getStorageList(array $option = array())
 	{
-		$user_id = ( isset($input['user_id']) ? $input['user_id'] : \Auth::user()->id );
+		$user_type = \Auth::user()->type;
+		$user_id = ( isset($option['user_id']) ? $option['user_id'] : \Auth::user()->id );
 		
 		$order = \Order::with('OrderSchedule', 'OrderStuff', 'ReturnSchedule')
 					->join('order_payment', 'order_payment.order_id', '=', 'order.id')
 					->where('order_payment.status', 2);
 		
-		if( \Auth::user()->type == 'user' )
+		/**
+		 * For user list page
+		 */
+		if( $user_type == 'user' )
 		{
 			$order = $order->where('order.user_id', $user_id);
-		} else {
+		}
+
+		/**
+		 * For driver list page
+		 */
+		elseif($user_type == 'driver')
+		{
+			if (!empty($option['page_name']))
+			{
+				\Paginator::setPageName($option['page_name']);
+			}
+			$order = $order->with('User', 'DriverSchedule')->orderBy('order.created_at', 'desc');
+		}
+
+		/**
+		 * For admin list page
+		 */
+		else
+		{
 			$order = $order->with('User');
 		}
 		
-		$order = $order->where('order.status', 1)->paginate(20);
+		$order = $order->where('order.status', 1)->paginate(1);
 		
 		if ( $order ) {
 			return $order;
@@ -32,11 +60,29 @@ class OrderRepo extends BaseRepo
 			return false;
 		}
 	}
-	
-	
-	public function getInvoiceList(array $input = array())
+
+
+	public function getDriverSchedule()
 	{
-		$user_id = ( isset($input['user_id']) ? $input['user_id'] : \Auth::user()->id );
+		$order = \DriverSchedule::with('order.user')
+			->join('order_payment', 'order_payment.order_id', '=', 'driver_schedule.order_id')
+			->join('order_schedule', 'order_schedule.order_id', '=', 'driver_schedule.order_id')
+			->select('driver_schedule.*', 'order_schedule.*', 'order_payment.code')
+			->get();
+
+		return $order;
+	}
+
+	
+	/**
+	 * User order/transaction history
+	 * 
+	 * @param  array  $option
+	 * @return \Illuminate\Database\Eloquent\Model
+	 */
+	public function getOrderList(array $option = array())
+	{
+		$user_id = ( isset($option['user_id']) ? $option['user_id'] : \Auth::user()->id );
 		
 		$order = \Order::with('OrderSchedule', 'OrderPayment', 'ReturnSchedule');
 		
@@ -56,6 +102,13 @@ class OrderRepo extends BaseRepo
 		}
 	}
 	
+
+	/**
+	 * For confirmation payment user and admin
+	 * 
+	 * @param  array  $input
+	 * @return mix \Illuminate\Database\Eloquent\Model|false
+	 */
 	public function confirmPayment(array $input = array())
 	{
 		$status = ( \Auth::user()->type == 'admin' ? 2 : 1 );
@@ -145,6 +198,7 @@ class OrderRepo extends BaseRepo
 	{
 		$input = $orderPayment;
 		$input['order_id'] = $order_id;
+		$input['code'] = null;
 		return \OrderPayment::create($input);
 	}
 }

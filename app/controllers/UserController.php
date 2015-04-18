@@ -34,10 +34,15 @@ class UserController extends BaseController {
 
 	public function _driverDashboard()
 	{
-		// $orderRepo = app('OrderRepo');
+		$orderRepo = app('OrderRepo');
+
 		$data = [
-			// 'invoices' => $orderRepo->getInvoiceList()
+			'storages' => $orderRepo->getStorageList(['page_name' => 'page_queue']),
+			'tasks'	=> $orderRepo->getDriverSchedule(),
 		];
+
+		return $data['storages'];
+
 		return View::make('driver.index', $data);
 	}
 
@@ -46,7 +51,7 @@ class UserController extends BaseController {
 	{
 		$orderRepo = app('OrderRepo');
 		$data = [
-			'invoices' => $orderRepo->getInvoiceList()
+			'invoices' => $orderRepo->getOrderList()
 		];
 		return View::make('admin.history', $data);
 	}
@@ -126,7 +131,7 @@ class UserController extends BaseController {
 	{
 		$orderRepo = app('OrderRepo');
 		$data = [
-			'invoices' => $orderRepo->getInvoiceList()
+			'invoices' => $orderRepo->getOrderList()
 		];
 		return View::make('user.invoice', $data);
 	}

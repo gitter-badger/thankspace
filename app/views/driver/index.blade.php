@@ -15,8 +15,8 @@
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-body">
-						<h3>Order yang Anda tangani</h3>
 						
+						<h3>Order yang Anda tangani</h3>
 						<table class="table table-striped table-hover">
 							<thead>
 								<tr>
@@ -92,6 +92,73 @@
 											<ul class="dropdown-menu">
 												<li><a href="javascript:void(0)">"Sudah sampai Warehouse"</a></li>
 												<li><a href="javascript:void(0)">"Sudah dikembalikan"</a></li>
+											</ul>
+										</div>
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+
+
+						<h3 id="queue">Daftar antrian order yang tersedia</h3>
+						<table class="table table-striped table-hover">
+							<thead>
+								<tr>
+									<th>Order Number</th>
+									<th>Customer</th>
+									<th>Phone</th>
+									<th>Alamat</th>
+									<th>Box Yang dibutuhkan</th>
+									<th>Barang Lain</th>
+									<th>Jadwal Box Diantar</th>
+									<th>Jadwal Box Diambil</th>
+									<th>Aksi</th>
+								</tr>
+							</thead>
+							<tbody>
+
+								@if( count($storages) > 0 )
+								@foreach($storages as $s)
+									<tr>
+										<td>{{ $s['code'] }}</td>
+										<td>{{ $s['user']['fullname'] }}</td>
+										<td>{{ $s['user']['phone'] }}</td>
+										<td>{{ $s['user']['address'] }}</td>
+										<td>{{ $s['quantity'] }}</td>
+										<td>{{ $s['description'] }}</td>
+										<td>{{ $s['order_schedule']['delivery_date'] }}</td>
+										<td>
+											{{ $s['order_schedule']['pickup_date'] or $s['order_schedule']['delivery_date'] }}
+										</td>
+										<td>
+											<div class="checkbox">
+												<label>
+													{{ Form::checkbox('order_id[]', $s['id'], null, []) }}
+												</label>
+											</div>
+										</td>
+									</tr>
+								@endforeach
+								@else
+									<tr>
+										<td colspan="9">
+											<h4 class="text-center">Masih kosong</h4>
+										</td>
+									</tr>
+								@endif
+
+								<tr>
+									<td colspan="7">
+										{{ $storages->fragment('queue')
+											->links() }}
+									</td>
+									<td class="text-right" colspan="2">
+										<div class="btn-group">
+											<a href="javascript:void(0)" class="btn btn-primary">Action</a>
+											<a href="bootstrap-elements.html" data-target="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+											<ul class="dropdown-menu">
+												<li><a href="javascript:void(0)">"Saya tangani order ini"</a></li>
 											</ul>
 										</div>
 									</td>

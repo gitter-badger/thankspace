@@ -50,6 +50,8 @@
 						@endif
 						
 						<div class="table-responsive">
+						@if( count($members) > 0 )
+						
 							<table class="table table-striped table-hover text-center">
 								<thead>
 									<tr>
@@ -107,6 +109,12 @@
 									</tr>
 								</tbody>
 							</table>
+						
+						@else
+							
+							<div class="alert alert-info">Whoops, there are no members yet!</div>
+							
+						@endif
 						</div>
 					</div>
 				</div>

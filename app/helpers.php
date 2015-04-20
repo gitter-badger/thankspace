@@ -2,13 +2,17 @@
 
 function getTotalStored($type = 'box') {
 	$total = DB::table('order')
-				->where('order.type', $type)
 				->join('order_schedule', function($join)
 				{
 					$join->on('order.id', '=', 'order_schedule.order_id')
 						->where('order_schedule.status', '=', 1);
 				})
-				->sum('order.quantity');
+				->join('order_stuff', function($join) use ($type)
+				{
+					$join->on('order.id', '=', 'order_stuff.order_id')
+						->where('order_stuff.type', '=', $type);
+				})
+				->count();
 	
 	return $total;
 }
@@ -19,21 +23,30 @@ function getTotalCustomers() {
 
 function getTotalTransactions() {
 	$box	= DB::table('order')
-				->where('type', 'box')
 				->join('order_payment', function($join)
 				{
 					$join->on('order.id', '=', 'order_payment.order_id')
 						->where('order_payment.status', '=', 2);
 				})
-				->sum('quantity') * 50000;
+				->join('order_stuff', function($join)
+				{
+					$join->on('order.id', '=', 'order_stuff.order_id')
+						->where('order_stuff.type', '=', 'box');
+				})
+				->count() * 50000;
+				
 	$item	= DB::table('order')
-				->where('type', 'item')
 				->join('order_payment', function($join)
 				{
 					$join->on('order.id', '=', 'order_payment.order_id')
 						->where('order_payment.status', '=', 2);
 				})
-				->sum('quantity') * 150000;
+				->join('order_stuff', function($join)
+				{
+					$join->on('order.id', '=', 'order_stuff.order_id')
+						->where('order_stuff.type', '=', 'item');
+				})
+				->count() * 150000;
 				
 	return number_format($box + $item, 0, '', '.');
 }

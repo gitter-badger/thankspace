@@ -45,6 +45,8 @@
 						@endif
 						
 						<div class="table-responsive">
+						@if( count($invoices) > 0 )
+						
 							{{ Form::open([ 'method' => 'POST', 'class' => 'invoice-form-list' ]) }}
 							<table class="table table-striped table-hover text-center">
 								<thead>
@@ -131,6 +133,12 @@
 							</table>
 							{{ Form::close() }}
 							<input type="hidden" class="konfirmRoute" value="{{ route('user.confirm_payment') }}" />
+						
+						@else
+							
+							<div class="alert alert-info">Whoops, there are no transactions yet!</div>
+							
+						@endif
 						</div>
 					</div>
 				</div>

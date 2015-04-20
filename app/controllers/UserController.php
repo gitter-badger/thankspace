@@ -41,8 +41,6 @@ class UserController extends BaseController {
 			'tasks'	=> $orderRepo->getDriverSchedule(),
 		];
 
-		return $data['storages'];
-
 		return View::make('driver.index', $data);
 	}
 

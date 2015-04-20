@@ -34,39 +34,46 @@
 						</a>
 						<ul class="dropdown-menu">
 							@if( Auth::user()->type == 'user' )
-							<li>
-								<a href="{{ route('user.dashboard') }}">
-									<i class="fa fa-archive fa-fw"></i> Storage saya
-								</a>
-							</li>
-							<li>
-								<a href="{{ route('user.invoice') }}">
-									<i class="fa fa-archive fa-fw"></i> Riwayat Invoice
-								</a>
-							</li>
-							<li>
-								<a href="{{ route('order.index') }}">
-									<i class="fa fa-shopping-cart fa-fw"></i> Order Storage Box
-								</a>
-							</li>
-							<li>
-								<a href="{{ route('user.setting') }}">
-									<i class="fa fa-gear fa-fw"></i> Pengaturan Akun
-								</a>
-							</li>
-							<li class="divider"></li>
+								<li>
+									<a href="{{ route('user.dashboard') }}">
+										<i class="fa fa-archive fa-fw"></i> Storage saya
+									</a>
+								</li>
+								<li>
+									<a href="{{ route('user.invoice') }}">
+										<i class="fa fa-archive fa-fw"></i> Riwayat Invoice
+									</a>
+								</li>
+								<li>
+									<a href="{{ route('order.index') }}">
+										<i class="fa fa-shopping-cart fa-fw"></i> Order Storage Box
+									</a>
+								</li>
+								<li>
+									<a href="{{ route('user.setting') }}">
+										<i class="fa fa-gear fa-fw"></i> Pengaturan Akun
+									</a>
+								</li>
+								<li class="divider"></li>
 							@elseif( Auth::user()->type == 'admin' )
-							<li>
-								<a href="{{ route('user.member_list') }}">
-									<i class="fa fa-users"></i> Member List
-								</a>
-							</li>
-							<li>
-								<a href="{{ route('user.dashboard') }}">
-									<i class="fa fa-archive"></i> Order History
-								</a>
-							</li>
-							<li class="divider"></li>
+								<li>
+									<a href="{{ route('user.member_list') }}">
+										<i class="fa fa-users"></i> Member List
+									</a>
+								</li>
+								<li>
+									<a href="{{ route('user.dashboard') }}">
+										<i class="fa fa-archive"></i> Order History
+									</a>
+								</li>
+								<li class="divider"></li>
+							@elseif( Auth::user()->type == 'driver' )
+								<li>
+									<a href="{{ route('user.dashboard') }}">
+										<i class="fa fa-archive fa-fw"></i> Dashboard
+									</a>
+								</li>
+								<li class="divider"></li>
 							@endif
 							<li>
 								<a href="{{ route('user.signout') }}">

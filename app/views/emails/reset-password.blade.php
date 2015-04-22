@@ -15,7 +15,7 @@
 		<p>Lupa password Anda? Jangan khawatir, ayo kita buat yang baru.</p>
 		<p>
 			Untuk mereset password Anda, klik link di bawah ini.<br>
-			{{-- route() --}}
+			<a href="" target="_blank">{{-- route() --}}</a>
 		</p>
 		<p>Jika Anda tidak lupa password Anda, Anda dapat mengabaikan atau menghapus pesan email ini.</p>
 		<p>Password Anda tidak akan berubah dan Anda masih akan dapat mengakses akun Anda.</p>

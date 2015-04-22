@@ -115,6 +115,12 @@ class OrderRepo extends BaseRepo
 		$confirm = \OrderPayment::whereIn('id', $input['order_payment_id'])->update([ 'status' => $status ]);
 		if ( $confirm )
 		{
+			
+			if ( $status == 2 )
+			{
+				$this->_sendConfirmPaymentMail($input['order_payment_id']);
+			}
+			
 			return $confirm;
 		} else {
 			$this->setErrors('No invoice selected');
@@ -200,5 +206,33 @@ class OrderRepo extends BaseRepo
 		$input['order_id'] = $order_id;
 		$input['code'] = null;
 		return \OrderPayment::create($input);
+	}
+	
+	
+	protected function _sendConfirmPaymentMail(array $id = array())
+	{
+		$orders = \OrderPayment::with('order.user')->whereIn('id', $id)->get();
+		foreach( $orders as $order )
+		{
+			$fullname = ucfirst($order['order']['user']['firstname']) .' '. ucfirst($order['order']['user']['lastname']);
+			
+			$to = [
+				'code'		=>	$order['code'],
+				'email'		=>	$order['order']['user']['email'],
+				'fullname'	=>	$fullname,
+			];
+			
+			$data = [
+				'code'		=>	$order['code'],
+				'date'		=>	date('d/m/Y', strtotime($order['updated_at'])),
+				'fullname'	=>	$fullname,
+			];
+			
+			\Mail::send('emails.confirm-payment-success', $data, function($message) use ($to)
+			{
+				$message->to($to['email'], $to['fullname'])
+						->subject('[ThankSpace] Pembayaran invoice #'.$to['code'].' sudah kami terima');
+			});
+		}
 	}
 }

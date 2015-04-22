@@ -52,7 +52,7 @@
 		@if( !in_array($type, [ 'admin', 'driver']) )
 		<p>
 			Anda dapat menjadwalkan untuk pengiriman dan pengambilan storage box kapan saja di halaman berikut :<br>
-			{{ route('order.index') }}
+			<a href="{{ route('order.index') }}" target="_blank">{{ route('order.index') }}</a>
 		</p>
 		@endif
 		<p>Jika Anda memiliki pertanyaan, silahkan hubungi kami di 031-xxx-xxxx atau dengan membalas email ini.</p>

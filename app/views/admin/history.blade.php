@@ -51,7 +51,7 @@
 							<table class="table table-striped table-hover text-center">
 								<thead>
 									<tr>
-										<th>Order Number</th>
+										<th>Order Code</th>
 										<th>Customer</th>
 										<th>Box Yang dibutuhkan</th>
 										<th>Barang Lain</th>
@@ -73,7 +73,7 @@
 									@else
 									<tr class="danger">
 									@endif
-										<td>{{ $invoice->id }}</td>
+										<td>#{{ $invoice->order_payment->code }}</td>
 										<td><a href="">{{ $invoice->user->fullname }}</a></td>
 										<td>{{ $invoice->quantity }}</td>
 										<td>{{ $invoice->description ? : '---' }}</td>

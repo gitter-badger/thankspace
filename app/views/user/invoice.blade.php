@@ -43,7 +43,7 @@
 							<table class="table table-striped table-hover">
 								<thead>
 									<tr>
-										<th>Invoice Number</th>
+										<th>Invoice Code</th>
 										<th>Box Yang dibutuhkan</th>
 										<th>Barang Lain</th>
 										<th>Jadwal Box Diantar</th>
@@ -62,7 +62,7 @@
 									@else
 									<tr class="danger">
 									@endif
-										<td>{{ $invoice->id }}</td>
+										<td>#{{ $invoice->order_payment->code }}</td>
 										<td>{{ $invoice->quantity }}</td>
 										<td>{{ $invoice->description ? : 'Tidak Ada' }}</td>
 										<td>{{ $invoice->order_schedule->delivery_date }}</td>

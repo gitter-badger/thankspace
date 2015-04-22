@@ -103,7 +103,7 @@ class UserRepo extends BaseRepo
 		if ( $validation->passes() ) {
 			$user = $this->model->create($input);
 			
-			$this->_sendWelcomeMail();
+			$this->_sendWelcomeMail($input);
 			
 			if ( $input['via'] != 'admin' ) {
 				$auth = $this->_handleLogin($user->id);
@@ -147,8 +147,18 @@ class UserRepo extends BaseRepo
 	}
 
 
-	protected function _sendWelcomeMail()
+	protected function _sendWelcomeMail(array $input = array())
 	{
 		// logic sending email welcome
+		$to = [
+			'email'		=>	$input['email'],
+			'fullname'	=>	ucfirst($input['firstname']) .' '. ucfirst($input['lastname']),
+		];
+		
+		\Mail::send('emails.welcome', $input, function($message) use ($to)
+		{
+			$message->to($to['email'], $to['fullname'])
+					->subject('[ThankSpace] Selamat datang di ThankSpace');
+		});
 	}
 }

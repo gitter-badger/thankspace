@@ -7,6 +7,7 @@ class OrderController extends BaseController {
 		$data = [
 			'title' => 'Order index',
 			'qty_box_list' => app('OrderRepo')->quantity_box_dropdown(),
+			'qty_item_list' => app('OrderRepo')->quantity_item_dropdown(),
 			'form_data' => Session::get('order.index'),
 		];
 		return View::make('order.index', $data);
@@ -49,6 +50,9 @@ class OrderController extends BaseController {
 	public function completed()
 	{
 		$orderData = Session::get('order');
+		if ( empty($orderData)) {
+			return Redirect::route('order.index');
+		}
 
 		app('OrderRepo')->save($orderData);
 

@@ -98,6 +98,9 @@ class UserRepo extends BaseRepo
 			'email'	=>	'required|email|unique:user,email',
 		];
 
+		$input['type'] = (isset($input['type'])) ? $input['type'] : 'user';
+		$input['via'] = (isset($input['via'])) ? $input['via'] : 'register';
+
 		$validation = $this->model->validate($input, $customrules);
 		
 		if ( $validation->passes() ) {

@@ -13,16 +13,16 @@
 	<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
 		<div class="radio radio-primary">
 			<label>
-				{{ Form::radio('user_action', 'signin', false, ['class' => 'radio_signin']) }} Ya, Saya customer lama 
+				{{ Form::radio('user_action', 'signin', true, ['id' => 'id_radio2', 'class' => '']) }} Ya, Saya customer lama 
 			</label>
 			<label>
-				{{ Form::radio('user_action', 'signup', false, ['class' => 'radio_signup']) }} Belum, saya ingin mendaftar
+				{{ Form::radio('user_action', 'signup', false, ['id' => 'id_radio1', 'class' => '']) }} Belum, saya ingin mendaftar
 			</label>
 		</div>
 	</div>
 </div>
-<!-- div belum -->
-<div class="div_signup div_toggle" @if(Input::old('user_action') == 'signup') style="display: block;" @else @endif >
+
+<div id="Wowdiv">
 	<div class="form-group">
 		<label for="select" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">Nama Lengkap</label>
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="padding-bottom:20px;">
@@ -72,7 +72,7 @@
 </div>
 
 
-<div class="div_signin div_toggle" @if(Input::old('user_action') == 'signin') style="display: block;" @else @endif  >
+<div id="div2">
 	<div class="form-group">
 		<label for="select" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">Login </label>
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="padding-bottom:20px;">

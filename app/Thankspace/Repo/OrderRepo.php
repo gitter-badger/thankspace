@@ -140,6 +140,16 @@ class OrderRepo extends BaseRepo
 	}
 
 
+	public function quantity_item_dropdown()
+	{
+		$list = array();
+		for ($i=0; $i <= 5; $i++) {
+			$list[$i] = $i;
+		}
+		return $list;
+	}
+
+
 	/**
 	 * Save into order
 	 * @param  array $input this array require 3 key step : index, schedule, payment
@@ -149,9 +159,9 @@ class OrderRepo extends BaseRepo
 	{
 		$order = $this->_save_order($orderData['index']);
 
-		$this->_save_orderSchedule($order['id'], $orderData['schedule']);
+		$this->_save_orderSchedule($order->id, $orderData['schedule']);
 
-		$this->_save_orderPayment($order['id'], $orderData['payment']);
+		$this->_save_orderPayment($order->id, $orderData['payment']);
 	}
 
 
@@ -162,26 +172,50 @@ class OrderRepo extends BaseRepo
 		// handle quantity by user select
 		if ($orderIndex['type'] == 'box')
 		{
-			// if quantity box more than 21. use quantity_custom field
-			if ($orderIndex['quantity_box'] >= 21)
-			{
-				$orderIndex['quantity'] = $orderIndex['quantity_custom'];
-			}
-			
-			// if more less than 21, use quantity_box field
-			else
-			{
-				$orderIndex['quantity'] = $orderIndex['quantity_box'];
-			}
+			$orderIndex['quantity'] = ($orderIndex['quantity_box'] >= 21)
+				? $orderIndex['quantity_custom']
+				: $orderIndex['quantity_box'];
 		}
+
+		// if user order with custom item
+		// we calculating the quantity total
 		else
 		{
+			$qty_for_box = ($orderIndex['quantity_box'] >= 21)
+				? $orderIndex['quantity_custom']
+				: $orderIndex['quantity_box'];
+
+			$qty_for_item = $orderIndex['quantity_item'];
+			$total_qty = $qty_for_box + $qty_for_item;
+
 			// if user choose order type box, fill quantity with quantity_item field
-			$orderIndex['quantity'] = $orderIndex['quantity_item'];
+			$orderIndex['quantity'] = $total_qty;
 		}
 
 		// save on to order table
-		return \Order::create($orderIndex);
+		$order = \Order::create($orderIndex);
+
+		// insert to order stuff by quantity box
+		for ($i=0; $i < $orderIndex['quantity_box']; $i++)
+		{
+			\OrderStuff::create(array(
+				'order_id' => $order['id'],
+				'type' => 'box'
+			));
+		}
+
+		// insert to order stuff by quantity custom if needed
+		if ($orderIndex['quantity_item'] > 0) {
+			for ($i=0; $i < $orderIndex['quantity_item']; $i++)
+			{ 
+				\OrderStuff::create(array(
+					'order_id' => $order['id'],
+					'type' => 'item'
+				));
+			}
+		}
+
+		return $order;
 	}
 
 

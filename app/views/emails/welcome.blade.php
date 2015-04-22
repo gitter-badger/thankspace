@@ -55,7 +55,7 @@
 			{{ route('order.index') }}
 		</p>
 		@endif
-		<p>jika Anda memiliki pertanyaan, silahkan hubungi kami di 031-xxx-xxxx atau dengan membalas email ini.</p>
+		<p>Jika Anda memiliki pertanyaan, silahkan hubungi kami di 031-xxx-xxxx atau dengan membalas email ini.</p>
 		<p>Terima kasih telah menggunakan layanan ThankSpace.</p>
 		<p>Salam,</p>
 		<p>Happy Customer Service Officer, ThankSpace</p>

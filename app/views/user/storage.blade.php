@@ -37,7 +37,16 @@
 												<img class="img-responsive" src="{{ url('assets/img/box.png') }}">
 											</td>
 											<td>
-												<h2>Order #{{ $storage->id }}</h2>
+												<h2>Order #{{ $storage->code }}</h2>
+												<p>
+													<!-- <a data-toggle="modal" href="{{ route('ajax.modalStorageDetail', $storage->id) }}" data-target="#ajaxModal">
+														Detail
+													</a>
+													&nbsp;&nbsp;&nbsp; -->
+													<a data-toggle="modal" href="{{ route('ajax.modalStorageEdit', $storage->id) }}" data-target="#ajaxModal">
+														Edit Stuff
+													</a>
+												</p>
 												<h4>
 													@if( $storage->type == 'item' )
 														Item : {{ $storage->description }}
@@ -110,4 +119,28 @@
 		</div>
 	</div>
 
+@stop
+
+
+@section('foot')
+	@parent
+
+	<div class="modal fade" id="ajaxModal" tabindex="-1" role="dialog" aria-labelledby="ajaxModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            {{-- Modal Ajax Content --}}
+	        </div>
+	    </div>
+	</div>
+
+
+	<script type="text/javascript">
+
+		// disable ajax modal cache
+		$('#ajaxModal').on('shown.bs.modal', function ()
+		{
+			$(this).removeData('bs.modal');
+		});
+
+	</script>
 @stop

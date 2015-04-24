@@ -37,8 +37,8 @@ class UserController extends BaseController {
 		$orderRepo = app('OrderRepo');
 
 		$data = [
-			'storages' => $orderRepo->getStorageList(['page_name' => 'page_queue']),
-			'tasks'	=> $orderRepo->getDriverSchedule(),
+			'storages'	=> $orderRepo->getStorageList([ 'page_name' => 'page_queue' ]),
+			'tasks'		=> $orderRepo->getDeliverySchedule([ 'page_name' => 'page_task' ]),
 		];
 
 		return View::make('driver.index', $data);
@@ -147,7 +147,7 @@ class UserController extends BaseController {
 		{
 			return Redirect::back()->with('message', 'success');
 		}
-		return Redirect::back()->with('message', $userRepo->getErrors());
+		return Redirect::back()->with('message', $orderRepo->getErrors());
 	}
 
 
@@ -243,14 +243,25 @@ class UserController extends BaseController {
 		}
 		return $userRepo->getErrors();
 	}
+	
+	
+	public function modalInvoiceDetail($id)
+	{
+		$invoice = app('UserRepo')->getInvoiceDetail($id);
+		$data = [
+			'modal_title'	=> 'Order #'. $invoice['orderPayment']['code'],
+			'invoice'		=> $invoice,
+		];
+		return View::make('modal.invoice_detail', $data);
+	}
 
 
 	public function modalStorageDetail($id)
 	{
 		$storage = app('UserRepo')->getStorageDetail($id);
 		$data = [
-			'modal_title' => 'Order #'. $storage['orderPayment']['code'],
-			'storage' => $storage,
+			'modal_title'	=> 'Order #'. $storage['orderPayment']['code'],
+			'storage'		=> $storage,
 		];
 		return View::make('modal.storage_detail', $data);
 	}
@@ -277,6 +288,62 @@ class UserController extends BaseController {
 			$orderStuff->fill($value)->save();
 		}
 		return Redirect::route('user.dashboard');
+	}
+	
+	
+	public function setDeliveryStored()
+	{
+		if ( !Input::has('order_schedule_id') ) {
+			return Redirect::back()->with([ 'message' => 
+				[
+					'ico'	=> 'meh',
+					'msg'	=> 'No delivery schedule selected',
+					'type'	=> 'error',
+				]
+			]);
+		}
+		
+		$orderRepo = app('OrderRepo');
+		$input = Input::get();
+		if ( $orderRepo->setDeliveryStored($input) )
+		{
+			return Redirect::back()->with([ 'message' => 
+				[
+					'ico'	=> 'smile',
+					'msg'	=> 'Your selected delivery schedule has been set stored',
+					'type'	=> 'success',
+				]
+			]);
+		}
+		return Redirect::back()->with($orderRepo->getErrors());
+	}
+	
+	
+	public function assignDelivery()
+	{
+		if ( !Input::has('order_id') ) {
+			return Redirect::back()->with([ 'message' => 
+				[
+					'ico'	=> 'meh',
+					'msg'	=> 'No order selected',
+					'type'	=> 'error',
+				]
+			]);
+		}
+		
+		$userRepo = app('UserRepo');
+		$input = Input::get();
+		if ( $userRepo->assignDelivery($input) )
+		{
+			return Redirect::back()->with([ 'message' => 
+				[
+					'ico'	=> 'smile',
+					'msg'	=> 'Your selected order has been assigned to delivery',
+					'type'	=> 'success',
+				]
+			]);
+		}
+		return Redirect::back()->with($userRepo->getErrors());
 	}
 
 }

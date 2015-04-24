@@ -73,8 +73,12 @@
 									@else
 									<tr class="danger">
 									@endif
-										<td>#{{ $invoice->order_payment->code }}</td>
-										<td><a href="">{{ $invoice->user->fullname }}</a></td>
+										<td>
+											<a data-toggle="modal" href="{{ route('ajax.modalInvoiceDetail', $invoice->id) }}" data-target="#ajaxModal">
+												#{{ $invoice->order_payment->code }}
+											</a>
+										</td>
+										<td>{{ $invoice->user->fullname }}</td>
 										<td>{{ $invoice->quantity }}</td>
 										<td>{{ $invoice->description ? : '---' }}</td>
 										<td>{{ date('d-m-Y', strtotime($invoice->order_schedule->delivery_date)) }}</td>
@@ -146,4 +150,27 @@
 		</div>
 	</div>
 
+@stop
+
+@section('foot')
+	@parent
+
+	<div class="modal fade" id="ajaxModal" tabindex="-1" role="dialog" aria-labelledby="ajaxModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            {{-- Modal Ajax Content --}}
+	        </div>
+	    </div>
+	</div>
+
+
+	<script type="text/javascript">
+
+		// disable ajax modal cache
+		$('#ajaxModal').on('shown.bs.modal', function ()
+		{
+			$(this).removeData('bs.modal');
+		});
+
+	</script>
 @stop

@@ -21,33 +21,46 @@ function getTotalCustomers() {
 	return DB::table('user')->where('type', 'user')->count();
 }
 
-function getTotalTransactions() {
-	$box	= DB::table('order')
-				->join('order_payment', function($join)
+function getTotalTransactions( $id = NULL ) {
+	
+	$opr = ( $id ? '<=' : '=' );
+	
+	$box = DB::table('order');
+	
+	if ( $id ) {
+		$box = $box->where('order.id', $id);
+	}
+	
+	$box = $box->join('order_payment', function($join) use ($opr)
 				{
 					$join->on('order.id', '=', 'order_payment.order_id')
-						->where('order_payment.status', '=', 2);
+						->where('order_payment.status', $opr, 2);
 				})
 				->join('order_stuff', function($join)
 				{
 					$join->on('order.id', '=', 'order_stuff.order_id')
 						->where('order_stuff.type', '=', 'box');
 				})
-				->count() * 50000;
-				
-	$item	= DB::table('order')
-				->join('order_payment', function($join)
+				->count() * Config::get('thankspace.box.price');
+	
+	$item = DB::table('order');
+	
+	if ( $id ) {
+		$item = $item->where('order.id', $id);
+	}
+	
+	$item = $item->join('order_payment', function($join) use ($opr)
 				{
 					$join->on('order.id', '=', 'order_payment.order_id')
-						->where('order_payment.status', '=', 2);
+						->where('order_payment.status', $opr, 2);
 				})
 				->join('order_stuff', function($join)
 				{
 					$join->on('order.id', '=', 'order_stuff.order_id')
 						->where('order_stuff.type', '=', 'item');
 				})
-				->count() * 150000;
-				
+				->count() * Config::get('thankspace.item.price');
+	
 	return number_format($box + $item, 0, '', '.');
 }
 

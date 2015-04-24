@@ -245,4 +245,14 @@ $(function() {
 		$('.invoice-form-list').attr('action', $('.konfirmRoute').val());
 		$('.invoice-form-list').submit();
 	});
+	
+	$(document).on('click', '.setStored', function(e){
+		e.preventDefault();
+		$('.delivery-form-list').submit();
+	});
+	
+	$(document).on('click', '.assignDelivery', function(e){
+		e.preventDefault();
+		$('.schedule-form-list').submit();
+	});
 });

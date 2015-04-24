@@ -19,6 +19,8 @@ Route::group(['before' => 'auth'], function() {
 	Route::get('/edit-member/{num}', [ 'as' => 'user.member_edit', 'uses' => 'UserController@memberEdit' ]);
 	Route::put('/edit-member/{num}', [ 'as' => 'user.member_edit.put', 'uses' => 'UserController@memberEditPut' ]);
 	Route::get('/delete-member/{num}', [ 'as' => 'user.member_delete', 'uses' => 'UserController@memberDelete' ]);
+	Route::post('/set-stored', [ 'as' => 'user.delivery.stored', 'uses' => 'UserController@setDeliveryStored' ]);
+	Route::post('/assign-delivery', [ 'as' => 'user.assign_delivery', 'uses' => 'UserController@assignDelivery' ]);
 	// Route::get('/storage', [ 'as' => 'user.storage', 'uses' => 'UserController@storage' ]);
 	Route::get('/invoice', [ 'as' => 'user.invoice', 'uses' => 'UserController@invoice' ]);
 	Route::get('/setting', [ 'as' => 'user.setting', 'uses' => 'UserController@setting' ]);
@@ -58,6 +60,8 @@ Route::put('/storage/{id}/update', ['as' => 'user.storageUpdate', 'uses' => 'Use
 /* End user */
 
 Route::group(['prefix' => 'ajax', 'before' => ''], function() {
+	Route::get('/invoice/{id}', ['as' => 'ajax.modalInvoiceDetail', 'uses' => 'UserController@modalInvoiceDetail']);
+	
 	Route::get('/storage/{id}', ['as' => 'ajax.modalStorageDetail', 'uses' => 'UserController@modalStorageDetail']);
 	Route::get('/storage/{id}/edit', ['as' => 'ajax.modalStorageEdit', 'uses' => 'UserController@modalStorageEdit']);
 });

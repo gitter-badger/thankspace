@@ -41,7 +41,7 @@ class OrderRepo extends BaseRepo
 			{
 				\Paginator::setPageName($option['page_name']);
 			}
-			$order = $order->with('User', 'DriverSchedule')->orderBy('order.created_at', 'desc');
+			$order = $order->with('User', 'DeliverySchedule')->orderBy('order.created_at', 'desc');
 		}
 
 		/**
@@ -52,7 +52,7 @@ class OrderRepo extends BaseRepo
 			$order = $order->with('User');
 		}
 		
-		$order = $order->where('order.status', 1)->paginate(1);
+		$order = $order->where('order.status', 1)->paginate(20);
 		
 		if ( $order ) {
 			return $order;
@@ -62,13 +62,18 @@ class OrderRepo extends BaseRepo
 	}
 
 
-	public function getDriverSchedule()
+	public function getDeliverySchedule(array $option = array())
 	{
-		$order = \DriverSchedule::with('order.user')
-			->join('order_payment', 'order_payment.order_id', '=', 'driver_schedule.order_id')
-			->join('order_schedule', 'order_schedule.order_id', '=', 'driver_schedule.order_id')
-			->select('driver_schedule.*', 'order_schedule.*', 'order_payment.code')
-			->get();
+		if (!empty($option['page_name']))
+		{
+			\Paginator::setPageName($option['page_name']);
+		}
+			
+		$order = \DeliverySchedule::with('order.user', 'order.orderSchedule')
+			->join('order_payment', 'order_payment.order_id', '=', 'delivery_schedule.order_id')
+			->join('order_schedule', 'order_schedule.order_id', '=', 'delivery_schedule.order_id')
+			->select('delivery_schedule.*', 'order_schedule.*', 'order_payment.code')
+			->paginate(20);
 
 		return $order;
 	}
@@ -267,6 +272,31 @@ class OrderRepo extends BaseRepo
 				$message->to($to['email'], $to['fullname'])
 						->subject('[ThankSpace] Pembayaran invoice #'.$to['code'].' sudah kami terima');
 			});
+		}
+	}
+	
+	
+	/**
+	 * For order schedule set stored for driver
+	 * 
+	 * @param  array  $input
+	 * @return mix \Illuminate\Database\Eloquent\Model|false
+	 */
+	public function setDeliveryStored(array $input = array())
+	{
+		$confirm = \OrderSchedule::whereIn('id', $input['order_schedule_id'])->update([ 'status' => 1 ]);
+		if ( $confirm )
+		{	
+			return $confirm;
+		} else {
+			$this->setErrors([ 'message' => 
+				[
+					'ico'	=> 'meh',
+					'msg'	=> 'No delivery schedule selected',
+					'type'	=> 'error',
+				]
+			]);
+			return false;
 		}
 	}
 }

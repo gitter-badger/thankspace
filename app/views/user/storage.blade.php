@@ -54,7 +54,7 @@
 														{{--*/ $i = 1 /*--}}
 														@foreach( $storage->order_stuff as $stuff )
 														@if( $stuff->description )
-														Box {{ $i }} : {{ $stuff->description }}<br>
+														{{ ucfirst($stuff->type) }} {{ $i }} : {{ $stuff->description }}<br>
 														{{--*/ $i++ /*--}}
 														@endif
 														@endforeach

@@ -130,6 +130,18 @@ class UserRepo extends BaseRepo
 		$this->setErrors([ '<i class="fa fa-meh-o fa-4"></i> Maaf, kombinasi email dan password Anda salah.' ]);
 		return false;
 	}
+	
+	
+	/**
+	 * Get invoice detail
+	 * 
+	 * @param  integer $id
+	 * @return \Illuminate\Database\Eloquent\Model
+	 */
+	public function getInvoiceDetail($id)
+	{
+		return \Order::with('orderPayment', 'orderSchedule', 'orderStuff', 'user')->find($id);
+	}
 
 
 	/**
@@ -187,5 +199,37 @@ class UserRepo extends BaseRepo
 			$message->to($to['email'], $to['fullname'])
 					->subject('[ThankSpace] Selamat datang di ThankSpace');
 		});
+	}
+	
+	
+	/**
+	 * For assign schedule  for driver
+	 * 
+	 * @param  array  $input
+	 * @return mix \Illuminate\Database\Eloquent\Model|false
+	 */
+	public function assignDelivery(array $input = array())
+	{
+		if ( isset($input['order_id']) )
+		{
+			$order = $input['order_id'];
+			for ($i = 0; $i < count($order); $i++)
+			{
+				\DeliverySchedule::create([
+					'order_id'	=> $order[$i],
+					'user_id'	=> \Auth::user()->id
+				]);
+			}
+			return true;
+		} else {
+			$this->setErrors([ 'message' => 
+				[
+					'ico'	=> 'meh',
+					'msg'	=> 'No order selected',
+					'type'	=> 'error',
+				]
+			]);
+			return false;
+		}
 	}
 }

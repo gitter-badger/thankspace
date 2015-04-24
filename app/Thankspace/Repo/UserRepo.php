@@ -132,6 +132,30 @@ class UserRepo extends BaseRepo
 	}
 
 
+	/**
+	 * Get order detail
+	 * 
+	 * @param  integer $id
+	 * @return \Illuminate\Database\Eloquent\Model
+	 */
+	public function getStorageDetail($id)
+	{
+		return \Order::with('orderPayment', 'orderSchedule', 'orderStuff')->find($id);
+	}
+
+
+	/**
+	 * Get order stuff
+	 * 
+	 * @param  integer $id
+	 * @return \Illuminate\Database\Eloquent\Model
+	 */
+	public function getStorageStuff($order_id)
+	{
+		return \OrderStuff::where('order_id', $order_id)->get();
+	}
+
+
 	protected function _handleLogin($id)
 	{
 		if (\Auth::loginUsingId($id))

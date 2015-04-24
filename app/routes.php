@@ -54,4 +54,10 @@ Route::get('/signout', [ 'as' => 'user.signout', 'uses' => 'UserController@signo
 Route::post('/signin', [ 'as' => 'user.signin', 'uses' => 'UserController@signin' ]);
 Route::post('/signup', [ 'as' => 'user.signup', 'uses' => 'UserController@signup' ]);
 Route::post('/forgot-password', [ 'as' => 'user.forgot_password', 'uses' => 'UserController@index' ]);
+Route::put('/storage/{id}/update', ['as' => 'user.storageUpdate', 'uses' => 'UserController@storageUpdate']);
 /* End user */
+
+Route::group(['prefix' => 'ajax', 'before' => ''], function() {
+	Route::get('/storage/{id}', ['as' => 'ajax.modalStorageDetail', 'uses' => 'UserController@modalStorageDetail']);
+	Route::get('/storage/{id}/edit', ['as' => 'ajax.modalStorageEdit', 'uses' => 'UserController@modalStorageEdit']);
+});

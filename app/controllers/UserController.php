@@ -244,4 +244,39 @@ class UserController extends BaseController {
 		return $userRepo->getErrors();
 	}
 
+
+	public function modalStorageDetail($id)
+	{
+		$storage = app('UserRepo')->getStorageDetail($id);
+		$data = [
+			'modal_title' => 'Order #'. $storage['orderPayment']['code'],
+			'storage' => $storage,
+		];
+		return View::make('modal.storage_detail', $data);
+	}
+
+
+	public function modalStorageEdit($id)
+	{
+		$storage = app('UserRepo')->getStorageDetail($id);
+		$data = [
+			'modal_title' => 'Order #'. $storage['orderPayment']['code'] . ' - Stuffs',
+			'storage' => $storage,
+			'stuffs' => $storage['orderStuff'],
+		];
+		return View::make('modal.storage_edit', $data);
+	}
+
+
+	public function storageUpdate()
+	{
+		$stuff = Input::get('stuff');
+		foreach ($stuff as $key => $value)
+		{
+			$orderStuff = \OrderStuff::find($value['id']);
+			$orderStuff->fill($value)->save();
+		}
+		return Redirect::route('user.dashboard');
+	}
+
 }

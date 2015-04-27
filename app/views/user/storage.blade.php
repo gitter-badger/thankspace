@@ -39,10 +39,10 @@
 											<td>
 												<h2>Order #{{ $storage->code }}</h2>
 												<p>
-													<!-- <a data-toggle="modal" href="{{ route('ajax.modalStorageDetail', $storage->id) }}" data-target="#ajaxModal">
+													<a data-toggle="modal" href="{{ route('ajax.modalStorageDetail', $storage->id) }}" data-target="#ajaxModal">
 														Detail
 													</a>
-													&nbsp;&nbsp;&nbsp; -->
+													&nbsp;&nbsp;
 													<a data-toggle="modal" href="{{ route('ajax.modalStorageEdit', $storage->id) }}" data-target="#ajaxModal">
 														Edit Stuff
 													</a>

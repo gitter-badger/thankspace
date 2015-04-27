@@ -11,9 +11,11 @@
 				<div class="panel panel-default">
 					<div class="panel-body">
 
-						@if( Session::has('errors'))
+						@if( Session::has('messages'))
 							<div class="alert alert-danger">
-								{{ Session::get('errors') }}
+								@foreach(Session::get('messages') as $m)
+									<div>{{ $m }}</div>
+								@endforeach
 							</div>
 						@endif
 

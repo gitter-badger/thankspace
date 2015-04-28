@@ -14,6 +14,7 @@ class CreateReturnScheduleTable extends Migration {
 	{
 		Schema::create('return_schedule', function(Blueprint $table) {
 			$table->increments('id');
+			$table->integer('user_id');
 			$table->integer('order_id');
 			$table->date('return_date');
 			$table->string('return_time', 40);

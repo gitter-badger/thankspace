@@ -59,7 +59,7 @@ Route::post('/forgot-password', [ 'as' => 'user.forgot_password', 'uses' => 'Use
 Route::put('/storage/{id}/update', ['as' => 'user.storageUpdate', 'uses' => 'UserController@storageUpdate']);
 /* End user */
 
-Route::group(['prefix' => 'ajax', 'before' => ''], function() {
+Route::group(['prefix' => 'ajax', 'before' => 'ajax'], function() {
 	Route::get('/invoice/{id}', ['as' => 'ajax.modalInvoiceDetail', 'uses' => 'UserController@modalInvoiceDetail']);
 	
 	Route::get('/storage/{id}', ['as' => 'ajax.modalStorageDetail', 'uses' => 'UserController@modalStorageDetail']);

@@ -353,10 +353,13 @@ class UserController extends BaseController {
 	 */
 	public function forgotPassword()
 	{
+		if (! Input::get('email'))
+			return 'Specify your email first !';
+
 		// check for existance email
 		if ( ! \User::where('email', Input::get('email'))->first() )
 		{
-			return App::abort(403, 'This email "'. Input::get('email') .'" is not exist on our database');
+			return 'This email "'. Input::get('email') .'" is not exist on our database';
 		}
 
 		// create token
@@ -376,7 +379,10 @@ class UserController extends BaseController {
 					->subject('[ThankSpace] Reset Password');
 		});
 
-		return Redirect::route('page.index');
+		return [
+			'status' => 200,
+			'message' => 'Link perubahan password sudah kami kirim ke email anda. silahkan periksa email anda dan ikuti instruksi di dalamnya.'
+		];
 	}
 
 

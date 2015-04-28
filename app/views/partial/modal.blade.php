@@ -138,7 +138,11 @@
 				<h4 class="modal-title" id="myModalLabel">Lupa Password</h4><hr>
 			</div>
 			<div class="modal-body">
-				{{ Form::open(['method' => 'POST', 'url' => route('user.forgotPassword'), 'class' => 'form-horizontal']) }}
+				{{ Form::open(['method' => 'POST', 'url' => route('user.forgotPassword'), 'class' => 'form-horizontal reset-password-form']) }}
+					<p>
+						<span class="error-alert reset-password-err"></span>
+						<span class="success-alert reset-password-scs"></span>
+					</p>
 					<fieldset>
 						<p>Apakah password Anda kombinasi huruf dan angka? nama sebuah kota? <br>atau nama mantan?<br><br>Jangan khawatir, tim peramal kami akan masuk ke ingatan terdalam Anda dan mengembalikan Password ke email yang terdaftar di Thankspace</p>
 						<div class="form-group">
@@ -151,7 +155,7 @@
 						</div>
 						<div class="form-group">
 							<div class="col-lg-12">
-								<button type="submit" class="btn btn-primary">
+								<button type="submit" class="btn btn-primary btn-reset-password">
 									<i class="fa fa-refresh"></i>
 									Abracadabra
 								</button>

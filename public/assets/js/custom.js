@@ -174,6 +174,33 @@ $(function() {
 			},
 		});
 	});
+
+	
+	$(document).on('submit', '.reset-password-form', function(e){
+		e.preventDefault();
+		$('.btn-reset-password').button('loading...');
+		$.ajax({
+			url: $(this).attr('action'),
+			type: "POST",
+			data: $(this).serialize(),
+			success: function (result) {
+
+				if ( result['status'] == 200 ) {
+					$('.reset-password-scs').html(result['message']);
+					$('.reset-password-err').html('');
+					$('.btn-reset-password').button();
+				}
+				else
+				{
+					$('.reset-password-err').html(result);
+					$('.reset-password-scs').html('');
+					$('.btn-reset-password').button('reset');
+				}
+
+			},
+		});
+	});
+
 	
 	$(document).on('submit', '.update-profile-form', function(e){
 		var err = '';

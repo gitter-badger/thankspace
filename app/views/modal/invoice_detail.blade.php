@@ -85,9 +85,19 @@
 	@endif
 	
 	<p>
+		<b>Detail Barang</b>
+	</p>
+	<p>
+		<a data-toggle="modal" href="{{ route('ajax.modalStorageDetail', $invoice->id) }}" data-target="#ajaxModal">
+			Click here to view
+		</a>
+	</p>
+	
+	<p>
 		<b>Total Biaya : </b>Rp {{ getTotalTransactions($invoice->id) }}
 	</p>
 	
+	@if( Auth::user()->type == 'user' )
 	<p>Setelah Anda melakukan pembayaran, silahkan melakukan konfirmasi melalui beberapa cara berikut :</p>
 	<p>
 		<ol>
@@ -101,5 +111,6 @@
 			</li>
 		</ol>
 	</p>
+	@endif
 
 @stop

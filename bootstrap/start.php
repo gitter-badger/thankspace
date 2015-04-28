@@ -28,7 +28,7 @@ $env = $app->detectEnvironment(array(
 
 	'local' => array('WHITERUN', 'antoni-K46CB', 'Human', 'WIN-2RVCJDVAQS2'),
 	
-	'production' => array(''),
+	'production' => array('server1'),
 
 ));
 

@@ -346,4 +346,94 @@ class UserController extends BaseController {
 		return Redirect::back()->with($userRepo->getErrors());
 	}
 
+
+	/**
+	 * Handle send email for user forget password
+	 * @return Redirect
+	 */
+	public function forgotPassword()
+	{
+		if (! Input::get('email'))
+			return 'Specify your email first !';
+
+		// check for existance email
+		if ( ! \User::where('email', Input::get('email'))->first() )
+		{
+			return 'This email "'. Input::get('email') .'" is not exist on our database';
+		}
+
+		// create token
+		$time = time() + 60*60; // the expiration time
+		$token = Crypt::encrypt($time);
+		$email = Crypt::encrypt(Input::get('email'));
+		$data = [
+			'token' => $token,
+			'email' => $email,
+			'url_reset_password' => route('user.forgotPasswordForm') .'?token='. $token .'&e='. $email,
+		];
+		
+		// send user email with link and token to reset password form
+		\Mail::send('emails.reset-password', $data, function($message)
+		{
+			$message->to(Input::get('email'), 'Halo pelanggan setia thankspace')
+					->subject('[ThankSpace] Reset Password');
+		});
+
+		return [
+			'status' => 200,
+			'message' => 'Link perubahan password sudah kami kirim ke email anda. silahkan periksa email anda dan ikuti instruksi di dalamnya.'
+		];
+	}
+
+
+	public function forgotPasswordForm()
+	{
+		$token = Input::get('token');
+		$email = Input::get('e');
+		if ( ! $token OR ! $email) {
+			return App::abort(404);
+		}
+
+		$token = Crypt::decrypt($token);
+		$email = Crypt::decrypt($email);
+		if ( time() >= $token  ) {
+			return App::abort(403, 'Your token has been expired');
+		}
+
+		$data = [
+			'title' => 'Reset Password',
+			'email' => $email,
+		];
+
+		return View::make('user.reset_password', $data);
+	}
+
+
+	public function forgotPasswordProcess()
+	{
+		$input = Input::get();
+		$v = Validator::make($input, array(
+			'email' => 'required|email',
+			'password' => 'required|confirmed|min:6',
+		));
+		if ($v->fails()) {
+			return Redirect::back()->withInput()->withMessages($v->messages()->all());
+		}
+
+		$user = \User::where('email', $input['email'])->first();
+		$user->password = $input['password'];
+		if ($user->save())
+		{
+			\Mail::send('emails.reset-password-success', array('user' => $user), function($message) use($user)
+			{
+				$message->to($user['email'], 'Halo pelanggan setia thankspace')
+						->subject('[ThankSpace] Selamat Reset Password Berhasil');
+			});
+
+			Auth::loginUsingId($user['id']);
+			return Redirect::route('user.dashboard');
+		}
+
+	}
+
 }

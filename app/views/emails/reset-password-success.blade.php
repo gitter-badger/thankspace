@@ -11,7 +11,7 @@
 		</style>
 	</head>
 	<body>
-		<p>Hi {{-- $fullname --}},</p>
+		<p>Hi {{ $user['fullname'] }},</p>
 		<p>Anda telah berhasil mengubah password Anda</p>
 		<p>
 			Jika Anda menerima email ini tetapi tidak mengubah password Anda, silahkan menghubungi kami di.<br>

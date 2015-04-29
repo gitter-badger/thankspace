@@ -62,11 +62,13 @@
 											@endif
 										</td>
 										<td>
+											@if( $t->order->order_schedule->status != 1 )
 											<div class="checkbox">
 												<label>
 													{{ Form::checkbox('order_schedule_id[]', $t->id, null, []) }}
 												</label>
 											</div>
+											@endif
 										</td>
 									</tr>
 								@endforeach

@@ -29,8 +29,12 @@
 		</p>
 		<p>
 			<label>Pickup Date : </label>
-			{{ $storage['order_schedule']['pickup_date']->format('l, jS F Y') }}
-			at {{ $storage['order_schedule']['pickup_time'] }}
+			@if( ! empty($storage['order_schedule']['pickup_date']) )
+				{{ $storage['order_schedule']['pickup_date']->format('l, jS F Y') }}
+				at {{ $storage['order_schedule']['pickup_time'] }}
+			@else
+				immediately
+			@endif
 		</p>
 	</div>
 

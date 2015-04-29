@@ -47,19 +47,25 @@
 														Edit Stuff
 													</a>
 												</p>
-												<h4>
-													@if( $storage->type == 'item' )
-														Item : {{ $storage->description }}
-													@else
-														{{--*/ $i = 1 /*--}}
-														@foreach( $storage->order_stuff as $stuff )
-														@if( $stuff->description )
-														{{ ucfirst($stuff->type) }} {{ $i }} : {{ $stuff->description }}<br>
-														{{--*/ $i++ /*--}}
-														@endif
-														@endforeach
+
+												@if( $storage->type == 'item' )
+													Item : {{ $storage->description }}
+												@else
+													<?php $i = 1 ?>
+													@foreach( $storage->order_stuff->take(5) as $stuff )
+													@if( $stuff->description )
+														<h4 style="margin: 3px 0px;">
+															{{ ucfirst($stuff->type) }} {{ $i++ }} : {{ $stuff->description }}
+														</h4>
 													@endif
-												</h4>
+													@endforeach
+
+													@if(count($storage->order_stuff) > 5)
+														<a data-toggle="modal" href="{{ route('ajax.modalStorageDetail', $storage->id) }}" data-target="#ajaxModal">
+															see more...
+														</a>
+													@endif
+												@endif
 											</td>
 											<td>
 												@if( $storage->order_schedule->status == 1 )

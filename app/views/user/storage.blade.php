@@ -75,9 +75,13 @@
 												@endif
 											</td>
 											<td>
-												<div class="checkbox">
+												{{-- <div class="checkbox">
 													<label><input name="order_id[]" type="checkbox" value="{{ $storage->id }}" /></label>
-												</div>
+												</div> --}}
+												<a data-toggle="modal" href="{{ route('ajax.modalStorageReturn', $storage->id) }}" data-target="#ajaxModal">
+													<i class="fa fa-sign-out"></i>
+													Kembalikan
+												</a>
 											</td>
 										</tr>
 									@endforeach

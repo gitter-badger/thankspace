@@ -89,7 +89,7 @@ class OrderRepo extends BaseRepo
 	{
 		$user_id = ( isset($option['user_id']) ? $option['user_id'] : \Auth::user()->id );
 		
-		$order = \Order::with('OrderSchedule', 'OrderPayment', 'ReturnSchedule');
+		$order = \Order::with('OrderSchedule', 'OrderPayment', 'ReturnSchedule')->orderBy('id', 'desc');
 		
 		if( \Auth::user()->type == 'user' )
 		{

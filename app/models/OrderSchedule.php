@@ -12,6 +12,11 @@ class OrderSchedule extends \Eloquent {
 		return ['delivery_date', 'pickup_date'];
 	}
 
+	public function getDateFormat()
+	{
+		return 'Y-m-d';
+	}
+
 	
 	public function order()
 	{

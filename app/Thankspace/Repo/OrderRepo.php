@@ -89,7 +89,7 @@ class OrderRepo extends BaseRepo
 	{
 		$user_id = ( isset($option['user_id']) ? $option['user_id'] : \Auth::user()->id );
 		
-		$order = \Order::with('OrderSchedule', 'OrderPayment', 'ReturnSchedule');
+		$order = \Order::with('OrderSchedule', 'OrderPayment', 'ReturnSchedule')->orderBy('id', 'desc');
 		
 		if( \Auth::user()->type == 'user' )
 		{
@@ -298,5 +298,28 @@ class OrderRepo extends BaseRepo
 			]);
 			return false;
 		}
+	}
+
+
+	/**
+	 * Add return schedule to boxes
+	 */
+	public function createReturnSchedule(array $input)
+	{
+		$input['user_id'] = ( ! empty($input['user_id']) ? $input['user_id'] : \Auth::user()->id );
+		$validation = \ReturnSchedule::validate($input, ['stuffs' => 'required|array']);
+		if ( $validation->fails() )
+		{
+			$this->setErrors($validation->messages()->all());
+			return false;
+		}
+
+		$returnSchedule = \ReturnSchedule::create($input);
+
+		if ($returnSchedule)
+		{
+			\OrderStuff::whereIn('id', $input['stuffs'])->update(['return_schedule_id' => $returnSchedule->id]);
+		}
+		return true;
 	}
 }

@@ -279,6 +279,39 @@ class UserController extends BaseController {
 	}
 
 
+	/**
+	 * show modal form return schedule
+	 * @return View
+	 */
+	public function modalStorageReturn($id)
+	{
+		$storage = app('UserRepo')->getStorageDetail($id);
+		$data = [
+			'storage' => $storage,
+			'modal_title' => 'Return Schedule Order : #'. $storage['order_payment']['code'],
+		];
+		return View::make('modal.storage_return', $data);
+	}
+
+
+	/**
+	 * Processing return schedule
+	 * @return redirect
+	 */
+	public function storageReturnProcess($id)
+	{
+		$input = Input::all();
+		$input['status'] = 0;
+		// return $input;
+		$orderRepo = app('OrderRepo');
+		if ( $orderRepo->createReturnSchedule($input))
+		{
+			return Redirect::route('user.dashboard');
+		}
+		return $orderRepo->getErrors();
+	}
+
+
 	public function storageUpdate()
 	{
 		$stuff = Input::get('stuff');

@@ -16,6 +16,7 @@ class CreateOrderStuffTable extends Migration {
 			$table->increments('id');
 			$table->string('type', 10)->default('box');
 			$table->integer('order_id');
+			$table->integer('return_schedule_id');
 			$table->text('description')->nullable();
 			$table->enum('status', [ 1, 2 ])->default(1);
 			$table->timestamps();

@@ -2,7 +2,7 @@
 
 class ReturnSchedule extends \Eloquent {
 
-	protected $fillable = [];
+	protected $fillable = ['order_id', 'return_date', 'return_time', 'status'];
 	
 	protected $table = 'return_schedule';
 	
@@ -10,13 +10,18 @@ class ReturnSchedule extends \Eloquent {
 	{
 		return $this->belongsTo('Order');
 	}
+
+	public function stuffs()
+	{
+		return $this->hasMany('OrderStuff');
+	}
 	
 	public static function validate($input, $customrules = '')
 	{
 		$rules = [
 			'order_id'		=>	'exists:order,id',
 			'return_date'	=>	'required|date_format:Y-m-d',
-			'return_time'	=>	'required|min:5|max:40',
+			'return_time'	=>	'required',
 			'status'		=>	'between:0,1',
 		];
 		

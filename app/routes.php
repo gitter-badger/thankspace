@@ -57,6 +57,8 @@ Route::post('/signin', [ 'as' => 'user.signin', 'uses' => 'UserController@signin
 Route::post('/signup', [ 'as' => 'user.signup', 'uses' => 'UserController@signup' ]);
 Route::put('/storage/{id}/update', ['as' => 'user.storageUpdate', 'uses' => 'UserController@storageUpdate']);
 
+Route::post('/storage/{id}/return-process', ['as' => 'user.storageReturnProcess', 'uses' => 'UserController@storageReturnProcess']);
+
 Route::post('/forgot-password', [ 'as' => 'user.forgotPassword', 'uses' => 'UserController@forgotPassword' ]);
 Route::get('/forgot-password-form', [ 'as' => 'user.forgotPasswordForm', 'uses' => 'UserController@forgotPasswordForm' ]);
 Route::put('/forgot-password-process', [ 'as' => 'user.forgotPasswordProcess', 'uses' => 'UserController@forgotPasswordProcess' ]);
@@ -66,5 +68,6 @@ Route::group(['prefix' => 'ajax', 'before' => 'ajax'], function() {
 	Route::get('/invoice/{id}', ['as' => 'ajax.modalInvoiceDetail', 'uses' => 'UserController@modalInvoiceDetail']);
 	
 	Route::get('/storage/{id}', ['as' => 'ajax.modalStorageDetail', 'uses' => 'UserController@modalStorageDetail']);
+	Route::get('/storage/{id}/return', ['as' => 'ajax.modalStorageReturn', 'uses' => 'UserController@modalStorageReturn']);
 	Route::get('/storage/{id}/edit', ['as' => 'ajax.modalStorageEdit', 'uses' => 'UserController@modalStorageEdit']);
 });

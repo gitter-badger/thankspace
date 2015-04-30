@@ -9,15 +9,17 @@
 		$no = 1;
 		?>
 		@foreach($stuffs as $stuff)
-			<label>
-				{{ $stuff['type'] .' '. $no++ }}
-			</label>
-			{{ Form::hidden("stuff[$i][id]", $stuff['id']) }}
-			{{ Form::hidden("stuff[$i][type]", $stuff['type']) }}
-			{{ Form::textarea("stuff[$i][description]", $stuff['description'], ['class' => 'form-control', 'rows' => '3', 'placeholder' => 'Write your stuff in this '. $stuff['type']]) }}
-			<?php 
-			$i++;
-			?>
+			@if(! $stuff['return_schedule_id'])
+				<label>
+					{{ $stuff['type'] .' '. $no++ }}
+				</label>
+				{{ Form::hidden("stuff[$i][id]", $stuff['id']) }}
+				{{ Form::hidden("stuff[$i][type]", $stuff['type']) }}
+				{{ Form::textarea("stuff[$i][description]", $stuff['description'], ['class' => 'form-control', 'rows' => '3', 'placeholder' => 'Write your stuff in this '. $stuff['type']]) }}
+				<?php 
+				$i++;
+				?>
+			@endif
 		@endforeach
 
 		<hr>

@@ -45,4 +45,10 @@ class BaseController extends Controller {
 		return $result;
 	}
 
+
+	public function getOfficeHours()
+	{
+		return Config::get('thankspace.office_hours');
+	}
+
 }

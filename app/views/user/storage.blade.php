@@ -53,7 +53,7 @@
 												@else
 													<?php $i = 1 ?>
 													@foreach( $storage->order_stuff->take(5) as $stuff )
-													@if( $stuff->description )
+													@if( $stuff->description AND ! $stuff['return_schedule_id'])
 														<h4 style="margin: 3px 0px;">
 															{{ ucfirst($stuff->type) }} {{ $i++ }} : {{ $stuff->description }}
 														</h4>
@@ -87,23 +87,8 @@
 									@endforeach
 										
 									<tr>
-										<td class="text-left" colspan="2">
+										<td class="text-left" colspan="4">
 											{{ $storages->links() }}
-										</td>
-										<td class="text-right" colspan="2" style="vertical-align:middle;">
-											<div class="btn-group">
-												<button type="button" class="btn btn-primary">Action</button>
-												<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-													<span class="caret"></span>
-													<span class="sr-only">Toggle Dropdown</span>
-												</button>
-												<ul class="dropdown-menu pull-right">
-													<li>
-														<a href="javascript:void(0)">Kirimkan kembali barang Saya</a>
-													</li>
-													{{--<li><a href="javascript:void(0)">Ikutkan Storage War (soon)</a></li>--}}
-												</ul>
-											</div>
 										</td>
 									</tr>
 								</tbody>

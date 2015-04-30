@@ -9,13 +9,13 @@
 		<div class="form-group">
 			<label class="col-md-3">Return Date</label>
 			<div class="col-md-9">
-				{{ Form::text('return_date', null, ['class' => 'form-control']) }}
+				<input type="date" name="return_date" value="" class="form-control">
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-md-3">Return Time</label>
 			<div class="col-md-9">
-				{{ Form::text('return_time', null, ['class' => 'form-control']) }}
+				{{ Form::select('return_time', Config::get('thankspace.office_hours'), null, ['class' => 'form-control']) }}
 			</div>
 		</div>
 
@@ -25,20 +25,20 @@
 
 		<?php $i = 1 ?>
 		@foreach( $storage->order_stuff as $stuff )
-		@if( $stuff->description )
-			<div class="row">
-				<div class="col-md-10">
-					<div class="well">
-						<h4 style="margin: 3px 0px;">
-							{{ ucfirst($stuff->type) }} {{ $i++ }} : {{ $stuff->description }}
-						</h4>
+			@if( $stuff->description AND ! $stuff['return_schedule_id'])
+				<div class="row">
+					<div class="col-md-10">
+						<div class="well">
+							<h4 style="margin: 3px 0px;">
+								{{ ucfirst($stuff->type) }} {{ $i++ }} : {{ $stuff->description }}
+							</h4>
+						</div>
+					</div>
+					<div class="col-md-2">
+						{{ Form::checkbox('stuffs[]', $stuff['id'], false, ['class' => 'form-control']) }}
 					</div>
 				</div>
-				<div class="col-md-2">
-					{{ Form::checkbox('stuffs[]', $stuff['id'], false, ['class' => 'form-control']) }}
-				</div>
-			</div>
-		@endif
+			@endif
 		@endforeach
 
 		<div class="form-group text-center">

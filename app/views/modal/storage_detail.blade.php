@@ -42,21 +42,17 @@
 
 	<div>
 		<h4>Your Box</h4>
-		@foreach(array_chunk($storage['order_stuff']->toArray(), 3) as $row)
-			<div class="row">
-				@foreach($row as $stuff)
-					<div class="col-md-4">
-						<div class="well">
-							<label>
-								{{ $stuff['type'] .' '. $no++ }}
-							</label>
-							<p>
-								{{ $stuff['description'] }}
-							</p>
-						</div>
-					</div>
-				@endforeach
-			</div>
+		@foreach($storage['order_stuff'] as $stuff)
+			@if(! $stuff['return_schedule_id'])
+				<div class="well" style="display: inline-block; margin: 6px; width: 30%;">
+					<label>
+						{{ $stuff['type'] .' '. $no++ }}
+					</label>
+					<p>
+						{{ $stuff['description'] }}
+					</p>
+				</div>
+			@endif
 		@endforeach
 	</div>
 

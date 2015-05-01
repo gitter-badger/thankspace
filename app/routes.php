@@ -21,6 +21,8 @@ Route::group(['before' => 'auth'], function() {
 	Route::get('/delete-member/{num}', [ 'as' => 'user.member_delete', 'uses' => 'UserController@memberDelete' ]);
 	Route::post('/set-stored', [ 'as' => 'user.delivery.stored', 'uses' => 'UserController@setDeliveryStored' ]);
 	Route::post('/assign-delivery', [ 'as' => 'user.assign_delivery', 'uses' => 'UserController@assignDelivery' ]);
+	Route::post('/set-returned', [ 'as' => 'user.return.set', 'uses' => 'UserController@setReturnedSet' ]);
+	Route::post('/assign-return', [ 'as' => 'user.assign_return', 'uses' => 'UserController@assignReturn' ]);
 	// Route::get('/storage', [ 'as' => 'user.storage', 'uses' => 'UserController@storage' ]);
 	Route::get('/invoice', [ 'as' => 'user.invoice', 'uses' => 'UserController@invoice' ]);
 	Route::get('/setting', [ 'as' => 'user.setting', 'uses' => 'UserController@setting' ]);

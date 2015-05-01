@@ -2,7 +2,8 @@
 
 @section('body')
 	
-	{{ Form::open(['method' => 'POST', 'url' => route('user.storageReturnProcess', $storage['id']), 'class' => 'form-horizontal']) }}
+	{{ Form::open(['method' => 'POST', 'url' => route('user.storageReturnProcess', $storage['id']), 'class' => 'form-horizontal return-process-form']) }}
+		<span class="error-alert return-process-err text-center"></span>
 		{{ Form::hidden('order_id', $storage['id']) }}
 
 		<h4>1. Schedule</h4>
@@ -42,7 +43,7 @@
 		@endforeach
 
 		<div class="form-group text-center">
-			<button type="submit" class="btn btn-primary">
+			<button type="submit" class="btn btn-primary return-process" data-loading-text="Processing...">
 				Kembalikan
 			</button>
 		</div>

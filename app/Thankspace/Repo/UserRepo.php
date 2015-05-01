@@ -203,7 +203,7 @@ class UserRepo extends BaseRepo
 	
 	
 	/**
-	 * For assign schedule  for driver
+	 * For assign delivery schedule for driver
 	 * 
 	 * @param  array  $input
 	 * @return mix \Illuminate\Database\Eloquent\Model|false
@@ -226,6 +226,30 @@ class UserRepo extends BaseRepo
 				[
 					'ico'	=> 'meh',
 					'msg'	=> 'No order selected',
+					'type'	=> 'error',
+				]
+			]);
+			return false;
+		}
+	}
+	
+	/**
+	 * For assign return schedule for driver
+	 * 
+	 * @param  array  $input
+	 * @return mix \Illuminate\Database\Eloquent\Model|false
+	 */
+	public function assignReturn(array $input = array())
+	{
+		if ( isset($input['return_schedule_id']) )
+		{
+			\ReturnSchedule::whereIn('id', $input['return_schedule_id'])->update([ 'user_id' => \Auth::user()->id ]);
+			return true;
+		} else {
+			$this->setErrors([ 'message' => 
+				[
+					'ico'	=> 'meh',
+					'msg'	=> 'No schedule selected',
 					'type'	=> 'error',
 				]
 			]);

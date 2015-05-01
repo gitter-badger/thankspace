@@ -282,4 +282,36 @@ $(function() {
 		e.preventDefault();
 		$('.schedule-form-list').submit();
 	});
+	
+	$(document).on('submit', '.return-process-form', function(e){
+		var err = '';
+		e.preventDefault();
+		$('.return-process').button('loading');
+		$.ajax({
+			url: $(this).attr('action'),
+			type: "POST",
+			data: $(this).serialize(),
+			success: function (result) {
+				if ( result['status'] == 200 ) {
+					window.location.href = result['redirect'];
+				} else {
+					for (var i = 0; i < result.length; i++ ) {
+						err += '<i class="fa fa-meh-o fa-4"></i> '+result[i]+'<br>';
+					};
+					$('.return-process-err').html(err);
+					$('.return-process').button('reset');
+				}
+			},
+		});
+	});
+	
+	$(document).on('click', '.assignReturn', function(e){
+		e.preventDefault();
+		$('.schedule-form-list').submit();
+	});
+	
+	$(document).on('click', '.setReturned', function(e){
+		e.preventDefault();
+		$('.return-form-list').submit();
+	});
 });

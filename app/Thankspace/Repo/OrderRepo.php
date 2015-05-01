@@ -310,7 +310,7 @@ class OrderRepo extends BaseRepo
 		$validation = \ReturnSchedule::validate($input, ['stuffs' => 'required|array']);
 		if ( $validation->fails() )
 		{
-			$this->setErrors($validation->messages()->all());
+			$this->setErrors($validation->messages()->all(':message'));
 			return false;
 		}
 
@@ -321,5 +321,71 @@ class OrderRepo extends BaseRepo
 			\OrderStuff::whereIn('id', $input['stuffs'])->update(['return_schedule_id' => $returnSchedule->id]);
 		}
 		return true;
+	}
+	
+	
+	/**
+	 * Get available & driver return schedule
+	 * 
+	 * @param  array  $option
+	 * @return \Illuminate\Database\Eloquent\Model
+	 */
+	public function getReturnSchedule(array $option = array())
+	{
+		$schedule = \ReturnSchedule::with('order.orderPayment', 'order.user', 'stuffs');
+	
+		if ( isset($option['user_id']) )
+		{
+			$schedule = $schedule->where('user_id', $option['user_id']);
+		} else {
+			$schedule = $schedule->where('user_id', '=', '');
+		}
+		
+		$schedule = $schedule->paginate(20);
+		
+		if ( $schedule ) {
+			return $schedule;
+		} else {
+			return false;
+		}
+	}
+	
+	
+	/**
+	 * For return schedule set returned for driver
+	 * 
+	 * @param  array  $input
+	 * @return mix \Illuminate\Database\Eloquent\Model|false
+	 */
+	public function setReturnedSet(array $input = array())
+	{
+		$confirm = \ReturnSchedule::whereIn('id', $input['return_schedule_id'])->update([ 'status' => 1 ]);
+		if ( $confirm )
+		{
+			$schedule = $input['return_schedule_id'];
+			for ($i = 0; $i < count($schedule); $i++)
+			{
+				\OrderStuff::where('return_schedule_id', $schedule[$i])->update([ 'status' => 2 ]);
+				
+				$return = \ReturnSchedule::where('id', $schedule[$i])->first();
+				$stuff_count = \OrderStuff::where('order_id', $return->order_id)->where('status', 1)->count();
+				
+				if ( $stuff_count == 0)
+				{
+					\Order::where('id', $return->order_id)->update([ 'is_returned' => 1 ]);
+				}
+			}
+			
+			return $confirm;
+		} else {
+			$this->setErrors([ 'message' => 
+				[
+					'ico'	=> 'meh',
+					'msg'	=> 'No return schedule selected',
+					'type'	=> 'error',
+				]
+			]);
+			return false;
+		}
 	}
 }

@@ -15,7 +15,10 @@
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-body">
-					
+						<p>
+							<a href="{{ route('user.dashboard') }}?sch=return">Jadwal Pengembalian Barang</a>
+						</p>
+						
 						@if ( Session::has('message') )
 						<p class="text-center">
 							<span class="{{ Session::get('message.type') }}-alert">

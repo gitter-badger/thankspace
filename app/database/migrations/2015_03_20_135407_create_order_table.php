@@ -16,6 +16,7 @@ class CreateOrderTable extends Migration {
 			$table->increments('id');
 			$table->integer('user_id');
 			$table->integer('quantity');
+			$table->enum('is_returned', [ 0, 1 ])->default(0);
 			$table->enum('status', [ 0, 1 ])->default(1);
 			$table->timestamps();
 		});

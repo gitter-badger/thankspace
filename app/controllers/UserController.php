@@ -35,13 +35,23 @@ class UserController extends BaseController {
 	public function _driverDashboard()
 	{
 		$orderRepo = app('OrderRepo');
+		
+		if ( Input::has('sch') && Input::get('sch') == 'return' )
+		{
+			$data = [
+				'schedules'	=> $orderRepo->getReturnSchedule([ 'page_name' => 'page_schedule' ]),
+				'tasks'		=> $orderRepo->getReturnSchedule([ 'page_name' => 'page_task', 'user_id' => Auth::user()->id ]),
+			];
+			
+			return View::make('driver.index_return', $data);
+		} else {
+			$data = [
+				'storages'	=> $orderRepo->getStorageList([ 'page_name' => 'page_queue' ]),
+				'tasks'		=> $orderRepo->getDeliverySchedule([ 'page_name' => 'page_task' ]),
+			];
 
-		$data = [
-			'storages'	=> $orderRepo->getStorageList([ 'page_name' => 'page_queue' ]),
-			'tasks'		=> $orderRepo->getDeliverySchedule([ 'page_name' => 'page_task' ]),
-		];
-
-		return View::make('driver.index', $data);
+			return View::make('driver.index', $data);
+		}
 	}
 
 
@@ -300,13 +310,16 @@ class UserController extends BaseController {
 	 */
 	public function storageReturnProcess($id)
 	{
-		$input = Input::all();
+		if ( ! Request::ajax()) {
+			return App::abort(404);
+		}
+		
+		$input = Input::get();
 		$input['status'] = 0;
-		// return $input;
 		$orderRepo = app('OrderRepo');
 		if ( $orderRepo->createReturnSchedule($input))
 		{
-			return Redirect::route('user.dashboard');
+			return [ 'status' => 200, 'redirect' => route('user.dashboard') ];
 		}
 		return $orderRepo->getErrors();
 	}
@@ -467,6 +480,62 @@ class UserController extends BaseController {
 			return Redirect::route('user.dashboard');
 		}
 
+	}
+	
+	
+	public function setReturnedSet()
+	{
+		if ( !Input::has('return_schedule_id') ) {
+			return Redirect::back()->with([ 'message' => 
+				[
+					'ico'	=> 'meh',
+					'msg'	=> 'No return schedule selected',
+					'type'	=> 'error',
+				]
+			]);
+		}
+		
+		$orderRepo = app('OrderRepo');
+		$input = Input::get();
+		if ( $orderRepo->setReturnedSet($input) )
+		{
+			return Redirect::back()->with([ 'message' => 
+				[
+					'ico'	=> 'smile',
+					'msg'	=> 'Your selected return schedule has been set returned',
+					'type'	=> 'success',
+				]
+			]);
+		}
+		return Redirect::back()->with($orderRepo->getErrors());
+	}
+	
+	
+	public function assignReturn()
+	{
+		if ( !Input::has('return_schedule_id') ) {
+			return Redirect::back()->with([ 'message' => 
+				[
+					'ico'	=> 'meh',
+					'msg'	=> 'No schedule selected',
+					'type'	=> 'error',
+				]
+			]);
+		}
+		
+		$userRepo = app('UserRepo');
+		$input = Input::get();
+		if ( $userRepo->assignReturn($input) )
+		{
+			return Redirect::back()->with([ 'message' => 
+				[
+					'ico'	=> 'smile',
+					'msg'	=> 'Your selected schedule has been assigned to you',
+					'type'	=> 'success',
+				]
+			]);
+		}
+		return Redirect::back()->with($userRepo->getErrors());
 	}
 
 }

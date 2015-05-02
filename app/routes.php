@@ -72,4 +72,7 @@ Route::group(['prefix' => 'ajax', 'before' => 'ajax'], function() {
 	Route::get('/storage/{id}', ['as' => 'ajax.modalStorageDetail', 'uses' => 'UserController@modalStorageDetail']);
 	Route::get('/storage/{id}/return', ['as' => 'ajax.modalStorageReturn', 'uses' => 'UserController@modalStorageReturn']);
 	Route::get('/storage/{id}/edit', ['as' => 'ajax.modalStorageEdit', 'uses' => 'UserController@modalStorageEdit']);
+	
+	Route::get('/returned-stuff/{id}', [ 'as' => 'ajax.modalReturnedStuff', 'uses' => 'UserController@modalReturnedStuff' ]);
+
 });

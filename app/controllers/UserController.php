@@ -537,5 +537,16 @@ class UserController extends BaseController {
 		}
 		return Redirect::back()->with($userRepo->getErrors());
 	}
+	
+	
+	public function modalReturnedStuff($id)
+	{
+		$stuff = app('OrderRepo')->getReturnedStuffs($id);
+		$data = [
+			'modal_title'	=> 'Returned Stuffs from Order #'. $stuff['order']['order_payment']['code'],
+			'stuffs'		=> $stuff,
+		];
+		return View::make('modal.returned_stuff', $data);
+	}
 
 }

@@ -52,7 +52,7 @@ class OrderRepo extends BaseRepo
 			$order = $order->with('User');
 		}
 		
-		$order = $order->where('order.status', 1)->paginate(20);
+		$order = $order->where('is_returned', 0)->where('order.status', 1)->paginate(20);
 		
 		if ( $order ) {
 			return $order;
@@ -387,5 +387,17 @@ class OrderRepo extends BaseRepo
 			]);
 			return false;
 		}
+	}
+	
+	
+	/**
+	 * Get returned stuff from return schedule
+	 * 
+	 * @param  array  $option
+	 * @return \Illuminate\Database\Eloquent\Model
+	 */
+	public function getReturnedStuffs($id)
+	{
+		return \ReturnSchedule::with('order.orderPayment', 'order.user', 'stuffs')->find($id);
 	}
 }

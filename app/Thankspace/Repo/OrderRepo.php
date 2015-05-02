@@ -167,6 +167,8 @@ class OrderRepo extends BaseRepo
 		$this->_save_orderSchedule($order->id, $orderData['schedule']);
 
 		$this->_save_orderPayment($order->id, $orderData['payment']);
+		
+		$this->_sendInvoiceDetailMail($order->id);
 	}
 
 
@@ -245,6 +247,29 @@ class OrderRepo extends BaseRepo
 		$input['order_id'] = $order_id;
 		$input['code'] = null;
 		return \OrderPayment::create($input);
+	}
+	
+	
+	protected function _sendInvoiceDetailMail(array $id = array())
+	{
+		$order = \Order::with('orderPayment', 'orderSchedule', 'orderStuff', 'user')->find($id);
+		
+		$name	= \Auth::user()->fullname;
+		$email	= \Auth::user()->email;
+		
+		$to = [
+			'code'		=>	$order['order_payment']['code'],
+			'email'		=>	$email,
+			'name'		=>	$name,
+		];
+		
+		$data = [ 'order'	=>	$order ];
+		
+		\Mail::send('emails.order-invoice-detail', $data, function($message) use ($to)
+		{
+			$message->to($to['email'], $to['name'])
+					->subject('[ThankSpace] Detail Order #'.$to['code'].' di ThankSpace');
+		});
 	}
 	
 	

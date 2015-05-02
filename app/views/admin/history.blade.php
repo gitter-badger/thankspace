@@ -64,7 +64,7 @@
 								</thead>
 								<tbody>
 									@foreach( $invoices as $invoice )
-									@if( $invoice->return_schedule && $invoice->return_schedule->status == 1 )
+									@if( $invoice->is_returned == 1 )
 									<tr>
 									@elseif( $invoice->order_schedule->status == 1 )
 									<tr class="success">
@@ -97,7 +97,7 @@
 											@endif
 										</td>
 										<td>
-											@if( $invoice->return_schedule && $invoice->return_schedule->status == 1 )
+											@if( $invoice->is_returned == 1 )
 											<span class="label label-default">Returned</span>
 											@elseif( $invoice->order_schedule->status == 1 )
 											<span class="label label-success">Stored</span>

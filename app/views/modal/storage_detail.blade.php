@@ -2,9 +2,7 @@
 
 @section('body')
 	
-	<?php 
-	$no = 1;
-	?>
+	<?php $no = 1; ?>
 
 	<div>
 		<h4>Order Payment</h4>
@@ -17,9 +15,9 @@
 			{{ $storage['order_payment']['message'] }}
 		</p>
 	</div>
-
+	
 	<hr>
-
+	
 	<div>
 		<h4>Order Schedule</h4>
 		<p>
@@ -37,13 +35,13 @@
 			@endif
 		</p>
 	</div>
-
+	
 	<hr>
-
+	
 	<div>
 		<h4>Your Box</h4>
 		@foreach($storage['order_stuff'] as $stuff)
-			@if(! $stuff['return_schedule_id'])
+			@if(! $stuff['return_schedule_id'] || $storage['is_returned'] == 1)
 				<div class="well" style="display: inline-block; margin: 6px; width: 30%;">
 					<label>
 						{{ $stuff['type'] .' '. $no++ }}

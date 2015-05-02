@@ -42,10 +42,12 @@
 													<a data-toggle="modal" href="{{ route('ajax.modalStorageDetail', $storage->id) }}" data-target="#ajaxModal">
 														Detail
 													</a>
+													@if( $storage->order_schedule->status != 1 )
 													&nbsp;&nbsp;
 													<a data-toggle="modal" href="{{ route('ajax.modalStorageEdit', $storage->id) }}" data-target="#ajaxModal">
 														Edit Stuff
 													</a>
+													@endif
 												</p>
 
 												@if( $storage->type == 'item' )
@@ -53,7 +55,7 @@
 												@else
 													<?php $i = 1 ?>
 													@foreach( $storage->order_stuff->take(5) as $stuff )
-													@if( $stuff->description AND ! $stuff['return_schedule_id'])
+													@if( $stuff->description AND ! $stuff['return_schedule_id'] || $storage->is_returned == 1 )
 														<h4 style="margin: 3px 0px;">
 															{{ ucfirst($stuff->type) }} {{ $i++ }} : {{ $stuff->description }}
 														</h4>
@@ -68,20 +70,21 @@
 												@endif
 											</td>
 											<td>
-												@if( $storage->order_schedule->status == 1 )
+												@if( $storage->is_returned == 1 )
+												<span class="label label-default">Returned</span>
+												@elseif( $storage->order_schedule->status == 1 )
 												<span class="label label-success">Stored</span>
 												@else
 												<span class="label label-warning">On Delivery</span>
 												@endif
 											</td>
 											<td>
-												{{-- <div class="checkbox">
-													<label><input name="order_id[]" type="checkbox" value="{{ $storage->id }}" /></label>
-												</div> --}}
+												@if( $storage->order_schedule->status == 1 && $storage->is_returned == 0 )
 												<a data-toggle="modal" href="{{ route('ajax.modalStorageReturn', $storage->id) }}" data-target="#ajaxModal">
 													<i class="fa fa-sign-out"></i>
 													Kembalikan
 												</a>
+												@endif
 											</td>
 										</tr>
 									@endforeach

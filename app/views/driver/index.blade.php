@@ -37,7 +37,7 @@
 										<th>Customer</th>
 										<th>Phone</th>
 										<th>Alamat</th>
-										<th>Box Yang dibutuhkan</th>
+										<th>Box</th>
 										<th>Jadwal Box Diantar</th>
 										<th>Jadwal Box Diambil</th>
 										<th>Status</th>
@@ -53,9 +53,19 @@
 										<td>{{ $t->order->user->phone }}</td>
 										<td>{{ $t->order->user->address }}</td>
 										<td>{{ $t->order->quantity }}</td>
-										<td>{{ $t->order->order_schedule->delivery_date }}</td>
 										<td>
-											{{ $t->order->order_schedule->pickup_date or $t->order->order_schedule->delivery_date }}
+											{{ date('l, d m Y', strtotime($t['order']['order_schedule']['delivery_date'])) }}
+											<br>
+											{{ $t['order']['order_schedule']['delivery_time'] }}
+										</td>
+										<td>
+											@if( !$t['order']['order_schedule']['pickup_date'] )
+											At that time
+											@else
+											{{ date('l, d m Y', strtotime($t['order']['order_schedule']['delivery_date'])) }}
+											<br>
+											{{ $t['order']['order_schedule']['pickup_time'] }}
+											@endif
 										</td>
 										<td>
 											@if( $t->order->order_schedule->status == 1 )
@@ -115,7 +125,7 @@
 										<th>Customer</th>
 										<th>Phone</th>
 										<th>Alamat</th>
-										<th>Box Yang dibutuhkan</th>
+										<th>Box</th>
 										<th>Jadwal Box Diantar</th>
 										<th>Jadwal Box Diambil</th>
 										<th>Aksi</th>
@@ -132,9 +142,19 @@
 											<td>{{ $s['user']['phone'] }}</td>
 											<td>{{ $s['user']['address'] }}</td>
 											<td>{{ $s['quantity'] }}</td>
-											<td>{{ $s['order_schedule']['delivery_date'] }}</td>
 											<td>
-												{{ $s['order_schedule']['pickup_date'] or $s['order_schedule']['delivery_date'] }}
+												{{ date('l, d m Y', strtotime($s['order_schedule']['delivery_date'])) }}
+												<br>
+												{{ $s['order_schedule']['delivery_time'] }}
+											</td>
+											<td>
+												@if( !$s['order_schedule']['pickup_date'] )
+												At that time
+												@else
+												{{ date('l, d m Y', strtotime($s['order_schedule']['delivery_date'])) }}
+												<br>
+												{{ $s['order_schedule']['pickup_time'] }}
+												@endif
 											</td>
 											<td>
 												<div class="checkbox">

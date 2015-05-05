@@ -19,6 +19,12 @@
 				{{ Form::select('return_time', Config::get('thankspace.office_hours'), null, ['class' => 'form-control']) }}
 			</div>
 		</div>
+		<div class="form-group">
+			<label class="col-md-3">Other Address</label>
+			<div class="col-md-9">
+				<input type="text" name="other_address" value="" class="form-control" placeholder="This is optional">
+			</div>
+		</div>
 
 		<hr />
 

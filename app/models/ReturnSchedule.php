@@ -2,7 +2,7 @@
 
 class ReturnSchedule extends \Eloquent {
 
-	protected $fillable = ['order_id', 'return_date', 'return_time', 'status'];
+	protected $fillable = ['order_id', 'return_date', 'return_time', 'other_address', 'status'];
 	
 	protected $table = 'return_schedule';
 	
@@ -22,6 +22,7 @@ class ReturnSchedule extends \Eloquent {
 			'order_id'		=>	'exists:order,id',
 			'return_date'	=>	'required|date_format:Y-m-d',
 			'return_time'	=>	'required',
+			'other_address'	=>	'sometimes|required|min:10',
 			'status'		=>	'between:0,1',
 		];
 		

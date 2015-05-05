@@ -44,8 +44,7 @@
 								<thead>
 									<tr>
 										<th>Invoice Code</th>
-										<th>Box Yang dibutuhkan</th>
-										<th>Barang Lain</th>
+										<th>Box</th>
 										<th>Jadwal Box Diantar</th>
 										<th>Jadwal Box Diambil</th>
 										<th>Biaya</th>
@@ -68,22 +67,21 @@
 											</a>
 										</td>
 										<td>{{ $invoice->quantity }}</td>
-										<td>{{ $invoice->description ? : 'Tidak Ada' }}</td>
-										<td>{{ $invoice->order_schedule->delivery_date }}</td>
+										<td>
+											{{ date('l, d m Y', strtotime($invoice->order_schedule->delivery_date)) }}
+											<br>
+											{{ $invoice->order_schedule->delivery_time }}
+										</td>
 										<td>
 											@if( !$invoice->order_schedule->pickup_date )
-											{{ $invoice->order_schedule->delivery_date }}
+											At that time
 											@else
-											{{ $invoice->order_schedule->pickup_date }}
+											{{ date('l, d m Y', strtotime($invoice->order_schedule->delivery_date)) }}
+											<br>
+											{{ $invoice->order_schedule->pickup_time }}
 											@endif
 										</td>
-										<td>
-											@if( $invoice->type == 'item' )
-											{{ $invoice->quantity * 150000 }}
-											@else
-											{{ $invoice->quantity * 50000 }}
-											@endif
-										</td>
+										<td>{{ getTotalTransactions($invoice->id) }}</td>
 										<td>
 											@if( $invoice->order_payment->status == 2 )
 											<span class="label label-success">Completed Payment</span>
@@ -103,7 +101,7 @@
 									</tr>
 									@endforeach
 									<tr>
-										<td class="text-left" colspan="5">
+										<td class="text-left" colspan="4">
 											{{ $invoices->links() }}
 										</td>
 										<td class="text-right" colspan="3" style="vertical-align:middle;">

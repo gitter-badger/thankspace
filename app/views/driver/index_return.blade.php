@@ -16,7 +16,7 @@
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<p>
-							<a href="{{ route('user.dashboard') }}?sch=return">Jadwal Pengembalian Barang</a>
+							<a href="{{ route('user.dashboard') }}">Jadwal Pengiriman Box</a>
 						</p>
 						
 						@if ( Session::has('message') )
@@ -50,14 +50,16 @@
 										<td>#{{ $t['order']['order_payment']['code'] }}</td>
 										<td>{{ $t['order']['user']['fullname'] }}</td>
 										<td>{{ $t['order']['user']['phone'] }}</td>
-										<td>{{ $t['order']['user']['address'] }}</td>
+										<td>
+											{{ $t['other_address'] or $t['order']['user']['address'] }}
+										</td>
 										<td>
 											<a data-toggle="modal" href="{{ route('ajax.modalReturnedStuff', $t['id']) }}" data-target="#ajaxModal">
 												Click to view
 											</a>
 										</td>
 										<td>
-											{{ $t['return_date'] }}
+											{{ date('l, d m Y', strtotime($t['return_date'])) }}
 											<br>
 											{{ $t['return_time'] }}
 										</td>
@@ -133,14 +135,16 @@
 											<td>#{{ $s['order']['order_payment']['code'] }}</td>
 											<td>{{ $s['order']['user']['fullname'] }}</td>
 											<td>{{ $s['order']['user']['phone'] }}</td>
-											<td>{{ $s['order']['user']['address'] }}</td>
+											<td>
+												{{ $s['other_address'] or $s['order']['user']['address'] }}
+											</td>
 											<td>
 												<a data-toggle="modal" href="{{ route('ajax.modalReturnedStuff', $s['id']) }}" data-target="#ajaxModal">
 													Click to view
 												</a>
 											</td>
 											<td>
-												{{ $s['return_date'] }}
+												{{ date('l, d m Y', strtotime($s['return_date'])) }}
 												<br>
 												{{ $s['return_time'] }}
 											</td>

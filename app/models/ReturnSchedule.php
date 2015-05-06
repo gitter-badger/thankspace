@@ -6,6 +6,16 @@ class ReturnSchedule extends \Eloquent {
 	
 	protected $table = 'return_schedule';
 	
+	public function getDates()
+	{
+		return [ 'return_date' ];
+	}
+
+	public function getDateFormat()
+	{
+		return 'Y-m-d';
+	}
+	
 	public function order()
 	{
 		return $this->belongsTo('Order');

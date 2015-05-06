@@ -143,7 +143,7 @@
 											<td>{{ $s['user']['address'] }}</td>
 											<td>{{ $s['quantity'] }}</td>
 											<td>
-												{{ date('l, d m Y', strtotime($s['order_schedule']['delivery_date'])) }}
+												{{ $s['order_schedule']['delivery_date']->format('l, d m Y') }}
 												<br>
 												{{ $s['order_schedule']['delivery_time'] }}
 											</td>
@@ -151,7 +151,7 @@
 												@if( !$s['order_schedule']['pickup_date'] )
 												At that time
 												@else
-												{{ date('l, d m Y', strtotime($s['order_schedule']['delivery_date'])) }}
+												{{ $s['order_schedule']['delivery_date']->format('l, d m Y') }}
 												<br>
 												{{ $s['order_schedule']['pickup_time'] }}
 												@endif

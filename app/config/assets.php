@@ -19,7 +19,7 @@ return array(
 	],
 	
 	'script' => [
-		'/assets/js/jquery-1.10.1.min.js',
+		'/assets/js/jquery-1.11.1.min.js',
 		'/assets/js/bootstrap.min.js',
 		'/assets/js/sweet-alert.js',
 		'/assets/js/intro.js',

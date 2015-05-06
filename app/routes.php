@@ -68,11 +68,11 @@ Route::put('/forgot-password-process', [ 'as' => 'user.forgotPasswordProcess', '
 
 Route::group(['prefix' => 'ajax', 'before' => 'ajax'], function() {
 	Route::get('/invoice/{id}', ['as' => 'ajax.modalInvoiceDetail', 'uses' => 'UserController@modalInvoiceDetail']);
-	
 	Route::get('/storage/{id}', ['as' => 'ajax.modalStorageDetail', 'uses' => 'UserController@modalStorageDetail']);
 	Route::get('/storage/{id}/return', ['as' => 'ajax.modalStorageReturn', 'uses' => 'UserController@modalStorageReturn']);
 	Route::get('/storage/{id}/edit', ['as' => 'ajax.modalStorageEdit', 'uses' => 'UserController@modalStorageEdit']);
-	
 	Route::get('/returned-stuff/{id}', [ 'as' => 'ajax.modalReturnedStuff', 'uses' => 'UserController@modalReturnedStuff' ]);
-
+	
+	Route::get('/order-gallery/{id}', [ 'as' => 'ajax.modalOrderGallery', 'uses' => 'OrderController@modalOrderGallery' ]);
+	Route::post('/order-gallery', [ 'as' => 'ajax.modalOrderGalleryPost', 'uses' => 'OrderController@modalOrderGalleryPost' ]);
 });

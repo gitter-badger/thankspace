@@ -176,5 +176,15 @@ class OrderController extends BaseController {
 
 		return true;
 	}
+	
+	
+	public function modalOrderGallery($id)
+	{
+		if ( ! Request::ajax()) {
+			return App::abort(404);
+		}
+		
+		return View::make('modal.order_gallery');
+	}
 
 }

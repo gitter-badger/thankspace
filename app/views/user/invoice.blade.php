@@ -54,47 +54,47 @@
 								</thead>
 								<tbody>
 									@foreach( $invoices as $invoice )
-									@if( $invoice->order_payment->status == 2 )
+									@if( $invoice['order_payment']['status'] == 2 )
 									<tr class="success">
-									@elseif( $invoice->order_payment->status == 1 )
+									@elseif( $invoice['order_payment']['status'] == 1 )
 									<tr class="info">
 									@else
 									<tr class="danger">
 									@endif
 										<td>
-											<a data-toggle="modal" href="{{ route('ajax.modalInvoiceDetail', $invoice->id) }}" data-target="#ajaxModal">
-												#{{ $invoice->order_payment->code }}
+											<a data-toggle="modal" href="{{ route('ajax.modalInvoiceDetail', $invoice['id']) }}" data-target="#ajaxModal">
+												#{{ $invoice['order_payment']['code'] }}
 											</a>
 										</td>
-										<td>{{ $invoice->quantity }}</td>
+										<td>{{ $invoice['quantity'] }}</td>
 										<td>
-											{{ date('l, d m Y', strtotime($invoice->order_schedule->delivery_date)) }}
+											{{ $invoice['order_schedule']['delivery_date']->format('l, d m Y') }}
 											<br>
-											{{ $invoice->order_schedule->delivery_time }}
+											{{ $invoice['order_schedule']['delivery_time'] }}
 										</td>
 										<td>
-											@if( !$invoice->order_schedule->pickup_date )
+											@if( !$invoice['order_schedule']['pickup_date'] )
 											At that time
 											@else
-											{{ date('l, d m Y', strtotime($invoice->order_schedule->delivery_date)) }}
+											{{ $invoice['order_schedule']['delivery_date']->format('l, d m Y') }}
 											<br>
-											{{ $invoice->order_schedule->pickup_time }}
+											{{ $invoice['order_schedule']['pickup_time'] }}
 											@endif
 										</td>
-										<td>{{ getTotalTransactions($invoice->id) }}</td>
+										<td>Rp {{ getTotalTransactions($invoice['id']) }}</td>
 										<td>
-											@if( $invoice->order_payment->status == 2 )
+											@if( $invoice['order_payment']['status'] == 2 )
 											<span class="label label-success">Completed Payment</span>
-											@elseif( $invoice->order_payment->status == 1 )
+											@elseif( $invoice['order_payment']['status'] == 1 )
 											<span class="label label-info">Waiting Confirmation</span>
 											@else
 											<span class="label label-danger">Pending Payment</span>
 											@endif
 										</td>
 										<td>
-											@if( $invoice->order_payment->status == 0 )
+											@if( $invoice['order_payment']['status'] == 0 )
 											<div class="checkbox">
-												<label><input name="order_payment_id[]" type="checkbox" value="{{ $invoice->order_payment->id }}" /></label>
+												<label><input name="order_payment_id[]" type="checkbox" value="{{ $invoice['order_payment']['id'] }}" /></label>
 											</div>
 											@endif
 										</td>

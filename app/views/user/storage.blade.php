@@ -48,6 +48,10 @@
 														Edit Stuff
 													</a>
 													@endif
+													&nbsp;&nbsp;
+													<a data-toggle="modal" href="{{ route('ajax.modalOrderGallery', $storage->id) }}" data-target="#ajaxModal2">
+														Gallery
+													</a>
 												</p>
 
 												@if( $storage->type == 'item' )
@@ -130,12 +134,25 @@
 	        </div>
 	    </div>
 	</div>
+	
+	<div class="modal fade" id="ajaxModal2" tabindex="-1" role="dialog" aria-labelledby="ajaxModalLabel2" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				{{-- Modal Ajax 2 Content --}}
+			</div>
+		</div>
+	</div>
 
 
 	<script type="text/javascript">
 
 		// disable ajax modal cache
 		$('#ajaxModal').on('shown.bs.modal', function ()
+		{
+			$(this).removeData('bs.modal');
+		});
+		
+		$('#ajaxModal2').on('shown.bs.modal', function ()
 		{
 			$(this).removeData('bs.modal');
 		});

@@ -61,7 +61,18 @@ function getTotalTransactions( $id = NULL ) {
 				})
 				->count() * Config::get('thankspace.item.price');
 	
-	return number_format($box + $item, 0, '', '.');
+	$total = $box + $item;
+	
+	if ( $id ) {
+		$code = DB::table('order_payment')->where('order_id', $id)->first();
+		$ucode = str_replace('TH', '', $code->code);
+	} else {
+		$ucode = 0;
+	}
+	
+	$grand_total = $total + $ucode;
+	
+	return number_format($grand_total, 0, '', '.');
 }
 
 

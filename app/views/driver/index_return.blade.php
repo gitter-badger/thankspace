@@ -59,7 +59,7 @@
 											</a>
 										</td>
 										<td>
-											{{ date('l, d m Y', strtotime($t['return_date'])) }}
+											{{ $t['return_date']->format('l, d m Y') }}
 											<br>
 											{{ $t['return_time'] }}
 										</td>
@@ -144,7 +144,7 @@
 												</a>
 											</td>
 											<td>
-												{{ date('l, d m Y', strtotime($s['return_date'])) }}
+												{{ $s['return_date']->format('l, d m Y') }}
 												<br>
 												{{ $s['return_time'] }}
 											</td>

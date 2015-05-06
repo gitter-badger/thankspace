@@ -16,6 +16,11 @@ class Order extends \Eloquent {
 		return $this->hasOne('DeliverySchedule', 'order_id');
 	}
 	
+	public function orderGallery()
+	{
+		return $this->hasMany('OrderGallery', 'order_id');
+	}
+	
 	public function orderPayment()
 	{
 		return $this->hasOne('OrderPayment', 'order_id');

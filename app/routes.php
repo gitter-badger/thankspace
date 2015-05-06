@@ -74,5 +74,7 @@ Route::group(['prefix' => 'ajax', 'before' => 'ajax'], function() {
 	Route::get('/returned-stuff/{id}', [ 'as' => 'ajax.modalReturnedStuff', 'uses' => 'UserController@modalReturnedStuff' ]);
 	
 	Route::get('/order-gallery/{id}', [ 'as' => 'ajax.modalOrderGallery', 'uses' => 'OrderController@modalOrderGallery' ]);
-	Route::post('/order-gallery', [ 'as' => 'ajax.modalOrderGalleryPost', 'uses' => 'OrderController@modalOrderGalleryPost' ]);
 });
+
+Route::post('image', [ 'as' => 'img.post', 'uses' => 'ImagesController@store' ]);
+Route::get('image/{id}', [ 'as' => 'img.show', 'uses' => 'ImagesController@show' ]);

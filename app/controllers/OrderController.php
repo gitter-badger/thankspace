@@ -184,7 +184,9 @@ class OrderController extends BaseController {
 			return App::abort(404);
 		}
 		
-		return View::make('modal.order_gallery');
+		$data = [ 'id' => $id ];
+		
+		return View::make('modal.order_gallery', $data);
 	}
 
 }

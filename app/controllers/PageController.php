@@ -16,10 +16,29 @@ class PageController extends BaseController {
 		return View::make('page.about_us', $data);
 	}
 
+	public function storagerules()
+	{
+		$data = [];
+		return View::make('page.storage_rules', $data);
+	}
+
+	public function contactus()
+	{
+		$data = [];
+		return View::make('page.contact_us', $data);
+	}
+
 	public function faq()
 	{
 		$data = [];
 		return View::make('page.faq', $data);
+	}
+
+
+	public function careers()
+	{
+		$data = [];
+		return View::make('page.careers', $data);
 	}
 	
 	public function tos()

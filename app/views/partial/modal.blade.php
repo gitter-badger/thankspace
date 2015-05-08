@@ -144,7 +144,7 @@
 						<span class="success-alert reset-password-scs"></span>
 					</p>
 					<fieldset>
-						<p>Apakah password Anda kombinasi huruf dan angka? nama sebuah kota? <br>atau nama mantan?<br><br>Jangan khawatir, tim peramal kami akan masuk ke ingatan terdalam Anda dan mengembalikan Password ke email yang terdaftar di Thankspace</p>
+						<p>Kami akan mengirimkan email dengan petunjuk lebih lanjut tentang cara untuk mereset password Anda.</p>
 						<div class="form-group">
 							<div class="col-lg-12">
 								<div class="input-group margin-bottom-sm">
@@ -157,7 +157,7 @@
 							<div class="col-lg-12">
 								<button type="submit" class="btn btn-primary btn-reset-password">
 									<i class="fa fa-refresh"></i>
-									Abracadabra
+									Kirim Email
 								</button>
 							</div>
 						</div>

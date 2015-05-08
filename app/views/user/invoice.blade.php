@@ -43,9 +43,8 @@
 							<table class="table table-striped table-hover">
 								<thead>
 									<tr>
-										<th>Invoice Number</th>
-										<th>Box Yang dibutuhkan</th>
-										<th>Barang Lain</th>
+										<th>Invoice Code</th>
+										<th>Box</th>
 										<th>Jadwal Box Diantar</th>
 										<th>Jadwal Box Diambil</th>
 										<th>Biaya</th>
@@ -55,51 +54,54 @@
 								</thead>
 								<tbody>
 									@foreach( $invoices as $invoice )
-									@if( $invoice->order_payment->status == 2 )
+									@if( $invoice['order_payment']['status'] == 2 )
 									<tr class="success">
-									@elseif( $invoice->order_payment->status == 1 )
+									@elseif( $invoice['order_payment']['status'] == 1 )
 									<tr class="info">
 									@else
 									<tr class="danger">
 									@endif
-										<td>{{ $invoice->id }}</td>
-										<td>{{ $invoice->quantity }}</td>
-										<td>{{ $invoice->description ? : 'Tidak Ada' }}</td>
-										<td>{{ $invoice->order_schedule->delivery_date }}</td>
 										<td>
-											@if( !$invoice->order_schedule->pickup_date )
-											{{ $invoice->order_schedule->delivery_date }}
-											@else
-											{{ $invoice->order_schedule->pickup_date }}
-											@endif
+											<a data-toggle="modal" href="{{ route('ajax.modalInvoiceDetail', $invoice['id']) }}" data-target="#ajaxModal">
+												#{{ $invoice['order_payment']['code'] }}
+											</a>
+										</td>
+										<td>{{ $invoice['quantity'] }}</td>
+										<td>
+											{{ $invoice['order_schedule']['delivery_date']->format('l, d m Y') }}
+											<br>
+											{{ $invoice['order_schedule']['delivery_time'] }}
 										</td>
 										<td>
-											@if( $invoice->type == 'item' )
-											{{ $invoice->quantity * 150000 }}
+											@if( !$invoice['order_schedule']['pickup_date'] )
+											At that time
 											@else
-											{{ $invoice->quantity * 50000 }}
+											{{ $invoice['order_schedule']['delivery_date']->format('l, d m Y') }}
+											<br>
+											{{ $invoice['order_schedule']['pickup_time'] }}
 											@endif
 										</td>
+										<td>Rp {{ getTotalTransactions($invoice['id']) }}</td>
 										<td>
-											@if( $invoice->order_payment->status == 2 )
+											@if( $invoice['order_payment']['status'] == 2 )
 											<span class="label label-success">Completed Payment</span>
-											@elseif( $invoice->order_payment->status == 1 )
+											@elseif( $invoice['order_payment']['status'] == 1 )
 											<span class="label label-info">Waiting Confirmation</span>
 											@else
 											<span class="label label-danger">Pending Payment</span>
 											@endif
 										</td>
 										<td>
-											@if( $invoice->order_payment->status == 0 )
+											@if( $invoice['order_payment']['status'] == 0 )
 											<div class="checkbox">
-												<label><input name="order_payment_id[]" type="checkbox" value="{{ $invoice->order_payment->id }}" /></label>
+												<label><input name="order_payment_id[]" type="checkbox" value="{{ $invoice['order_payment']['id'] }}" /></label>
 											</div>
 											@endif
 										</td>
 									</tr>
 									@endforeach
 									<tr>
-										<td class="text-left" colspan="5">
+										<td class="text-left" colspan="4">
 											{{ $invoices->links() }}
 										</td>
 										<td class="text-right" colspan="3" style="vertical-align:middle;">
@@ -140,4 +142,27 @@
 		</div>
 	</div>
 
+@stop
+
+@section('foot')
+	@parent
+
+	<div class="modal fade" id="ajaxModal" tabindex="-1" role="dialog" aria-labelledby="ajaxModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            {{-- Modal Ajax Content --}}
+	        </div>
+	    </div>
+	</div>
+
+
+	<script type="text/javascript">
+
+		// disable ajax modal cache
+		$('#ajaxModal').on('shown.bs.modal', function ()
+		{
+			$(this).removeData('bs.modal');
+		});
+
+	</script>
 @stop

@@ -51,10 +51,9 @@
 							<table class="table table-striped table-hover text-center">
 								<thead>
 									<tr>
-										<th>Order Number</th>
+										<th>Order Code</th>
 										<th>Customer</th>
-										<th>Box Yang dibutuhkan</th>
-										<th>Barang Lain</th>
+										<th>Box</th>
 										<th>Jadwal Box Diantar</th>
 										<th>Jadwal Box Diambil</th>
 										<th>Biaya</th>
@@ -64,59 +63,66 @@
 								</thead>
 								<tbody>
 									@foreach( $invoices as $invoice )
-									@if( $invoice->return_schedule && $invoice->return_schedule->status == 1 )
+									@if( $invoice->is_returned == 1 )
 									<tr>
-									@elseif( $invoice->order_schedule->status == 1 )
+									@elseif( $invoice['order_schedule']['status'] == 1 )
 									<tr class="success">
-									@elseif( $invoice->order_payment->status == 2 )
+									@elseif( $invoice['order_payment']['status'] == 1 )
+									<tr class="warning">
+									@elseif( $invoice['order_payment']['status'] == 2 )
 									<tr class="info">
 									@else
 									<tr class="danger">
 									@endif
-										<td>{{ $invoice->id }}</td>
-										<td><a href="">{{ $invoice->user->fullname }}</a></td>
-										<td>{{ $invoice->quantity }}</td>
-										<td>{{ $invoice->description ? : '---' }}</td>
-										<td>{{ date('d-m-Y', strtotime($invoice->order_schedule->delivery_date)) }}</td>
 										<td>
-											@if( !$invoice->order_schedule->pickup_date )
-											{{ date('d-m-Y', strtotime($invoice->order_schedule->delivery_date)) }}
-											@else
-											{{ date('d-m-Y', strtotime($invoice->order_schedule->pickup_date)) }}
-											@endif
+											<a data-toggle="modal" href="{{ route('ajax.modalInvoiceDetail', $invoice['id']) }}" data-target="#ajaxModal">
+												#{{ $invoice['order_payment']['code'] }}
+											</a>
+										</td>
+										<td>{{ $invoice['user']['fullname'] }}</td>
+										<td>{{ $invoice['quantity'] }}</td>
+										<td>
+											{{ $invoice['order_schedule']['delivery_date']->format('l, d m Y') }}
+											<br>
+											{{ $invoice['order_schedule']['delivery_time'] }}
 										</td>
 										<td>
-											@if( $invoice->type == 'item' )
-											{{ $invoice->quantity * 150000 }}
+											@if( !$invoice['order_schedule']['pickup_date'] )
+											At that time
 											@else
-											{{ $invoice->quantity * 50000 }}
+											{{ $invoice['order_schedule']['delivery_date']->format('l, d m Y') }}
+											<br>
+											{{ $invoice['order_schedule']['pickup_time'] }}
 											@endif
 										</td>
+										<td>Rp {{ getTotalTransactions($invoice['id']) }}</td>
 										<td>
-											@if( $invoice->return_schedule && $invoice->return_schedule->status == 1 )
+											@if( $invoice['is_returned'] == 1 )
 											<span class="label label-default">Returned</span>
-											@elseif( $invoice->order_schedule->status == 1 )
+											@elseif( $invoice['order_schedule']['status'] == 1 )
 											<span class="label label-success">Stored</span>
-											@elseif( $invoice->order_payment->status == 2 )
+											@elseif( $invoice['order_payment']['status'] == 1 )
+											<span class="label label-warning">Waiting Confirmation</span>
+											@elseif( $invoice['order_payment']['status'] == 2 )
 											<span class="label label-info">Completed Payment</span>
 											@else
 											<span class="label label-danger">Pending Payment</span>
 											@endif
 										</td>
 										<td>
-											@if( $invoice->order_payment->status == 1 )
+											@if( $invoice['order_payment']['status'] == 1 )
 											<div class="checkbox">
-												<label><input name="order_payment_id[]" type="checkbox" value="{{ $invoice->order_payment->id }}" /></label>
+												<label><input name="order_payment_id[]" type="checkbox" value="{{ $invoice['order_payment']['id'] }}" /></label>
 											</div>
 											@endif
 										</td>
 									</tr>
 									@endforeach
 									<tr>
-										<td class="text-left" colspan="5">
+										<td class="text-left" colspan="6">
 											{{ $invoices->links() }}
 										</td>
-										<td class="text-right" colspan="4" style="vertical-align:middle;">
+										<td class="text-right" colspan="2" style="vertical-align:middle;">
 											<div class="btn-group">
 												<button type="button" class="btn btn-primary">Action</button>
 												<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -146,4 +152,27 @@
 		</div>
 	</div>
 
+@stop
+
+@section('foot')
+	@parent
+
+	<div class="modal fade" id="ajaxModal" tabindex="-1" role="dialog" aria-labelledby="ajaxModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            {{-- Modal Ajax Content --}}
+	        </div>
+	    </div>
+	</div>
+
+
+	<script type="text/javascript">
+
+		// disable ajax modal cache
+		$('#ajaxModal').on('shown.bs.modal', function ()
+		{
+			$(this).removeData('bs.modal');
+		});
+
+	</script>
 @stop

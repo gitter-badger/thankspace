@@ -1,10 +1,10 @@
 <?php
 
-class DriverSchedule extends \Eloquent {
+class DeliverySchedule extends \Eloquent {
 
-	protected $fillable = [];
+	protected $fillable = [ 'order_id' ];
 	
-	protected $table = 'driver_schedule';
+	protected $table = 'delivery_schedule';
 	
 	public function user()
 	{

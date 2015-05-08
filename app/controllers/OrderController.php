@@ -7,6 +7,7 @@ class OrderController extends BaseController {
 		$data = [
 			'title' => 'Order index',
 			'qty_box_list' => app('OrderRepo')->quantity_box_dropdown(),
+			'qty_item_list' => app('OrderRepo')->quantity_item_dropdown(),
 			'form_data' => Session::get('order.index'),
 		];
 		return View::make('order.index', $data);
@@ -49,6 +50,9 @@ class OrderController extends BaseController {
 	public function completed()
 	{
 		$orderData = Session::get('order');
+		if ( empty($orderData)) {
+			return Redirect::route('order.index');
+		}
 
 		app('OrderRepo')->save($orderData);
 
@@ -80,6 +84,25 @@ class OrderController extends BaseController {
 			break;
 			
 			case 'schedule':
+
+				$delivery_date = Input::get('delivery_year') .'-'. Input::get('delivery_month') .'-'. Input::get('delivery_day');
+				if (! $this->_validateDateShouldLater($delivery_date)) {
+					return Redirect::back()
+						->withMessages(['Delivery date should greater than today'])
+						->withInput();
+				}
+
+				// if pickup immediaetly we pass this validation
+				if (Input::get('type') != 'immediately')
+				{
+					$pickup_date = Input::get('pickup_year') .'-'. Input::get('pickup_month') .'-'. Input::get('pickup_day');
+					if (! $this->_validateDateShouldLater($pickup_date)) {
+						return Redirect::back()
+							->withMessages(['Pickup date should greater than today'])
+							->withInput();
+					}
+				}
+
 				Session::put('order.schedule', Input::only([
 					'delivery_day', 'delivery_month', 'delivery_year', 'delivery_time',
 					'type', 'pickup_day', 'pickup_month', 'pickup_year', 'pickup_time',
@@ -141,6 +164,29 @@ class OrderController extends BaseController {
 		Session::forget('order');
 
 		return Redirect::route('order.index');
+	}
+
+
+	protected function _validateDateShouldLater($date)
+	{
+		$today = date('Y-m-d');
+		if ($today > $date) {
+			return false;
+		}
+
+		return true;
+	}
+	
+	
+	public function modalOrderGallery($id)
+	{
+		if ( ! Request::ajax()) {
+			return App::abort(404);
+		}
+		
+		$data = [ 'id' => $id ];
+		
+		return View::make('modal.order_gallery', $data);
 	}
 
 }

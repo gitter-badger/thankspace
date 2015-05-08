@@ -9,7 +9,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
 	use UserTrait, RemindableTrait;
 	
-	protected $guarded = [ 'password_confirm', 'remember_token', 'created_at', 'updated_at', 'user_id', 'via' ];
+	protected $guarded = ['remember_token', 'created_at', 'updated_at', 'user_id', 'via'];
 
 	/**
 	 * The database table used by the model.
@@ -59,9 +59,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return $this->hasMany('Order', 'user_id');
 	}
 	
-	public function schedule()
+	public function deliverySchedule()
 	{
-		return $this->hasMany('DriverSchedule', 'user_id');
+		return $this->hasMany('DeliverySchedule', 'user_id');
 	}
 	
 	public static function validate($input, $customrules = '')

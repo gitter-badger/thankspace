@@ -5,6 +5,18 @@ class OrderSchedule extends \Eloquent {
 	protected $fillable = ['order_id', 'delivery_date', 'delivery_time', 'pickup_date', 'pickup_time', 'status'];
 	
 	protected $table = 'order_schedule';
+
+
+	public function getDates()
+	{
+		return ['delivery_date', 'pickup_date'];
+	}
+
+	public function getDateFormat()
+	{
+		return 'Y-m-d';
+	}
+
 	
 	public function order()
 	{

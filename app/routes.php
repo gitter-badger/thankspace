@@ -19,6 +19,10 @@ Route::group(['before' => 'auth'], function() {
 	Route::get('/edit-member/{num}', [ 'as' => 'user.member_edit', 'uses' => 'UserController@memberEdit' ]);
 	Route::put('/edit-member/{num}', [ 'as' => 'user.member_edit.put', 'uses' => 'UserController@memberEditPut' ]);
 	Route::get('/delete-member/{num}', [ 'as' => 'user.member_delete', 'uses' => 'UserController@memberDelete' ]);
+	Route::post('/set-stored', [ 'as' => 'user.delivery.stored', 'uses' => 'UserController@setDeliveryStored' ]);
+	Route::post('/assign-delivery', [ 'as' => 'user.assign_delivery', 'uses' => 'UserController@assignDelivery' ]);
+	Route::post('/set-returned', [ 'as' => 'user.return.set', 'uses' => 'UserController@setReturnedSet' ]);
+	Route::post('/assign-return', [ 'as' => 'user.assign_return', 'uses' => 'UserController@assignReturn' ]);
 	// Route::get('/storage', [ 'as' => 'user.storage', 'uses' => 'UserController@storage' ]);
 	Route::get('/invoice', [ 'as' => 'user.invoice', 'uses' => 'UserController@invoice' ]);
 	Route::get('/setting', [ 'as' => 'user.setting', 'uses' => 'UserController@setting' ]);
@@ -53,5 +57,24 @@ Route::get('/page/terms-and-conditions', [ 'as' => 'page.tos', 'uses' => 'PageCo
 Route::get('/signout', [ 'as' => 'user.signout', 'uses' => 'UserController@signout' ]);
 Route::post('/signin', [ 'as' => 'user.signin', 'uses' => 'UserController@signin' ]);
 Route::post('/signup', [ 'as' => 'user.signup', 'uses' => 'UserController@signup' ]);
-Route::post('/forgot-password', [ 'as' => 'user.forgot_password', 'uses' => 'UserController@index' ]);
+Route::put('/storage/{id}/update', ['as' => 'user.storageUpdate', 'uses' => 'UserController@storageUpdate']);
+
+Route::post('/storage/{id}/return-process', ['as' => 'user.storageReturnProcess', 'uses' => 'UserController@storageReturnProcess']);
+
+Route::post('/forgot-password', [ 'as' => 'user.forgotPassword', 'uses' => 'UserController@forgotPassword' ]);
+Route::get('/forgot-password-form', [ 'as' => 'user.forgotPasswordForm', 'uses' => 'UserController@forgotPasswordForm' ]);
+Route::put('/forgot-password-process', [ 'as' => 'user.forgotPasswordProcess', 'uses' => 'UserController@forgotPasswordProcess' ]);
 /* End user */
+
+Route::group(['prefix' => 'ajax', 'before' => 'ajax'], function() {
+	Route::get('/invoice/{id}', ['as' => 'ajax.modalInvoiceDetail', 'uses' => 'UserController@modalInvoiceDetail']);
+	Route::get('/storage/{id}', ['as' => 'ajax.modalStorageDetail', 'uses' => 'UserController@modalStorageDetail']);
+	Route::get('/storage/{id}/return', ['as' => 'ajax.modalStorageReturn', 'uses' => 'UserController@modalStorageReturn']);
+	Route::get('/storage/{id}/edit', ['as' => 'ajax.modalStorageEdit', 'uses' => 'UserController@modalStorageEdit']);
+	Route::get('/returned-stuff/{id}', [ 'as' => 'ajax.modalReturnedStuff', 'uses' => 'UserController@modalReturnedStuff' ]);
+	
+	Route::get('/order-gallery/{id}', [ 'as' => 'ajax.modalOrderGallery', 'uses' => 'OrderController@modalOrderGallery' ]);
+});
+
+Route::post('image', [ 'as' => 'img.post', 'uses' => 'ImagesController@store' ]);
+Route::get('image/{id}', [ 'as' => 'img.show', 'uses' => 'ImagesController@show' ]);

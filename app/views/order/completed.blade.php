@@ -17,7 +17,7 @@
 							Oversized Anda.<br><br>Langkah selanjutnya adalah melakukan pembayaran sesuai dengan metode pembayaran yang
 							telah Anda pilih. Masuk ke Akun Anda - Lihat Invoice.</p>
 
-							<center><a class="btn btn-primary" href="invoice.php">Lihat Invoice</a></center>
+							<center><a class="btn btn-primary" href="{{ route('user.invoice') }}">Lihat Invoice</a></center>
 						</center>
 					</div>
 				</div>

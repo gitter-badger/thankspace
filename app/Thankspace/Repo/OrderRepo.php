@@ -41,7 +41,7 @@ class OrderRepo extends BaseRepo
 			{
 				\Paginator::setPageName($option['page_name']);
 			}
-			$order = $order->with('User', 'DriverSchedule')->orderBy('order.created_at', 'desc');
+			$order = $order->with('User', 'DeliverySchedule')->orderBy('order.created_at', 'desc');
 		}
 
 		/**
@@ -52,7 +52,7 @@ class OrderRepo extends BaseRepo
 			$order = $order->with('User');
 		}
 		
-		$order = $order->where('order.status', 1)->paginate(1);
+		$order = $order->where('order.status', 1)->paginate(20);
 		
 		if ( $order ) {
 			return $order;
@@ -62,13 +62,18 @@ class OrderRepo extends BaseRepo
 	}
 
 
-	public function getDriverSchedule()
+	public function getDeliverySchedule(array $option = array())
 	{
-		$order = \DriverSchedule::with('order.user')
-			->join('order_payment', 'order_payment.order_id', '=', 'driver_schedule.order_id')
-			->join('order_schedule', 'order_schedule.order_id', '=', 'driver_schedule.order_id')
-			->select('driver_schedule.*', 'order_schedule.*', 'order_payment.code')
-			->get();
+		if (!empty($option['page_name']))
+		{
+			\Paginator::setPageName($option['page_name']);
+		}
+			
+		$order = \DeliverySchedule::with('order.user', 'order.orderSchedule')
+			->join('order_payment', 'order_payment.order_id', '=', 'delivery_schedule.order_id')
+			->join('order_schedule', 'order_schedule.order_id', '=', 'delivery_schedule.order_id')
+			->select('delivery_schedule.*', 'order_schedule.*', 'order_payment.code')
+			->paginate(20);
 
 		return $order;
 	}
@@ -84,7 +89,7 @@ class OrderRepo extends BaseRepo
 	{
 		$user_id = ( isset($option['user_id']) ? $option['user_id'] : \Auth::user()->id );
 		
-		$order = \Order::with('OrderSchedule', 'OrderPayment', 'ReturnSchedule');
+		$order = \Order::with('OrderSchedule', 'OrderPayment', 'ReturnSchedule')->orderBy('id', 'desc');
 		
 		if( \Auth::user()->type == 'user' )
 		{
@@ -115,6 +120,12 @@ class OrderRepo extends BaseRepo
 		$confirm = \OrderPayment::whereIn('id', $input['order_payment_id'])->update([ 'status' => $status ]);
 		if ( $confirm )
 		{
+			
+			if ( $status == 2 )
+			{
+				$this->_sendConfirmPaymentMail($input['order_payment_id']);
+			}
+			
 			return $confirm;
 		} else {
 			$this->setErrors('No invoice selected');
@@ -134,6 +145,16 @@ class OrderRepo extends BaseRepo
 	}
 
 
+	public function quantity_item_dropdown()
+	{
+		$list = array();
+		for ($i=0; $i <= 5; $i++) {
+			$list[$i] = $i;
+		}
+		return $list;
+	}
+
+
 	/**
 	 * Save into order
 	 * @param  array $input this array require 3 key step : index, schedule, payment
@@ -143,9 +164,11 @@ class OrderRepo extends BaseRepo
 	{
 		$order = $this->_save_order($orderData['index']);
 
-		$this->_save_orderSchedule($order['id'], $orderData['schedule']);
+		$this->_save_orderSchedule($order->id, $orderData['schedule']);
 
-		$this->_save_orderPayment($order['id'], $orderData['payment']);
+		$this->_save_orderPayment($order->id, $orderData['payment']);
+		
+		$this->_sendInvoiceDetailMail($order->id);
 	}
 
 
@@ -156,26 +179,50 @@ class OrderRepo extends BaseRepo
 		// handle quantity by user select
 		if ($orderIndex['type'] == 'box')
 		{
-			// if quantity box more than 21. use quantity_custom field
-			if ($orderIndex['quantity_box'] >= 21)
-			{
-				$orderIndex['quantity'] = $orderIndex['quantity_custom'];
-			}
-			
-			// if more less than 21, use quantity_box field
-			else
-			{
-				$orderIndex['quantity'] = $orderIndex['quantity_box'];
-			}
+			$orderIndex['quantity'] = ($orderIndex['quantity_box'] >= 21)
+				? $orderIndex['quantity_custom']
+				: $orderIndex['quantity_box'];
 		}
+
+		// if user order with custom item
+		// we calculating the quantity total
 		else
 		{
+			$qty_for_box = ($orderIndex['quantity_box'] >= 21)
+				? $orderIndex['quantity_custom']
+				: $orderIndex['quantity_box'];
+
+			$qty_for_item = $orderIndex['quantity_item'];
+			$total_qty = $qty_for_box + $qty_for_item;
+
 			// if user choose order type box, fill quantity with quantity_item field
-			$orderIndex['quantity'] = $orderIndex['quantity_item'];
+			$orderIndex['quantity'] = $total_qty;
 		}
 
 		// save on to order table
-		return \Order::create($orderIndex);
+		$order = \Order::create($orderIndex);
+
+		// insert to order stuff by quantity box
+		for ($i=0; $i < $orderIndex['quantity_box']; $i++)
+		{
+			\OrderStuff::create(array(
+				'order_id' => $order['id'],
+				'type' => 'box'
+			));
+		}
+
+		// insert to order stuff by quantity custom if needed
+		if ($orderIndex['quantity_item'] > 0) {
+			for ($i=0; $i < $orderIndex['quantity_item']; $i++)
+			{ 
+				\OrderStuff::create(array(
+					'order_id' => $order['id'],
+					'type' => 'item'
+				));
+			}
+		}
+
+		return $order;
 	}
 
 
@@ -200,5 +247,182 @@ class OrderRepo extends BaseRepo
 		$input['order_id'] = $order_id;
 		$input['code'] = null;
 		return \OrderPayment::create($input);
+	}
+	
+	
+	protected function _sendInvoiceDetailMail($id)
+	{
+		$order = \Order::with('orderPayment', 'orderSchedule', 'orderStuff', 'user')->find($id);
+		
+		$name	= \Auth::user()->fullname;
+		$email	= \Auth::user()->email;
+		
+		$to = [
+			'code'		=>	$order['order_payment']['code'],
+			'email'		=>	$email,
+			'name'		=>	$name,
+		];
+		
+		$data = [ 'order'	=>	$order ];
+		
+		\Mail::send('emails.order-invoice-detail', $data, function($message) use ($to)
+		{
+			$message->to($to['email'], $to['name'])
+					->subject('[ThankSpace] Detail Order #'.$to['code'].' di ThankSpace');
+		});
+	}
+	
+	
+	protected function _sendConfirmPaymentMail(array $id = array())
+	{
+		$orders = \OrderPayment::with('order.user')->whereIn('id', $id)->get();
+		foreach( $orders as $order )
+		{
+			$fullname = ucfirst($order['order']['user']['firstname']) .' '. ucfirst($order['order']['user']['lastname']);
+			
+			$to = [
+				'code'		=>	$order['code'],
+				'email'		=>	$order['order']['user']['email'],
+				'fullname'	=>	$fullname,
+			];
+			
+			$data = [
+				'code'		=>	$order['code'],
+				'date'		=>	date('d/m/Y', strtotime($order['updated_at'])),
+				'fullname'	=>	$fullname,
+			];
+			
+			\Mail::send('emails.confirm-payment-success', $data, function($message) use ($to)
+			{
+				$message->to($to['email'], $to['fullname'])
+						->subject('[ThankSpace] Pembayaran invoice #'.$to['code'].' sudah kami terima');
+			});
+		}
+	}
+	
+	
+	/**
+	 * For order schedule set stored for driver
+	 * 
+	 * @param  array  $input
+	 * @return mix \Illuminate\Database\Eloquent\Model|false
+	 */
+	public function setDeliveryStored(array $input = array())
+	{
+		$confirm = \OrderSchedule::whereIn('id', $input['order_schedule_id'])->update([ 'status' => 1 ]);
+		if ( $confirm )
+		{	
+			return $confirm;
+		} else {
+			$this->setErrors([ 'message' => 
+				[
+					'ico'	=> 'meh',
+					'msg'	=> 'No delivery schedule selected',
+					'type'	=> 'error',
+				]
+			]);
+			return false;
+		}
+	}
+
+
+	/**
+	 * Add return schedule to boxes
+	 */
+	public function createReturnSchedule(array $input)
+	{
+		$input['user_id'] = ( ! empty($input['user_id']) ? $input['user_id'] : \Auth::user()->id );
+		$validation = \ReturnSchedule::validate($input, ['stuffs' => 'required|array']);
+		if ( $validation->fails() )
+		{
+			$this->setErrors($validation->messages()->all(':message'));
+			return false;
+		}
+
+		$returnSchedule = \ReturnSchedule::create($input);
+
+		if ($returnSchedule)
+		{
+			\OrderStuff::whereIn('id', $input['stuffs'])->update(['return_schedule_id' => $returnSchedule->id]);
+		}
+		return true;
+	}
+	
+	
+	/**
+	 * Get available & driver return schedule
+	 * 
+	 * @param  array  $option
+	 * @return \Illuminate\Database\Eloquent\Model
+	 */
+	public function getReturnSchedule(array $option = array())
+	{
+		$schedule = \ReturnSchedule::with('order.orderPayment', 'order.user', 'stuffs');
+	
+		if ( isset($option['user_id']) )
+		{
+			$schedule = $schedule->where('user_id', $option['user_id']);
+		} else {
+			$schedule = $schedule->where('user_id', '=', '');
+		}
+		
+		$schedule = $schedule->paginate(20);
+		
+		if ( $schedule ) {
+			return $schedule;
+		} else {
+			return false;
+		}
+	}
+	
+	
+	/**
+	 * For return schedule set returned for driver
+	 * 
+	 * @param  array  $input
+	 * @return mix \Illuminate\Database\Eloquent\Model|false
+	 */
+	public function setReturnedSet(array $input = array())
+	{
+		$confirm = \ReturnSchedule::whereIn('id', $input['return_schedule_id'])->update([ 'status' => 1 ]);
+		if ( $confirm )
+		{
+			$schedule = $input['return_schedule_id'];
+			for ($i = 0; $i < count($schedule); $i++)
+			{
+				\OrderStuff::where('return_schedule_id', $schedule[$i])->update([ 'status' => 2 ]);
+				
+				$return = \ReturnSchedule::where('id', $schedule[$i])->first();
+				$stuff_count = \OrderStuff::where('order_id', $return->order_id)->where('status', 1)->count();
+				
+				if ( $stuff_count == 0)
+				{
+					\Order::where('id', $return->order_id)->update([ 'is_returned' => 1 ]);
+				}
+			}
+			
+			return $confirm;
+		} else {
+			$this->setErrors([ 'message' => 
+				[
+					'ico'	=> 'meh',
+					'msg'	=> 'No return schedule selected',
+					'type'	=> 'error',
+				]
+			]);
+			return false;
+		}
+	}
+	
+	
+	/**
+	 * Get returned stuff from return schedule
+	 * 
+	 * @param  array  $option
+	 * @return \Illuminate\Database\Eloquent\Model
+	 */
+	public function getReturnedStuffs($id)
+	{
+		return \ReturnSchedule::with('order.orderPayment', 'order.user', 'stuffs')->find($id);
 	}
 }

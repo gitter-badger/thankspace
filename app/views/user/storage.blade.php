@@ -37,54 +37,65 @@
 												<img class="img-responsive" src="{{ url('assets/img/box.png') }}">
 											</td>
 											<td>
-												<h2>Order #{{ $storage->id }}</h2>
-												<h4>
-													@if( $storage->type == 'item' )
-														Item : {{ $storage->description }}
-													@else
-														{{--*/ $i = 1 /*--}}
-														@foreach( $storage->order_stuff as $stuff )
-														@if( $stuff->description )
-														Box {{ $i }} : {{ $stuff->description }}<br>
-														{{--*/ $i++ /*--}}
-														@endif
-														@endforeach
+												<h2>Order #{{ $storage->code }}</h2>
+												<p>
+													<a data-toggle="modal" href="{{ route('ajax.modalStorageDetail', $storage->id) }}" data-target="#ajaxModal">
+														Detail
+													</a>
+													@if( $storage->order_schedule->status != 1 )
+													&nbsp;&nbsp;
+													<a data-toggle="modal" href="{{ route('ajax.modalStorageEdit', $storage->id) }}" data-target="#ajaxModal">
+														Edit Stuff
+													</a>
 													@endif
-												</h4>
+													&nbsp;&nbsp;
+													<a data-toggle="modal" href="{{ route('ajax.modalOrderGallery', $storage->id) }}" data-target="#ajaxModal2">
+														Gallery
+													</a>
+												</p>
+
+												@if( $storage->type == 'item' )
+													Item : {{ $storage->description }}
+												@else
+													<?php $i = 1 ?>
+													@foreach( $storage->order_stuff->take(5) as $stuff )
+													@if( $stuff->description AND ! $stuff['return_schedule_id'] || $storage->is_returned == 1 )
+														<h4 style="margin: 3px 0px;">
+															{{ ucfirst($stuff->type) }} {{ $i++ }} : {{ $stuff->description }}
+														</h4>
+													@endif
+													@endforeach
+
+													@if(count($storage->order_stuff) > 5)
+														<a data-toggle="modal" href="{{ route('ajax.modalStorageDetail', $storage->id) }}" data-target="#ajaxModal">
+															see more...
+														</a>
+													@endif
+												@endif
 											</td>
 											<td>
-												@if( $storage->order_schedule->status == 1 )
+												@if( $storage->is_returned == 1 )
+												<span class="label label-default">Returned</span>
+												@elseif( $storage->order_schedule->status == 1 )
 												<span class="label label-success">Stored</span>
 												@else
 												<span class="label label-warning">On Delivery</span>
 												@endif
 											</td>
 											<td>
-												<div class="checkbox">
-													<label><input name="order_id[]" type="checkbox" value="{{ $storage->id }}" /></label>
-												</div>
+												@if( $storage->order_schedule->status == 1 && $storage->is_returned == 0 )
+												<a data-toggle="modal" href="{{ route('ajax.modalStorageReturn', $storage->id) }}" data-target="#ajaxModal">
+													<i class="fa fa-sign-out"></i>
+													Kembalikan
+												</a>
+												@endif
 											</td>
 										</tr>
 									@endforeach
 										
 									<tr>
-										<td class="text-left" colspan="2">
+										<td class="text-left" colspan="4">
 											{{ $storages->links() }}
-										</td>
-										<td class="text-right" colspan="2" style="vertical-align:middle;">
-											<div class="btn-group">
-												<button type="button" class="btn btn-primary">Action</button>
-												<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-													<span class="caret"></span>
-													<span class="sr-only">Toggle Dropdown</span>
-												</button>
-												<ul class="dropdown-menu pull-right">
-													<li>
-														<a href="javascript:void(0)">Kirimkan kembali barang Saya</a>
-													</li>
-													{{--<li><a href="javascript:void(0)">Ikutkan Storage War (soon)</a></li>--}}
-												</ul>
-											</div>
 										</td>
 									</tr>
 								</tbody>
@@ -110,4 +121,41 @@
 		</div>
 	</div>
 
+@stop
+
+
+@section('foot')
+	@parent
+
+	<div class="modal fade" id="ajaxModal" tabindex="-1" role="dialog" aria-labelledby="ajaxModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            {{-- Modal Ajax Content --}}
+	        </div>
+	    </div>
+	</div>
+	
+	<div class="modal fade" id="ajaxModal2" tabindex="-1" role="dialog" aria-labelledby="ajaxModalLabel2" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				{{-- Modal Ajax 2 Content --}}
+			</div>
+		</div>
+	</div>
+
+
+	<script type="text/javascript">
+
+		// disable ajax modal cache
+		$('#ajaxModal').on('shown.bs.modal', function ()
+		{
+			$(this).removeData('bs.modal');
+		});
+		
+		$('#ajaxModal2').on('shown.bs.modal', function ()
+		{
+			$(this).removeData('bs.modal');
+		});
+
+	</script>
 @stop

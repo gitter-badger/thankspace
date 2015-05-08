@@ -71,13 +71,7 @@
 									<div class="form-group">
 										<label for="select" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 control-label">Jumlah barang/item</label>
 										<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
-											{{ Form::select('quantity_item', [1,2,3,4,5], null, ['class' => 'form-control', 'id' => 'jumlahitem']) }}
-										</div>
-									</div>
-									<div class="form-group">
-										<label for="select" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 control-label">Detail barang</label>
-										<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-											{{ Form::textarea('description', null, ['class' => 'form-control', 'placeholder' => 'Sebutkan dengan detail barang lainnya yang ingin Anda simpan', 'rows' => '5' ]) }}
+											{{ Form::select('quantity_item', $qty_item_list, null, ['class' => 'form-control', 'id' => 'jumlahitem']) }}
 										</div>
 									</div>
 								</div>

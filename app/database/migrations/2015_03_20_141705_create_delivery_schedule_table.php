@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDriverScheduleTable extends Migration {
+class CreateDeliveryScheduleTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,7 +12,7 @@ class CreateDriverScheduleTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('driver_schedule', function(Blueprint $table) {
+		Schema::create('delivery_schedule', function(Blueprint $table) {
 			$table->increments('id');
 			$table->integer('user_id');
 			$table->integer('order_id');
@@ -28,7 +28,7 @@ class CreateDriverScheduleTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('driver_schedule');
+		Schema::drop('delivery_schedule');
 	}
 
 }

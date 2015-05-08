@@ -15,131 +15,93 @@
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-body">
+						<p>
+							<a href="{{ route('user.dashboard') }}?sch=return">Jadwal Pengembalian Barang</a>
+						</p>
+						
+						@if ( Session::has('message') )
+						<p class="text-center">
+							<span class="{{ Session::get('message.type') }}-alert">
+								<i class="fa fa-{{ Session::get('message.ico') }}-o"></i> {{ Session::get('message.msg') }}
+							</span>
+						</p>
+						@endif
 						
 						<h3>Order yang Anda tangani</h3>
-						<table class="table table-striped table-hover">
-							<thead>
-								<tr>
-									<th>Order Number</th>
-									<th>Customer</th>
-									<th>Phone</th>
-									<th>Alamat</th>
-									<th>Box Yang dibutuhkan</th>
-									<th>Barang Lain</th>
-									<th>Jadwal Box Diantar</th>
-									<th>Jadwal Box Diambil</th>
-									<th>Status</th>
-									<th>Aksi</th>
-								</tr>
-							</thead>
-							<tbody>
-
-								<tr>
-									<td>2354</td>
-									<td><a href="">Clark Kent</a></td>
-									<td>5964441</td>
-									<td>Jl. Gembong Sawah n0.6 denpasar surabaya</td>
-									<td>5</td>
-									<td>Sofa, Meja, Lemari</td>
-									<td>25-12-2015</td>
-									<td>25-12-2015</td>
-									<td>Siap Diantar</td>
-									<td>
-										<div class="checkbox">
-											<label><input type="checkbox"></label>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>3217</td>
-									<td><a href="">Deny Setiawan</a></td>
-									<td>5964441</td>
-									<td>Jl. Gembong Sawah n0.6 denpasar surabaya</td>
-									<td>8</td>
-									<td>0</td>
-									<td>01-05-2015</td>
-									<td>01-05-2015</td>
-									<td>Sudah diantar di Warehouse</td>
-									<td>
-										<div class="checkbox">
-											<label><input type="checkbox"></label>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>4412</td>
-									<td><a href="">Akbar</a></td>
-									<td>5964441</td>
-									<td>Jl. Gembong Sawah n0.6 denpasar surabaya</td>
-									<td>12</td>
-									<td>0</td>
-									<td>01-05-2015</td>
-									<td>01-05-2015</td>								
-									<td>Sudah dikembalikan</td>
-									<td><!--
-										<div class="checkbox">
-											<label><input type="checkbox"></label>
-										</div>-->
-									</td>
-								</tr>
-
-
-								<tr>
-									<td class="text-right" colspan="9">
-										<div class="btn-group">
-											<a href="javascript:void(0)" class="btn btn-primary">Action</a>
-											<a href="bootstrap-elements.html" data-target="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
-											<ul class="dropdown-menu">
-												<li><a href="javascript:void(0)">"Sudah sampai Warehouse"</a></li>
-												<li><a href="javascript:void(0)">"Sudah dikembalikan"</a></li>
-											</ul>
-										</div>
-									</td>
-								</tr>
-
-							</tbody>
-						</table>
-
-
-						<h3 id="queue">Daftar antrian order yang tersedia</h3>
-						<table class="table table-striped table-hover">
-							<thead>
-								<tr>
-									<th>Order Number</th>
-									<th>Customer</th>
-									<th>Phone</th>
-									<th>Alamat</th>
-									<th>Box Yang dibutuhkan</th>
-									<th>Barang Lain</th>
-									<th>Jadwal Box Diantar</th>
-									<th>Jadwal Box Diambil</th>
-									<th>Aksi</th>
-								</tr>
-							</thead>
-							<tbody>
-
-								@if( count($storages) > 0 )
-								@foreach($storages as $s)
+						<div class="table-responsive">
+							{{ Form::open([ 'route' => 'user.delivery.stored', 'method' => 'POST', 'class' => 'delivery-form-list' ]) }}
+							<table class="table table-striped table-hover">
+								<thead>
 									<tr>
-										<td>{{ $s['code'] }}</td>
-										<td>{{ $s['user']['fullname'] }}</td>
-										<td>{{ $s['user']['phone'] }}</td>
-										<td>{{ $s['user']['address'] }}</td>
-										<td>{{ $s['quantity'] }}</td>
-										<td>{{ $s['description'] }}</td>
-										<td>{{ $s['order_schedule']['delivery_date'] }}</td>
+										<th>Order Number</th>
+										<th>Customer</th>
+										<th>Phone</th>
+										<th>Alamat</th>
+										<th>Box</th>
+										<th>Jadwal Box Diantar</th>
+										<th>Jadwal Box Diambil</th>
+										<th>Status</th>
+										<th>Aksi</th>
+									</tr>
+								</thead>
+								<tbody>
+								@if( count($tasks) > 0 )
+								@foreach( $tasks as $t )
+									<tr>
+										<td>#{{ $t->code }}</td>
+										<td>{{ $t->order->user->fullname }}</td>
+										<td>{{ $t->order->user->phone }}</td>
+										<td>{{ $t->order->user->address }}</td>
+										<td>{{ $t->order->quantity }}</td>
 										<td>
-											{{ $s['order_schedule']['pickup_date'] or $s['order_schedule']['delivery_date'] }}
+											{{ date('l, d m Y', strtotime($t['order']['order_schedule']['delivery_date'])) }}
+											<br>
+											{{ $t['order']['order_schedule']['delivery_time'] }}
 										</td>
 										<td>
+											@if( !$t['order']['order_schedule']['pickup_date'] )
+											At that time
+											@else
+											{{ date('l, d m Y', strtotime($t['order']['order_schedule']['delivery_date'])) }}
+											<br>
+											{{ $t['order']['order_schedule']['pickup_time'] }}
+											@endif
+										</td>
+										<td>
+											@if( $t->order->order_schedule->status == 1 )
+											<span class="label label-success">Stored</span>
+											@else
+											<span class="label label-warning">Siap Diantar</span>
+											@endif
+										</td>
+										<td>
+											@if( $t->order->order_schedule->status != 1 )
 											<div class="checkbox">
 												<label>
-													{{ Form::checkbox('order_id[]', $s['id'], null, []) }}
+													{{ Form::checkbox('order_schedule_id[]', $t->id, null, []) }}
 												</label>
 											</div>
+											@endif
 										</td>
 									</tr>
 								@endforeach
+									<tr>
+										<td class="text-left" colspan="7">
+											{{ $tasks->fragment('task')->links() }}
+										</td>
+										<td class="text-right" colspan="2" style="vertical-align:middle;">
+											<div class="btn-group">
+												<button type="button" class="btn btn-primary">Action</button>
+												<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+													<span class="caret"></span>
+													<span class="sr-only">Toggle Dropdown</span>
+												</button>
+												<ul class="dropdown-menu pull-right">
+													<li><a href="#" class="setStored">Sudah sampai Warehouse</a></li>
+												</ul>
+											</div>
+										</td>
+									</tr>
 								@else
 									<tr>
 										<td colspan="9">
@@ -147,25 +109,92 @@
 										</td>
 									</tr>
 								@endif
+								
+								</tbody>
+							</table>
+							{{ Form::close() }}
+						</div>
 
-								<tr>
-									<td colspan="7">
-										{{ $storages->fragment('queue')
-											->links() }}
-									</td>
-									<td class="text-right" colspan="2">
-										<div class="btn-group">
-											<a href="javascript:void(0)" class="btn btn-primary">Action</a>
-											<a href="bootstrap-elements.html" data-target="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
-											<ul class="dropdown-menu">
-												<li><a href="javascript:void(0)">"Saya tangani order ini"</a></li>
-											</ul>
-										</div>
-									</td>
-								</tr>
+						<h3 id="queue">Daftar antrian order yang tersedia</h3>
+						<div class="table-responsive">
+							{{ Form::open([ 'route' => 'user.assign_delivery', 'method' => 'POST', 'class' => 'schedule-form-list' ]) }}
+							<table class="table table-striped table-hover">
+								<thead>
+									<tr>
+										<th>Order Number</th>
+										<th>Customer</th>
+										<th>Phone</th>
+										<th>Alamat</th>
+										<th>Box</th>
+										<th>Jadwal Box Diantar</th>
+										<th>Jadwal Box Diambil</th>
+										<th>Aksi</th>
+									</tr>
+								</thead>
+								<tbody>
 
-							</tbody>
-						</table>
+									@if( count($storages) > 0 )
+									@foreach($storages as $s)
+										@if( !$s['delivery_schedule'] )
+										<tr>
+											<td>#{{ $s['code'] }}</td>
+											<td>{{ $s['user']['fullname'] }}</td>
+											<td>{{ $s['user']['phone'] }}</td>
+											<td>{{ $s['user']['address'] }}</td>
+											<td>{{ $s['quantity'] }}</td>
+											<td>
+												{{ $s['order_schedule']['delivery_date']->format('l, d m Y') }}
+												<br>
+												{{ $s['order_schedule']['delivery_time'] }}
+											</td>
+											<td>
+												@if( !$s['order_schedule']['pickup_date'] )
+												At that time
+												@else
+												{{ $s['order_schedule']['delivery_date']->format('l, d m Y') }}
+												<br>
+												{{ $s['order_schedule']['pickup_time'] }}
+												@endif
+											</td>
+											<td>
+												<div class="checkbox">
+													<label>
+														{{ Form::checkbox('order_id[]', $s['id'], null, []) }}
+													</label>
+												</div>
+											</td>
+										</tr>
+										@endif
+									@endforeach
+										<tr>
+											<td colspan="6">
+												{{ $storages->fragment('queue')->links() }}
+											</td>
+											<td class="text-right" colspan="2" style="vertical-align:middle;">
+												<div class="btn-group">
+													<button type="button" class="btn btn-primary">Action</button>
+													<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+														<span class="caret"></span>
+														<span class="sr-only">Toggle Dropdown</span>
+													</button>
+													<ul class="dropdown-menu pull-right">
+														<li><a href="#" class="assignDelivery">Saya tangani order ini</a></li>
+													</ul>
+												</div>
+											</td>
+										</tr>
+									@else
+										<tr>
+											<td colspan="8">
+												<h4 class="text-center">Masih kosong</h4>
+											</td>
+										</tr>
+									@endif
+									
+								</tbody>
+							</table>
+							{{ Form::close() }}
+						</div>
 
 					</div>
 				</div>

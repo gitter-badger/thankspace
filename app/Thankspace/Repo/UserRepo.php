@@ -98,12 +98,15 @@ class UserRepo extends BaseRepo
 			'email'	=>	'required|email|unique:user,email',
 		];
 
+		$input['type'] = (isset($input['type'])) ? $input['type'] : 'user';
+		$input['via'] = (isset($input['via'])) ? $input['via'] : 'register';
+
 		$validation = $this->model->validate($input, $customrules);
 		
 		if ( $validation->passes() ) {
 			$user = $this->model->create($input);
 			
-			$this->_sendWelcomeMail();
+			$this->_sendWelcomeMail($input);
 			
 			if ( $input['via'] != 'admin' ) {
 				$auth = $this->_handleLogin($user->id);
@@ -127,6 +130,42 @@ class UserRepo extends BaseRepo
 		$this->setErrors([ '<i class="fa fa-meh-o fa-4"></i> Maaf, kombinasi email dan password Anda salah.' ]);
 		return false;
 	}
+	
+	
+	/**
+	 * Get invoice detail
+	 * 
+	 * @param  integer $id
+	 * @return \Illuminate\Database\Eloquent\Model
+	 */
+	public function getInvoiceDetail($id)
+	{
+		return \Order::with('orderPayment', 'orderSchedule', 'orderStuff', 'user')->find($id);
+	}
+
+
+	/**
+	 * Get order detail
+	 * 
+	 * @param  integer $id
+	 * @return \Illuminate\Database\Eloquent\Model
+	 */
+	public function getStorageDetail($id)
+	{
+		return \Order::with('orderPayment', 'orderSchedule', 'orderStuff')->find($id);
+	}
+
+
+	/**
+	 * Get order stuff
+	 * 
+	 * @param  integer $id
+	 * @return \Illuminate\Database\Eloquent\Model
+	 */
+	public function getStorageStuff($order_id)
+	{
+		return \OrderStuff::where('order_id', $order_id)->get();
+	}
 
 
 	protected function _handleLogin($id)
@@ -147,8 +186,74 @@ class UserRepo extends BaseRepo
 	}
 
 
-	protected function _sendWelcomeMail()
+	protected function _sendWelcomeMail(array $input = array())
 	{
 		// logic sending email welcome
+		$to = [
+			'email'		=>	$input['email'],
+			'fullname'	=>	ucfirst($input['firstname']) .' '. ucfirst($input['lastname']),
+		];
+		
+		\Mail::send('emails.welcome', $input, function($message) use ($to)
+		{
+			$message->to($to['email'], $to['fullname'])
+					->subject('[ThankSpace] Selamat datang di ThankSpace');
+		});
+	}
+	
+	
+	/**
+	 * For assign delivery schedule for driver
+	 * 
+	 * @param  array  $input
+	 * @return mix \Illuminate\Database\Eloquent\Model|false
+	 */
+	public function assignDelivery(array $input = array())
+	{
+		if ( isset($input['order_id']) )
+		{
+			$order = $input['order_id'];
+			for ($i = 0; $i < count($order); $i++)
+			{
+				\DeliverySchedule::create([
+					'order_id'	=> $order[$i],
+					'user_id'	=> \Auth::user()->id
+				]);
+			}
+			return true;
+		} else {
+			$this->setErrors([ 'message' => 
+				[
+					'ico'	=> 'meh',
+					'msg'	=> 'No order selected',
+					'type'	=> 'error',
+				]
+			]);
+			return false;
+		}
+	}
+	
+	/**
+	 * For assign return schedule for driver
+	 * 
+	 * @param  array  $input
+	 * @return mix \Illuminate\Database\Eloquent\Model|false
+	 */
+	public function assignReturn(array $input = array())
+	{
+		if ( isset($input['return_schedule_id']) )
+		{
+			\ReturnSchedule::whereIn('id', $input['return_schedule_id'])->update([ 'user_id' => \Auth::user()->id ]);
+			return true;
+		} else {
+			$this->setErrors([ 'message' => 
+				[
+					'ico'	=> 'meh',
+					'msg'	=> 'No schedule selected',
+					'type'	=> 'error',
+				]
+			]);
+			return false;
+		}
 	}
 }

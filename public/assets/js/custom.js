@@ -98,7 +98,7 @@ $(function() {
 			steps: [
 				{
 					element: '#step1',
-					intro: "Hai, Selamat datang di ThankSpace, layanan on-demand storage yang melayani kebutuhan Space sesuai kebutuhan. Saya Adam, Tour Guide tampan dari Galaxy Far Far Away! Untuk melanjutkan tour ini, Anda bisa klik Next!",
+					intro: "<img class=img-responsive src=assets/img/tour-1.png width=125> <br> Hai, saya Antoni, di sini saya akan membantu Anda mengenal ThankSpace. klik Next untuk melanjutkan!",
 					position: 'right'
 				},
 				{
@@ -112,7 +112,7 @@ $(function() {
 				},
 				{
 					element: '#step4',
-					intro: 'Harga jakdakdak'
+					intro: 'Harga yang sesuai dengan kebutuhan'
 				},
 				{
 					element: '#step5',

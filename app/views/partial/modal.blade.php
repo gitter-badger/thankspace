@@ -140,7 +140,7 @@
 			<div class="modal-body">
 				<form class="form-horizontal">
 					<fieldset>
-						<p>Apakah password Anda kombinasi huruf dan angka? nama sebuah kota? <br>atau nama mantan?<br><br>Jangan khawatir, tim peramal kami akan masuk ke ingatan terdalam Anda dan mengembalikan Password ke email yang terdaftar di Thankspace</p>
+						<p>Kami akan mengirimkan email dengan petunjuk lebih lanjut tentang cara untuk mereset password Anda.</p>
 						<div class="form-group">
 							<div class="col-lg-12">
 								<div class="input-group margin-bottom-sm">
@@ -151,7 +151,7 @@
 						</div>
 						<div class="form-group">
 							<div class="col-lg-12">
-								<button type="submit" class="btn btn-primary"><i class="fa fa-refresh"></i> Abracadabra</button>
+								<button type="submit" class="btn btn-primary"><i class="fa fa-refresh"></i> Kirim Email</button>
 							</div>
 						</div>
 					</fieldset>

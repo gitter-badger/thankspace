@@ -8,12 +8,26 @@
 	
 	<div class="page-header" id="banner">
 		<div class="row text-center">
-			<h3>Frequently Asked Question (FAQ)</h3>
+			<h3>Karir di ThankSpace</h3>
 		</div>
 	</div>
-	
 	<div class="container">
-		<div class="panel panel-default col-lg-9 col-centered">
+		<div class="row">
+			<div class="col-lg-3 hidden-md hidden-sm hidden-xs ">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<h5>Menu</h5>
+						<ul>
+							<li><b>Tentang Kami</b></li>
+							<li><a href="bantuan">Karir</a></li>
+							<li><a href="daftarkan-target-sosial">Syarat dan Ketentuan</a></li>
+							<li><a href="daftarkan-event">Aturan Penyimpanan</a></li>
+							<li><a href="kontak-kami">Kontak Kami</a></li>
+						</ul>
+					</div>  
+				</div>
+			</div>
+		<div class="panel panel-default col-lg-9">
 			<div class="panel-body">
 				<h3 class="h4">On-demand flexible Storage in Indonesia</h3>
 				<h2 id="General" class="anchor-header">1. General</h2>
@@ -459,6 +473,7 @@
 					</div>
 				</div>
 			</div>
+		</div>
 		</div>
 	</div>
 

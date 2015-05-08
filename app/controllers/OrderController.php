@@ -184,9 +184,33 @@ class OrderController extends BaseController {
 			return App::abort(404);
 		}
 		
-		$data = [ 'id' => $id ];
+		$storage = app('UserRepo')->getStorageDetail($id);
+		$gallery = app('OrderRepo')->getOrderGallery([ 'order_id' => $id ]);
+		
+		$data = [
+			'storage'		=> $storage,
+			'gallery'		=> $gallery,
+			'modal_title'	=> 'Gallery Order #'. $storage['order_payment']['code'],
+		];
 		
 		return View::make('modal.order_gallery', $data);
+	}
+	
+	
+	public function modalOrderGalleryUpload($id)
+	{
+		if ( ! Request::ajax()) {
+			return App::abort(404);
+		}
+		
+		$storage = app('UserRepo')->getStorageDetail($id);
+		
+		$data = [
+			'id'			=> $id,
+			'modal_title'	=> 'Upload Image(s) to Order #'. $storage['order_payment']['code'],
+		];
+		
+		return View::make('modal.order_gallery_upload', $data);
 	}
 
 }

@@ -4,6 +4,8 @@ class ImagesController extends BaseController {
 	
 	public function show($id)
 	{
+		$id = str_replace('.jpg', '', $id);
+		
 		$size = (!Input::has('size')) ? '' : Input::get('size') ;
 		
 		$_size = array(
@@ -48,7 +50,7 @@ class ImagesController extends BaseController {
 		
 		foreach ( $files as $file )
 		{
-			$name = time().'.jpg';
+			$filename = generate_random_code(10);
 			
 			// get image size ( width & height )
 			$info = getimagesize($file);
@@ -57,12 +59,12 @@ class ImagesController extends BaseController {
 			
 			if( $info[0] > 1024 ) $image->widen(1024);
 			
-			$image->interlace()->save($path.'/'.$name, 75);
+			$image->interlace()->save($path.'/'.$filename.'.jpg', 75);
 			
-			OrderGallery::create([ 'order_id' => Input::get('id'), 'filename' => $name ]);
+			OrderGallery::create([ 'order_id' => Input::get('id'), 'filename' => $filename.'.jpg' ]);
 			
 			// set our results to have our asset path
-			$name = URL::route('img.show', time()).'?size=normal';
+			$name = URL::route('img.show', $filename).'?size=medium';
 			$results[] = compact('name');
 		}
 		

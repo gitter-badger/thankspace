@@ -27,9 +27,9 @@ return array(
 		'/assets/js/ripples.min.js',
 		'/assets/js/snackbar.min.js',
 		'/assets/js/jquery.nouislider.min.js',
+		'/assets/js/custom.js',
 		'/assets/js/mapsurabaya.js',
 		'/assets/js/mapdenpasar.js',
-		'/assets/js/custom.js',
 	],
 	
 );

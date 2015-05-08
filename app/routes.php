@@ -7,6 +7,9 @@ include_once(app_path('helpers.php'));
 
 
 Route::get('/', [ 'as' => 'page.index', 'uses' => 'PageController@index' ]);
+Route::get('/tes', function(){
+	return app('OrderRepo')->getOrderGallery([ 'order_id' => 1 ]);
+});
 
 
 /* Page that Require Authentication */
@@ -74,6 +77,7 @@ Route::group(['prefix' => 'ajax', 'before' => 'ajax'], function() {
 	Route::get('/returned-stuff/{id}', [ 'as' => 'ajax.modalReturnedStuff', 'uses' => 'UserController@modalReturnedStuff' ]);
 	
 	Route::get('/order-gallery/{id}', [ 'as' => 'ajax.modalOrderGallery', 'uses' => 'OrderController@modalOrderGallery' ]);
+	Route::get('/order-gallery/{id}/upload', [ 'as' => 'ajax.modalOrderGalleryUpload', 'uses' => 'OrderController@modalOrderGalleryUpload' ]);
 });
 
 Route::post('image', [ 'as' => 'img.post', 'uses' => 'ImagesController@store' ]);

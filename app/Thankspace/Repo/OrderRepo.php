@@ -425,4 +425,29 @@ class OrderRepo extends BaseRepo
 	{
 		return \ReturnSchedule::with('order.orderPayment', 'order.user', 'stuffs')->find($id);
 	}
+	
+	
+	/**
+	 * User order/gallery
+	 * 
+	 * @param  array  $option
+	 * @return \Illuminate\Database\Eloquent\Model
+	 */
+	public function getOrderGallery(array $option = array())
+	{
+		$gallery = \OrderGallery::orderBy('id', 'desc');
+		
+		if( isset($option['order_id']) )
+		{
+			$gallery = $gallery->where('order_id', $option['order_id']);
+		}
+		
+		$gallery = $gallery->paginate(20);
+		
+		if ( $gallery ) {
+			return $gallery;
+		} else {
+			return false;
+		}
+	}
 }

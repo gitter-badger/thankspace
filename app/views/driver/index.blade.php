@@ -52,7 +52,13 @@
 										<td>{{ $t->order->user->fullname }}</td>
 										<td>{{ $t->order->user->phone }}</td>
 										<td>{{ $t->order->user->address }}</td>
-										<td>{{ $t->order->quantity }}</td>
+										<td>
+											<span data-toggle="tooltip" data-placement="top" title="Click to View Gallery">
+												<a data-toggle="modal" href="{{ route('ajax.modalOrderGallery', $t->order->id) }}" data-target="#ajaxModal2">
+													{{ $t->order->quantity }}
+												</a>
+											</span>
+										</td>
 										<td>
 											{{ date('l, d m Y', strtotime($t['order']['order_schedule']['delivery_date'])) }}
 											<br>
@@ -86,10 +92,10 @@
 									</tr>
 								@endforeach
 									<tr>
-										<td class="text-left" colspan="7">
+										<td class="text-left" colspan="6">
 											{{ $tasks->fragment('task')->links() }}
 										</td>
-										<td class="text-right" colspan="2" style="vertical-align:middle;">
+										<td class="text-right" colspan="3" style="vertical-align:middle;">
 											<div class="btn-group">
 												<button type="button" class="btn btn-primary">Action</button>
 												<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -167,10 +173,10 @@
 										@endif
 									@endforeach
 										<tr>
-											<td colspan="6">
+											<td colspan="5">
 												{{ $storages->fragment('queue')->links() }}
 											</td>
-											<td class="text-right" colspan="2" style="vertical-align:middle;">
+											<td class="text-right" colspan="3" style="vertical-align:middle;">
 												<div class="btn-group">
 													<button type="button" class="btn btn-primary">Action</button>
 													<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -203,4 +209,28 @@
 		</div>
 	</div>
 
+@stop
+
+
+@section('foot')
+	@parent
+	
+	<div class="modal fade" id="ajaxModal2" tabindex="-1" role="dialog" aria-labelledby="ajaxModalLabel2" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				{{-- Modal Ajax 2 Content --}}
+			</div>
+		</div>
+	</div>
+
+
+	<script type="text/javascript">
+
+		// disable ajax modal cache
+		$('#ajaxModal2').on('shown.bs.modal', function ()
+		{
+			$(this).removeData('bs.modal');
+		});
+
+	</script>
 @stop

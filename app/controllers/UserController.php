@@ -86,7 +86,7 @@ class UserController extends BaseController {
 	{	
 		$userRepo = app('UserRepo');
 		$input = Input::get();
-		$input += [ 'password' => generate_password(6) ];
+		$input += [ 'password' => generate_random_code(6) ];
 		if ( $userRepo->register($input) )
 		{
 			return Redirect::route('user.member_list')

@@ -7,9 +7,6 @@ include_once(app_path('helpers.php'));
 
 
 Route::get('/', [ 'as' => 'page.index', 'uses' => 'PageController@index' ]);
-Route::get('/tes', function(){
-	return app('OrderRepo')->getOrderGallery([ 'order_id' => 1 ]);
-});
 
 
 /* Page that Require Authentication */

@@ -4,9 +4,9 @@
 			<div class="col-lg-8">
 				<ul class="list-unstyled">
 					<li><a href="{{ route('page.about_us') }}">Tentang Kami</a></li>
-					<li><a href="careers.php">Careers</a></li>
+					<li><a href="{{ route('page.careers') }}">Careers</a></li>
 					<li><a href="{{ route('page.tos') }}">Syarat dan Ketentuan</a></li>
-					<li><a href="storage-rules.php">Aturan Penyimpanan</a></li>
+					<li><a href="{{ route('page.storage_rules') }}">Aturan Penyimpanan</a></li>
 					<li><a href="contact-us.php">Kontak Kami</a></li>
 				</ul>
 			</div>

@@ -15,7 +15,7 @@
 				</label>
 				{{ Form::hidden("stuff[$i][id]", $stuff['id']) }}
 				{{ Form::hidden("stuff[$i][type]", $stuff['type']) }}
-				{{ Form::textarea("stuff[$i][description]", $stuff['description'], ['class' => 'form-control', 'rows' => '3', 'placeholder' => 'Write your stuff in this '. $stuff['type']]) }}
+				{{ Form::textarea("stuff[$i][description]", $stuff['description'], ['class' => 'form-control', 'rows' => '3', 'placeholder' => 'Write your stuff in this '. $stuff['type'], 'required' => true]) }}
 				<?php 
 				$i++;
 				?>

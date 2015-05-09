@@ -29,11 +29,13 @@
 
 @section('body')
 	
-	<a class="btn btn-info" data-toggle="modal" href="{{ route('ajax.modalOrderGalleryUpload', $storage['id']) }}" data-target="#ajaxModal2">
-		<i class="glyphicon glyphicon-picture"></i> Upload Image(s)
-	</a>
-	
-	<hr>
+	@if($storage['order_schedule']['status'] == 0)
+		<a class="btn btn-info" data-toggle="modal" href="{{ route('ajax.modalOrderGalleryUpload', $storage['id']) }}" data-target="#ajaxModal2">
+			<i class="glyphicon glyphicon-picture"></i> Upload Image(s)
+		</a>
+		
+		<hr>
+	@endif
 	
 	<p class="afm error-alert text-center"></p>
 
@@ -42,7 +44,10 @@
 		@foreach( $gallery as $g )
 		
 			<div class="img-wrap img-{{ $g['id'] }}">
-				<span class="remove" data-filename="{{ $g['filename'] }}" data-id="{{ $g['id'] }}">&times;</span>
+				@if($storage['order_schedule']['status'] == 0)
+					<span class="remove" data-filename="{{ $g['filename'] }}" data-id="{{ $g['id'] }}">&times;</span>
+				@endif
+
 				<a href="{{ route('img.show', $g['filename']) }}?size=lightbox" data-lightbox="{{ $storage['order_payment']['code'] }}">
 					<img class="img-responsive img-thumbnail" src="{{ route('img.show', $g['filename']) }}?size=medium" style="margin: 5px" />
 				</a>

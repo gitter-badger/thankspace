@@ -65,7 +65,7 @@ function getTotalTransactions( $id = NULL ) {
 	
 	if ( $id ) {
 		$code = DB::table('order_payment')->where('order_id', $id)->first();
-		$ucode = str_replace('TH', '', $code->code);
+		$ucode = $code->unique;
 	} else {
 		$ucode = 0;
 	}

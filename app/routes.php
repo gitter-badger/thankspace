@@ -79,3 +79,4 @@ Route::group(['prefix' => 'ajax', 'before' => 'ajax'], function() {
 
 Route::post('image', [ 'as' => 'img.post', 'uses' => 'ImagesController@store' ]);
 Route::get('image/{id}', [ 'as' => 'img.show', 'uses' => 'ImagesController@show' ]);
+Route::get('image/{id}/remove', [ 'as' => 'img.remove', 'uses' => 'ImagesController@remove' ]);

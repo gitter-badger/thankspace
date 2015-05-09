@@ -2,7 +2,7 @@
 
 class DeliverySchedule extends \Eloquent {
 
-	protected $fillable = [ 'order_id' ];
+	protected $fillable = [ 'user_id', 'order_id' ];
 	
 	protected $table = 'delivery_schedule';
 	

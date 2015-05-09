@@ -314,4 +314,28 @@ $(function() {
 		e.preventDefault();
 		$('.return-form-list').submit();
 	});
+	
+	$(document).on('click', '.remove', function(){
+		var id = $(this).data('id');
+		var aw = confirm('Are you sure ?');
+		if(aw) {
+			$.ajax({
+				url: "/image/"+ id +"/remove",
+				type: "GET",
+				data: { filename : $(this).data('filename') },
+				beforeSend:function() {
+					$('img-'+id).css({ 'opacity' : '.5' });
+				},
+				success:function(res){
+					if (res.success) {
+						$('.img-'+id).remove();
+					} else {
+						$('.afm').html('<i class="fa fa-meh-o"></i> ' + res.message);
+					}
+				}
+			});
+		} else {
+			return false;
+		}
+	});
 });

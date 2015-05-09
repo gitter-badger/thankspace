@@ -35,7 +35,7 @@ class OrderRepo extends BaseRepo
 		/**
 		 * For driver list page
 		 */
-		elseif($user_type == 'driver')
+		elseif( $user_type == 'driver' )
 		{
 			if (!empty($option['page_name']))
 			{
@@ -49,7 +49,7 @@ class OrderRepo extends BaseRepo
 		 */
 		else
 		{
-			$order = $order->with('User');
+			$order = $order->with('User', 'deliverySchedule.user');
 		}
 		
 		$order = $order->where('order.status', 1)->paginate(20);
@@ -72,8 +72,14 @@ class OrderRepo extends BaseRepo
 		$order = \DeliverySchedule::with('order.user', 'order.orderSchedule')
 			->join('order_payment', 'order_payment.order_id', '=', 'delivery_schedule.order_id')
 			->join('order_schedule', 'order_schedule.order_id', '=', 'delivery_schedule.order_id')
-			->select('delivery_schedule.*', 'order_schedule.*', 'order_payment.code')
-			->paginate(20);
+			->select('delivery_schedule.*', 'order_schedule.*', 'order_payment.code');
+		
+		if (!empty($option['user_id']))
+		{
+			$order = $order->where('user_id', $option['user_id']);
+		}
+		
+		$order = $order->paginate(20);
 
 		return $order;
 	}
@@ -244,8 +250,11 @@ class OrderRepo extends BaseRepo
 	protected function _save_orderPayment($order_id, $orderPayment)
 	{
 		$input = $orderPayment;
-		$input['order_id'] = $order_id;
-		$input['code'] = null;
+		$input = [
+			'order_id'	=> $order_id,
+			'code'		=> NULL,
+			'unique'	=> NULL,
+		];
 		return \OrderPayment::create($input);
 	}
 	

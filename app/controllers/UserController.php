@@ -47,7 +47,7 @@ class UserController extends BaseController {
 		} else {
 			$data = [
 				'storages'	=> $orderRepo->getStorageList([ 'page_name' => 'page_queue' ]),
-				'tasks'		=> $orderRepo->getDeliverySchedule([ 'page_name' => 'page_task' ]),
+				'tasks'		=> $orderRepo->getDeliverySchedule([ 'page_name' => 'page_task', 'user_id' => Auth::user()->id ]),
 			];
 
 			return View::make('driver.index', $data);

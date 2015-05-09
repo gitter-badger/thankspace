@@ -8,15 +8,16 @@ class ImagesController extends BaseController {
 		
 		$size = (!Input::has('size')) ? '' : Input::get('size') ;
 		
-		$_size = array(
-			'200x'		=> array('width' => 200, 'height' => 200),
-			'normal'	=> array('width' => 125, 'height' => 125),
-			'medium'	=> array('width' => 100, 'height' => 100),
-			'stream'	=> array('width' => 80,  'height' => 80),
-			'feed'		=> array('width' => 60,  'height' => 60),
-			'small'		=> array('width' => 40,  'height' => 40),
-			'tiny'		=> array('width' => 20,  'height' => 20),
-		);
+		$_size = [
+			'lightbox'	=> [ 'width' => 650, 'height' => NULL ],
+			'200x'		=> [ 'width' => 200, 'height' => 200 ],
+			'normal'	=> [ 'width' => 125, 'height' => 125 ],
+			'medium'	=> [ 'width' => 100, 'height' => 100 ],
+			'stream'	=> [ 'width' => 80,  'height' => 80 ],
+			'feed'		=> [ 'width' => 60,  'height' => 60 ],
+			'small'		=> [ 'width' => 40,  'height' => 40 ],
+			'tiny'		=> [ 'width' => 20,  'height' => 20 ],
+		];
 		
 		$key = public_path('img/'.$id.'.jpg');
 		$get = ( file_exists($key) ? $key : public_path('img/nopic.png') );
@@ -70,6 +71,29 @@ class ImagesController extends BaseController {
 		
 		// return our results in a files object
 		return [ 'files' => $results ];
+	}
+	
+	public function remove($id)
+	{
+		if ( ! Request::ajax()) {
+			return App::abort(404);
+		}
+		
+		$filename = Input::get('filename');
+		
+		$remove = OrderGallery::where('id', $id)->delete();
+		
+		if ( $remove )
+		{
+			if ( unlink( public_path('img/'.$filename) ) )
+			{
+				return [ 'success' => true ];
+			} else {
+				return [ 'message' => 'Whoops, something went wrong ! Please try again' ];
+			}
+		}
+		
+		return [ 'message' => 'Whoops, something went wrong ! Please try again' ];
 	}
 	
 }

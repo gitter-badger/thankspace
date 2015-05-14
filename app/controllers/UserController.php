@@ -39,8 +39,8 @@ class UserController extends BaseController {
 		if ( Input::has('sch') && Input::get('sch') == 'return' )
 		{
 			$data = [
-				'schedules'	=> $orderRepo->getReturnSchedule([ 'page_name' => 'page_schedule' ]),
-				'tasks'		=> $orderRepo->getReturnSchedule([ 'page_name' => 'page_task', 'user_id' => Auth::user()->id ]),
+				'schedules'	=> $orderRepo->getReturnSchedule([ 'page_name' => 'page_schedule', 'status' => 1 ]),
+				'tasks'		=> $orderRepo->getReturnSchedule([ 'page_name' => 'page_task', 'user_id' => Auth::user()->id, 'status' => 1 ]),
 			];
 			
 			return View::make('driver.index_return', $data);
@@ -62,6 +62,40 @@ class UserController extends BaseController {
 			'invoices' => $orderRepo->getOrderList()
 		];
 		return View::make('admin.history', $data);
+	}
+
+
+	public function returnRequest()
+	{
+		$data = [
+			'returns' => app('OrderRepo')->getReturnSchedule(['status' => 0, 'is_paginated' => 1]),
+		];
+		return View::make('admin.return_request', $data);
+	}
+
+
+	/**
+	 * [postReturnRequest description]
+	 * 
+	 * @param  integer $id return_request_id
+	 * @return Redirect
+	 */
+	public function postReturnRequest($return_id)
+	{
+		$return = app('OrderRepo')->getReturnSchedule(['id' => $return_id, 'status' => 0]);
+		$data = [
+			'return' => $return,
+		];
+
+		\Mail::send('emails.return_schedule_confirm', $data, function($message) use ($return)
+		{
+			$user = $return['order']['user'];
+
+			$message->to($user['email'], $user['name'])
+					->subject('[ThankSpace] Confirmation return #'. $return['order']['order_payment']['code'].' di ThankSpace');
+		});
+
+		return Redirect::route('admin.returnRequest')->withMessage(['success' => 'Return request telah sukses terkonfirmasi']);
 	}
 	
 	
@@ -264,6 +298,17 @@ class UserController extends BaseController {
 		];
 		return View::make('modal.invoice_detail', $data);
 	}
+	
+	
+	public function modalReturnRequestConfirmation($return_id)
+	{
+		$return = app('OrderRepo')->getReturnSchedule(['id' => $return_id, 'status' => 0]);
+		$data = [
+			'modal_title'	=> 'Return confirmation',
+			'return'		=> $return,
+		];
+		return View::make('modal.return_confirmation', $data);
+	}
 
 
 	public function modalStorageDetail($id)
@@ -296,8 +341,10 @@ class UserController extends BaseController {
 	public function modalStorageReturn($id)
 	{
 		$storage = app('UserRepo')->getStorageDetail($id);
+		$cities = $this->getCities();
 		$data = [
 			'storage' => $storage,
+			'list_cities' => $cities,
 			'modal_title' => 'Return Schedule Order : #'. $storage['order_payment']['code'],
 		];
 		return View::make('modal.storage_return', $data);

@@ -341,6 +341,8 @@ class OrderRepo extends BaseRepo
 	public function createReturnSchedule(array $input)
 	{
 		$input['user_id'] = ( ! empty($input['user_id']) ? $input['user_id'] : \Auth::user()->id );
+		$input['status'] = 1;
+
 		$validation = \ReturnSchedule::validate($input, ['stuffs' => 'required|array']);
 		if ( $validation->fails() )
 		{
@@ -348,6 +350,12 @@ class OrderRepo extends BaseRepo
 			return false;
 		}
 
+		if ( ! empty($input['city_id']))
+		{
+			$input['status'] = (\Auth::user()->city_id == $input['city_id'])
+				? 1
+				: 0 ;
+		}
 		$returnSchedule = \ReturnSchedule::create($input);
 
 		if ($returnSchedule)
@@ -361,7 +369,7 @@ class OrderRepo extends BaseRepo
 	/**
 	 * Get available & driver return schedule
 	 * 
-	 * @param  array  $option
+	 * @param  array  $option [id, user_id, status, is_paginated]
 	 * @return \Illuminate\Database\Eloquent\Model
 	 */
 	public function getReturnSchedule(array $option = array())
@@ -374,8 +382,21 @@ class OrderRepo extends BaseRepo
 		} else {
 			$schedule = $schedule->where('user_id', '=', '');
 		}
+
+		if ( isset($option['status']) )
+		{
+			$schedule = $schedule->where('status', $option['status']);
+		}
 		
-		$schedule = $schedule->paginate(20);
+		if (! empty($option['id'])) {
+			$schedule = $schedule->find($option['id']);
+		}
+		elseif ( ! empty($option['is_paginated']) )
+		{
+			$schedule = $schedule->paginate(20);
+		} else {
+			$schedule = $schedule->get();
+		}
 		
 		if ( $schedule ) {
 			return $schedule;

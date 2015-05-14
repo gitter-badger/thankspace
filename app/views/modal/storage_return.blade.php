@@ -21,8 +21,17 @@
 		</div>
 		<div class="form-group">
 			<label class="col-md-3">Other Address</label>
-			<div class="col-md-9">
+			<div class="col-md-5">
 				<input type="text" name="other_address" value="" class="form-control" placeholder="This is optional">
+			</div>
+			<div class="col-md-4">
+				{{ Form::select('city_id', $list_cities, null, ['class' => 'form-control']) }}
+			</div>
+		</div>
+		<div class="form-group" style="margin-top: -10px;">
+			<label class="col-md-3"></label>
+			<div class="col-md-9">
+				<span class="help-block">* Untuk pengembalian barang dengan kota yang berbeda akan dikenakan biaya tambahan</span>
 			</div>
 		</div>
 

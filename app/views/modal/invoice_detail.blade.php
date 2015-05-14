@@ -84,14 +84,16 @@
 	<p>{{ $invoice['order_payment']['message'] }}</p>
 	@endif
 	
-	<p>
-		<b>Detail Barang</b>
-	</p>
-	<p>
-		<a data-toggle="modal" href="{{ route('ajax.modalStorageDetail', $invoice['id']) }}" data-target="#ajaxModal">
-			Click here to view
-		</a>
-	</p>
+	@if( ! Input::get('without_detail_stuff') )
+		<p>
+			<b>Detail Barang</b>
+		</p>
+		<p>
+			<a data-toggle="modal" href="{{ route('ajax.modalStorageDetail', $invoice['id']) }}" data-target="#ajaxModal">
+				Click here to view
+			</a>
+		</p>
+	@endif
 	
 	<p>
 		<b>Total Biaya : </b>Rp {{ getTotalTransactions($invoice['id']) }}

@@ -76,8 +76,13 @@ function getTotalTransactions( $id = NULL ) {
 }
 
 
-function makeFormatTime($y, $m, $d)
+function makeFormatTime($y, $m = null, $d = null)
 {
+	if ($m == null and $d == null)
+	{
+		$date = $y;
+		return \Carbon\Carbon::parse($date)->format('l, jS F Y');
+	}
 	return \Carbon\Carbon::createFromDate($y, $m, $d)->format('l, jS F Y');
 }
 

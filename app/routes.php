@@ -31,6 +31,10 @@ Route::group(['before' => 'auth'], function() {
 	Route::post('/check-password', [ 'as' => 'user.check_password', 'uses' => 'UserController@checkPassword' ]);
 	Route::post('/confirm-payment', [ 'as' => 'user.confirm_payment', 'uses' => 'UserController@confirmPayment' ]);
 
+
+	Route::get('/return-request', [ 'as' => 'admin.returnRequest', 'uses' => 'UserController@returnRequest' ]);
+	Route::post('/return-request/{id}', [ 'as' => 'admin.postReturnRequest', 'uses' => 'UserController@postReturnRequest' ]);
+
 });
 
 /* Order Pages */
@@ -75,6 +79,8 @@ Route::group(['prefix' => 'ajax', 'before' => 'ajax'], function() {
 	
 	Route::get('/order-gallery/{id}', [ 'as' => 'ajax.modalOrderGallery', 'uses' => 'OrderController@modalOrderGallery' ]);
 	Route::get('/order-gallery/{id}/upload', [ 'as' => 'ajax.modalOrderGalleryUpload', 'uses' => 'OrderController@modalOrderGalleryUpload' ]);
+
+	Route::get('/return-request-confirmation/{id}', [ 'as' => 'ajax.returnRequestConfirmation', 'uses' => 'UserController@modalReturnRequestConfirmation' ]);
 });
 
 Route::post('image', [ 'as' => 'img.post', 'uses' => 'ImagesController@store' ]);

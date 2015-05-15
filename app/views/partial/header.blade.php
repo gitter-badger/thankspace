@@ -28,6 +28,15 @@
 			
 			@if( Auth::check() )
 				<ul class="nav navbar-nav navbar-right">
+					@if( Auth::user()->type == 'admin' )
+						<li @if(Request::segment(1) == 'return-request') class="active" @endif >
+							<a href="{{ route('admin.returnRequest') }}">
+								<i class="fa fa-truck" style="font-size: 14pt;"></i>
+								Returning Request
+								<span class="label label-danger">20</span>
+							</a>
+						</li>
+					@endif
 					<li class="dropdown">
 						<a href="{{ route('user.dashboard') }}" class="dropdown-toggle" data-toggle="dropdown" >
 							<i class="fa fa-user" style="font-size: 14pt;"></i> {{ Auth::user()->fullname }}
@@ -63,7 +72,7 @@
 								</li>
 								<li>
 									<a href="{{ route('user.dashboard') }}">
-										<i class="fa fa-archive"></i> Order History
+										<i class="fa fa-history"></i> Order History
 									</a>
 								</li>
 								<li class="divider"></li>

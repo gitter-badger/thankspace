@@ -1,3 +1,5 @@
+@if ( !Auth::user() )
+
 {{-- Modal Log In - Mulai --}}
 <div class="modal fade text-center bs-example-modal-sm" id="sign-in-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-sm">
@@ -88,6 +90,20 @@
 								</div>
 							</div>
 						</div>
+						<div class="form-group">
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding-bottom:20px;">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-edit fa-fw"></i></span>
+									<input type="text" class="form-control floating-label" data-hint="Alamat diperlukan untuk pengiriman" name="address" placeholder="Alamat anda" required>
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-phone fa-fw"></i></span>
+									{{ Form::select('city_id', $list_cities, null, [ 'class' => 'form-control', 'required' => true, 'style' => 'margin-top: 5px;' ]) }}
+								</div>
+							</div>
+						</div>
 						<div class="form-group">                    
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding-bottom:20px;">
 								<div class="input-group">
@@ -128,6 +144,7 @@
 </div>
 {{-- Modal Sign Up - Selesai --}}
 
+@endif
 
 {{-- Modal Forgot Password  - Mulai --}}
 <div class="modal fade text-center" id="forgot-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">

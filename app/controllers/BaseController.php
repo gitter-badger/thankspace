@@ -54,7 +54,7 @@ class BaseController extends Controller {
 
 	public function getCities()
 	{
-		$result = ['' => 'Select City'];
+		$result = [ '' => 'Select City' ];
 		$cities = City::select('id', 'name', 'status')->where('status', 1)->get();
 		foreach($cities as $c)
 		{

@@ -114,7 +114,8 @@ class UserController extends BaseController {
 	
 	public function memberAdd()
 	{
-		$data = [];
+		$cities = $this->getCities();
+		$data = [ 'list_cities' => $cities ];
 		return View::make('admin.member-add', $data);
 	}
 	
@@ -138,7 +139,11 @@ class UserController extends BaseController {
 	public function memberEdit($id)
 	{
 		$user = app('UserRepo')->_getUserById($id);
-		$data = [ 'user' => $user ];
+		$cities = $this->getCities();
+		$data = [
+			'user'			=> $user,
+			'list_cities'	=> $cities
+		];
 		return View::make('admin.member-edit', $data);
 	}
 	

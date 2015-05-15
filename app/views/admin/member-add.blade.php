@@ -73,6 +73,14 @@
 											{{ Form::text('address', null, [ 'class' => 'form-control floating-label', 'data-hint' => 'Masukkan Alamat', 'placeholder' => 'Alamat', 'required' => true ]) }}
 										</div>
 									</div>
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding-bottom:20px;">
+										<div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-edit fa-fw"></i></span>
+											{{ Form::select('city_id', $list_cities, null, [ 'class' => 'form-control', 'required' => true, 'style' => 'margin-top: 5px;' ]) }}
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
 									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 										<div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-edit fa-fw"></i></span>
@@ -84,9 +92,6 @@
 											}}
 										</div>
 									</div>
-								</div>
-
-								<div class="form-group">
 									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 										<div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-edit fa-fw"></i></span>

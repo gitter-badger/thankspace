@@ -46,8 +46,11 @@
 	</div>
 	<div class="form-group">
 		<label for="select" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">Alamat Anda</label>
-		<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9" style="padding-bottom:20px;">
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding-bottom:20px;">
 			{{ Form::text('address', null, ['class' => 'form-control floating-label', 'data-hint' => 'Alamat diperlukan untuk pengiriman', 'placeholder' => 'Alamat anda']) }}
+		</div>
+		<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="padding-bottom:20px;">
+			{{ Form::select('city_id', $list_cities, null, [ 'class' => 'form-control', 'style' => 'margin-top: 5px;' ]) }}
 		</div>
 	</div>
 	<div class="form-group">

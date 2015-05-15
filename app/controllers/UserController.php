@@ -95,6 +95,9 @@ class UserController extends BaseController {
 					->subject('[ThankSpace] Confirmation return #'. $return['order']['order_payment']['code'].' di ThankSpace');
 		});
 
+		// update the return schedule
+		\ReturnSchedule::where('id', $return_id)->update(['status' => 1]);
+
 		return Redirect::route('admin.returnRequest')->withMessage(['success' => 'Return request telah sukses terkonfirmasi']);
 	}
 	

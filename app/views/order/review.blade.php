@@ -27,16 +27,26 @@
 							<div class="col-lg-4">
 								<h3>Jadwal Pengantaran</h3>
 								<hr>
-								<p class="text-left">Date: {{ makeFormatTime($review['schedule']['delivery_year'], $review['schedule']['delivery_month'], $review['schedule']['delivery_day']) }}
-								<br>
-								Time: {{ $review['schedule']['delivery_time'] }}</p>
+								<p class="text-left">
+									Date: {{ makeFormatTime($review['schedule']['delivery_year'], $review['schedule']['delivery_month'], $review['schedule']['delivery_day']) }}
+									<br>
+									Time: {{ $review['schedule']['delivery_time'] }}
+								</p>
 							</div>
 
 							<div class="col-lg-4">
 								<h3>Jadwal Pengambilan</h3>
 								<hr>
 								<p class="text-left">
-									{{ $review['schedule']['type'] }}
+									@if($review['schedule']['type'] == 'later')
+										<p class="text-left">
+											Date: {{ makeFormatTime($review['schedule']['pickup_year'], $review['schedule']['pickup_month'], $review['schedule']['pickup_day']) }}
+											<br>
+											Time: {{ $review['schedule']['pickup_time'] }}
+										</p>
+									@else
+										{{ $review['schedule']['type'] }}
+									@endif
 								</p>
 							</div>
 						</div>

@@ -28,10 +28,9 @@ class OrderController extends BaseController {
 
 	public function payment()
 	{
-		$cities = $this->getCities();
 		$data = [
 			'title' => __FUNCTION__,
-			'list_cities' => $cities,
+			'list_cities' => getCities(),
 			'form_data' => Session::get('order.payment'),
 		];
 		return View::make('order.payment', $data);

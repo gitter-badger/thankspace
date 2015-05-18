@@ -109,3 +109,15 @@ function calcPrice($type, $qty, $withCurrency = false)
 	}
 	return $price;
 }
+
+
+function getCities()
+{
+	$result = [ '' => 'Select City' ];
+	$cities = City::select('id', 'name', 'status')->where('status', 1)->get();
+	foreach($cities as $c)
+	{
+		$result[$c['id']] = $c['name'];
+	}
+	return $result;
+}

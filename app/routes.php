@@ -6,6 +6,15 @@
 include_once(app_path('helpers.php'));
 
 
+/**
+ * Register view composer
+ */
+View::composer(array('partial.modal'), function($view)
+{
+    $view->with('list_cities', getCities());
+});
+
+
 Route::get('/', [ 'as' => 'page.index', 'uses' => 'PageController@index' ]);
 
 

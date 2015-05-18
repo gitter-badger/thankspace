@@ -4,8 +4,7 @@ class PageController extends BaseController {
 
 	public function index()
 	{
-		$cities = $this->getCities();
-		$data = [ 'list_cities' => $cities ];
+		$data = [];
 		return View::make('page.index', $data);
 	}
 	

@@ -99,7 +99,7 @@
 							</div>
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-phone fa-fw"></i></span>
+									<span class="input-group-addon"><i class="fa fa-map-marker fa-fw"></i></span>
 									{{ Form::select('city_id', $list_cities, null, [ 'class' => 'form-control', 'required' => true, 'style' => 'margin-top: 5px;' ]) }}
 								</div>
 							</div>

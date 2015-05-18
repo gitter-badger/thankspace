@@ -88,7 +88,11 @@
 											</tr>
 										@endforeach
 									@else
-										Tidak ada
+										<tr>
+											<td colspan="5">
+												<h4 class="text-center"> Tidak ada data </h4>
+											</td>
+										</tr>
 									@endif
 									</tbody>
 								</table>

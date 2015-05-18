@@ -39,8 +39,8 @@ class UserController extends BaseController {
 		if ( Input::has('sch') && Input::get('sch') == 'return' )
 		{
 			$data = [
-				'schedules'	=> $orderRepo->getReturnSchedule([ 'page_name' => 'page_schedule', 'status' => 1 ]),
-				'tasks'		=> $orderRepo->getReturnSchedule([ 'page_name' => 'page_task', 'user_id' => Auth::user()->id, 'status' => 1 ]),
+				'schedules'	=> $orderRepo->getReturnSchedule([ 'is_paginated' => 1, 'page_name' => 'page_schedule' ]),
+				'tasks'		=> $orderRepo->getReturnSchedule([ 'is_paginated' => 1, 'page_name' => 'page_task', 'user_id' => Auth::user()->id ]),
 			];
 			
 			return View::make('driver.index_return', $data);

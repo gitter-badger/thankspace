@@ -414,7 +414,7 @@ class OrderRepo extends BaseRepo
 	 */
 	public function setReturnedSet(array $input = array())
 	{
-		$confirm = \ReturnSchedule::whereIn('id', $input['return_schedule_id'])->update([ 'status' => 1 ]);
+		$confirm = \ReturnSchedule::whereIn('id', $input['return_schedule_id'])->update([ 'status' => 2 ]);
 		if ( $confirm )
 		{
 			$schedule = $input['return_schedule_id'];

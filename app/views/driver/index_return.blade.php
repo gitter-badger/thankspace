@@ -51,7 +51,11 @@
 										<td>{{ $t['order']['user']['fullname'] }}</td>
 										<td>{{ $t['order']['user']['phone'] }}</td>
 										<td>
-											{{ $t['other_address'] or $t['order']['user']['address'] }}
+											@if( $t['other_address'] )
+												{{ $t['other_address'] }}
+											@else
+												{{ $t['order']['user']['address'] }}
+											@endif
 										</td>
 										<td>
 											<a data-toggle="modal" href="{{ route('ajax.modalReturnedStuff', $t['id']) }}" data-target="#ajaxModal">
@@ -64,14 +68,14 @@
 											{{ $t['return_time'] }}
 										</td>
 										<td>
-											@if( $t['status'] == 1 )
+											@if( $t['status'] == 2 )
 											<span class="label label-success">Returned</span>
 											@else
 											<span class="label label-warning">Siap Dikembalikan</span>
 											@endif
 										</td>
 										<td>
-											@if( $t['status'] != 1 )
+											@if( $t['status'] != 2 )
 											<div class="checkbox">
 												<label>
 													{{ Form::checkbox('return_schedule_id[]', $t['id'], null, []) }}
@@ -136,7 +140,11 @@
 											<td>{{ $s['order']['user']['fullname'] }}</td>
 											<td>{{ $s['order']['user']['phone'] }}</td>
 											<td>
-												{{ $s['other_address'] or $s['order']['user']['address'] }}
+												@if( $s['other_address'] )
+													{{ $s['other_address'] }}
+												@else
+													{{ $s['order']['user']['address'] }}
+												@endif
 											</td>
 											<td>
 												<a data-toggle="modal" href="{{ route('ajax.modalReturnedStuff', $s['id']) }}" data-target="#ajaxModal">

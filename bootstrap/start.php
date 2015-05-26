@@ -26,7 +26,7 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(array(
 
-	'local' => array('WHITERUN', 'antoni-K46CB', 'Human', 'WIN-2RVCJDVAQS2'),
+	'local' => array('WHITERUN', 'antoni-K46CB', 'Human', 'Ghost'),
 	
 	'production' => array('server1'),
 

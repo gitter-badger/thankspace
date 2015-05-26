@@ -92,7 +92,7 @@
 					</ul>
 				</p>
 				<center>
-				<a href="order.php"><button type="submit" class="btn btn-warning"><i class="fa fa-shopping-cart"></i> Order Sekarang</button></a>
+				<a href="{{ route('order.index') }}"><button type="submit" class="btn btn-warning"><i class="fa fa-shopping-cart"></i> Order Sekarang</button></a>
 				</center>
 			</div>
 			<div class="col-lg-6 col-sm-6">

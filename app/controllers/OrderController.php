@@ -16,6 +16,10 @@ class OrderController extends BaseController {
 
 	public function schedule()
 	{
+		if ( empty(Session::get('order.index'))) {
+			return Redirect::route('order.index');
+		}
+
 		$data = [
 			'title' => __FUNCTION__,
 			'calendar' => $this->getFormCalendar(),
@@ -28,6 +32,10 @@ class OrderController extends BaseController {
 
 	public function payment()
 	{
+		if ( empty(Session::get('order.schedule'))) {
+			return Redirect::route('order.schedule');
+		}
+
 		$data = [
 			'title' => __FUNCTION__,
 			'list_cities' => getCities(),
@@ -39,6 +47,10 @@ class OrderController extends BaseController {
 
 	public function review()
 	{
+		if ( empty(Session::get('order.payment'))) {
+			return Redirect::route('order.payment');
+		}
+
 		$data = [
 			'title' => __FUNCTION__,
 			'review' => Session::get('order'),

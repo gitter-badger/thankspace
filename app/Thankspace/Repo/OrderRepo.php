@@ -250,7 +250,7 @@ class OrderRepo extends BaseRepo
 	protected function _save_orderPayment($order_id, $orderPayment)
 	{
 		$input = $orderPayment;
-		$input = [
+		$input += [
 			'order_id'	=> $order_id,
 			'code'		=> NULL,
 			'unique'	=> NULL,

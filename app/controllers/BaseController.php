@@ -21,7 +21,11 @@ class BaseController extends Controller {
 		$result = [];
 
 		// get date
-		for ($i=1; $i <= 30 ; $i++) { 
+		for ($i=1; $i <= 9 ; $i++) { 
+			$i = (int) "0".$i;
+			$result['date'][$i] = $i;
+		}
+		for ($i=10; $i <= 30 ; $i++) { 
 			$result['date'][$i] = $i;
 		}
 

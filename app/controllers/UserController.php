@@ -114,7 +114,7 @@ class UserController extends BaseController {
 	
 	public function memberAdd()
 	{
-		$cities = $this->getCities();
+		$cities = getCities();
 		$data = [ 'list_cities' => $cities ];
 		return View::make('admin.member-add', $data);
 	}
@@ -139,7 +139,7 @@ class UserController extends BaseController {
 	public function memberEdit($id)
 	{
 		$user = app('UserRepo')->_getUserById($id);
-		$cities = $this->getCities();
+		$cities = getCities();
 		$data = [
 			'user'			=> $user,
 			'list_cities'	=> $cities
@@ -349,7 +349,7 @@ class UserController extends BaseController {
 	public function modalStorageReturn($id)
 	{
 		$storage = app('UserRepo')->getStorageDetail($id);
-		$cities = $this->getCities();
+		$cities = getCities();
 		$data = [
 			'storage' => $storage,
 			'list_cities' => $cities,

@@ -8,7 +8,7 @@
 	
 	<div class="page-header" id="banner">
 		<div class="row text-center">
-			<h3>About Us</h3>
+			<h3>Partnership</h3>
 		</div>
 	</div>
 	<div class="container">
@@ -19,9 +19,15 @@
 			<div class="col-lg-9">
 				<div class="panel panel-default">
 					<div class="panel-body">
-						<h2 id="navbar">ThankSpace</h2>
-						<p>ThankSpace adalah layanan On-demand Storage dimana kami menawarkan sebuah jasa penyimpanan barang yang fleksibel berdasarkan jangka waktu,  ruang dan harga  yang sesuai dengan kebutuhan customer.
-						<h2 id="navbar">Storage yang Modern</h2>
+						<h2 id="navbar">Sistim Affiliasi</h2>
+						<p>Program Afiliasi ThankSpace merupakan penghargaan secara financial kepada mereka yang mereferensikan website kami kepada konsumen & sebagai ucapan terima kasih karena telah mendatangkan konsumen. 
+						<p>Hal ini dibentuk dengan konsep yang benar-benar menguntungkan bagi Affiliate, dimana pihak Affiliate akan mendapatkan komisi atas setiap penggunaan jasa ThankSpace yang dilakukan dari link/counter mereka.
+					<p class="text-center">
+						<a id="step5" href="{{ route('order.index') }}" class="btn btn-warning btn-lg">
+							<i class="fa fa-shopping-cart"></i> <span>Info Detail & Daftar Affiliasi</span>
+						</a>
+					</p>
+						<h2 id="navbar">Sistim Franchise / Buka Cabang</h2>
 							<ul>
 								<li>Customer melakukan order secara online di www.thankspace.com (atau telepon kami di 800-920-9440) dan menjadwalkan waktu pengantaran box penyimpanan.
 								</li>

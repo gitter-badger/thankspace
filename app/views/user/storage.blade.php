@@ -27,7 +27,7 @@
 										<th></th>
 										<th>Box Details</th>
 										<th>Status</th>
-										<th>Aksi</th>
+										<th>Action</th>
 									</tr>
 								</thead>
 								<tbody>

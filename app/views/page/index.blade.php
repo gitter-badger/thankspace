@@ -39,7 +39,7 @@
 				<div class="col-lg-12" id="step3" ><center>
 					<h1>Location</h1>
 					<p class="lead">
-						ThankSpace saat ini melayani layanan <i>On-demand Storage</i> khusus area kota Surabaya & Denpasar.<br>
+						ThankSpace saat ini melayani layanan <i>Storage on Demand</i> khusus area kota Surabaya & Denpasar.<br>
 						Jakarta (soon) • Singapore (soon) • Shanghai (soon)
 					</p>
 				</div>
@@ -49,12 +49,13 @@
 							<div class="img-responsive" id='thankspacesby'></div>
 						</div>
 						<div class="options">
-							<h3>Surabaya</h3>
+							<h3>ThankSpace Surabaya</h3>
 							<p>
-								ThankSpace Office, Jl. Panggung No.18<br>
-								surabaya@thankspace.com<br>
-								(031) 7562649
-							</p>
+								Jl. Panggung No.18, Pabean Cantian, Surabaya, Jawa Timur. 60162<br>
+								surabaya@thankspace.com	
+							</p>													
+								<h4>Telepon kami? </h4>
+								<h3>(031) 7562649</h3>
 						</div>
 					</div>
 				</div>
@@ -64,15 +65,22 @@
 							<div class="img-responsive" id='thankspacebali'></div>
 						</div>
 						<div class="options">
-							<h3>Denpasar</h3>
+							<h3>ThankSpace Denpasar</h3>
 							<p>
-								ThankSpace Office, Jl. Mahendradatta Selatan 7A<br>
-								denpasar@thankspace.com<br>
-								(031) 7562649
-							</p>
+								Jl. Mahendradatta Selatan 7A, Denpasar, Bali, 80361 <br>
+								denpasar@thankspace.com<br>	
+							</p>													
+								<h4>Telepon kami? </h4>
+								<h3>(031) 7562649</h3>
 						</div>
 					</div>
 				</div>
+				<div class="col-lg-12"><center>
+					<p class="lead">
+						Ingin membuka layanan Storage on Demand di kota Anda? <a href="{{ route('page.partnership') }}">Kerjasama</a> dengan ThankSpace sekarang!
+					</p>
+				</div>
+
 			</div>
 		</div>
 	</div>
@@ -81,10 +89,10 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-6 col-sm-6">
-				<h2>Reliable On-demand Storage in Indonesia</h2>
+				<h2>Reliable Storage on Demand in Indonesia</h2>
 				<p>
 					<ul>
-						<li>Storage bulanan mulai dari IDR 200.000</li>
+						<li>Gudang penyimpanan bulanan mulai dari Rp. 100.000</li>
 						<li>Menerima penyimpanan barang oversized / overlength / overwidth / overheight</li>
 						<li>Tim yang bisa membantu pengepakan barang Anda</li>
 						<li>Tracking status barang secara online</li>
@@ -108,7 +116,7 @@
 				<div class="col-lg-12 text-center" id="step4" >
 					<h1>Pricing</h1>
 					<p class="lead">
-						<i>On-demand Storage</i> dengan kemudahan pembayaran sesuai dengan <i>space</i> yang Anda dibutuhkan.
+						<i>Storage on Demand</i> / layanan gudang penyimpanan dengan kemudahan pembayaran sesuai dengan <i>space</i> yang Anda dibutuhkan.
 					</p>
 				</div>
 				<div class="col-lg-4 col-md-4 col-sm-4">
@@ -119,13 +127,12 @@
 							</a>
 						</div>
 						<div class="options">
-							<h3>IDR 50.000/bulan<br>untuk 1 box</h3>
+							<h3>Rp. 100.000/bulan<br>untuk 1 box</h3>
 							<p style="text-align:right">
 								<ul style="text-align:left">
 									<li>Kami kirim dan ambil <i>Storage Box</i> di tempat Anda gratis</li>
 									<li>Butuh bantuan pengepakan? Tim kami bantu dengan senang hati</li>
-									<li>Kirim kembali beberapa atau semua Box IDR 100.000</li>
-									<li>Minimal 4 Box</li>
+									<li>Kirim kembali beberapa atau semua Box tanpa biaya, Gratis!</li>
 									<li><i>Warehouse</i> yang keren, terjamin dan aman</li>
 								</ul>
 							</p>
@@ -140,12 +147,12 @@
 							</a>
 						</div>
 						<div class="options">
-							<h3>Flexible Price<br>untuk tiap barang</h3>
+							<h3>Rp. 150.000/bulan<br>untuk 1 barang</h3>
 							<p style="text-align:right">
 								<ul style="text-align:left">
 									<li>Wow! ingin menyimpan Vespa Anda? No problem</li>
 									<li>Kami juga menerima barang-barang oversized Anda</li>
-									<li>Kirim kembali beberapa atau semua barang IDR 100.000</li>
+									<li>Berat barang maksimal 25kg dan panjang maksimal 2 meter</li>
 									<li><i>Warehouse</i> yang keren, terjamin dan aman</li>
 								</ul>
 							</p>

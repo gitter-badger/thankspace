@@ -13,7 +13,7 @@ return array(
 	),
 
 	'box' => array(
-		'price' => '50000',
+		'price' => '100000',
 	),
 
 	'item' => array(

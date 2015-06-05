@@ -67,7 +67,7 @@
 		<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
 			<div class="checkbox">
 				<label> 
-					<input type="checkbox" name="agree" checked="true" /> Saya telah membaca dan menyetujui <a href="terms-and-conditions.php" target="_blank">Syarat & Ketentuan Thankspace</a>.
+					<input type="checkbox" name="agree" checked="true" /> Saya telah membaca dan menyetujui <a href="{{ route('page.tos') }}" target="_blank">Syarat & Ketentuan Thankspace</a>.
 				</label>
 			</div>       
 		</div>

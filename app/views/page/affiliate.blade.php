@@ -11,15 +11,9 @@
 			<h3>Frequently Asked Question (FAQ)</h3>
 		</div>
 	</div>
-
+	
 	<div class="container">
-		<div class="row">
-			<div class="col-lg-3 hidden-md hidden-sm hidden-xs ">
-			@include('page._side')
-			</div>
-			<div class="col-lg-9">
-				<div class="panel panel-default">
-				
+		<div class="panel panel-default col-lg-9 col-centered">
 			<div class="panel-body">
 				<h3 class="h4">On-demand flexible Storage in Indonesia</h3>
 				<h2 id="General" class="anchor-header">1. General</h2>
@@ -237,7 +231,7 @@
 
 						<div id="collapse12" class="panel-collapse collapse">
 							<div class="panel-body">
-								<p>When you want any of your boxes back you can log on to your SpaceWays account and choose exactly which boxes you want returned and decide on a delivery date. We charge a flat rate of Â£19 for retrieval of your boxes, it doesn't matter how many you wish to have returned. We can deliver to any address in our service area within 24 hours.</p>
+								<p>When you want any of your boxes back you can log on to your SpaceWays account and choose exactly which boxes you want returned and decide on a delivery date. We charge a flat rate of £19 for retrieval of your boxes, it doesn't matter how many you wish to have returned. We can deliver to any address in our service area within 24 hours.</p>
 							</div>
 						</div>
 					</div>
@@ -253,7 +247,7 @@
 
 						<div id="collapse13" class="panel-collapse collapse">
 							<div class="panel-body">
-								<p>To make any changes to your scheduled appointment contact our customer service team at <a href="mailto:contact@spaceways.co.uk">contact@spaceways.co.uk</a>. You can cancel a scheduled appointment free of charge if you give us at least 24 hours notice. Cancellations with less than 24 hours notice are charged Â£19.</p>
+								<p>To make any changes to your scheduled appointment contact our customer service team at <a href="mailto:contact@spaceways.co.uk">contact@spaceways.co.uk</a>. You can cancel a scheduled appointment free of charge if you give us at least 24 hours notice. Cancellations with less than 24 hours notice are charged £19.</p>
 							</div>
 						</div>    
 					</div>
@@ -269,7 +263,7 @@
 
 						<div id="collapse14" class="panel-collapse collapse">
 							<div class="panel-body">
-								<p>If you are unavailable or we cannot access or find the address for your scheduled appointment and you have not rescheduled or cancelled, our driver will wait 20 minutes whilst trying to contact you. If we cannot get hold of you, we charge a Â£19 fee and we will abort the attempt.</p>
+								<p>If you are unavailable or we cannot access or find the address for your scheduled appointment and you have not rescheduled or cancelled, our driver will wait 20 minutes whilst trying to contact you. If we cannot get hold of you, we charge a £19 fee and we will abort the attempt.</p>
 							</div>
 						</div>    
 					</div>
@@ -302,28 +296,28 @@
 
 						<div id="collapse16" class="panel-collapse collapse">
 							<div class="panel-body">
-								<p>SpaceWays costs Â£6 per month per box. Included in this price is:</p>
+								<p>SpaceWays costs £6 per month per box. Included in this price is:</p>
 									<ul>
 										<li>Free delivery of your boxes to your address, as many as you need.</li>
 										<li>Access to your items via your online inventory, online or on your phone.</li>
-										<li>Up to Â£100 insurance against loss and theft.</li>
+										<li>Up to £100 insurance against loss and theft.</li>
 									</ul>
-								<p>The price of storing bulky items starts at Â£3:</p>
+								<p>The price of storing bulky items starts at £3:</p>
 									<ul>
-										<li>Baby stroller - Â£9.00</li>
-										<li>Bike - Â£9.00</li>
-										<li>Golf clubs - Â£9.00</li>
-										<li>Luggage (large) - Â£9.00</li>
-										<li>Luggage (small) - Â£6.00</li>
-										<li>Own cardboard box (large) - Â£9.00</li>
-										<li>Own cardboard box (small) - Â£6.00</li>
-										<li>Ski/Snowboard - Â£6.00</li>
-										<li>Special archive boxes - Â£3.00</li>
-										<li>Tennis/squash racket - Â£3.00</li>
-										<li>Wardrobe box - Â£9.00</li>
+										<li>Baby stroller - £9.00</li>
+										<li>Bike - £9.00</li>
+										<li>Golf clubs - £9.00</li>
+										<li>Luggage (large) - £9.00</li>
+										<li>Luggage (small) - £6.00</li>
+										<li>Own cardboard box (large) - £9.00</li>
+										<li>Own cardboard box (small) - £6.00</li>
+										<li>Ski/Snowboard - £6.00</li>
+										<li>Special archive boxes - £3.00</li>
+										<li>Tennis/squash racket - £3.00</li>
+										<li>Wardrobe box - £9.00</li>
 									</ul>
 									<p>The price is dependent on the size of the bulky item. Please simply drop us an email at <a href="mailto:contact@spaceways.co.uk">contact@spaceways.co.uk</a> with details of the size and shape of the item you wish to store and we can give you a quote. It would be great if you could provide us with pictures too.</p>
-									<p>When you're ready to take your boxes or bulky items back you pay a flat fee of Â£19 for delivery, regardless of how many boxes you wish to have delivered, and we deliver them to your door at a time that is convenient for you.</p>
+									<p>When you're ready to take your boxes or bulky items back you pay a flat fee of £19 for delivery, regardless of how many boxes you wish to have delivered, and we deliver them to your door at a time that is convenient for you.</p>
 									<p>We don't charge any administration fees or deposits that you would normally pay with traditional self-storage, there's only a 3 month minimum term contract. We do however charge fees for no-shows when our drivers come to collect  or deliver boxes at the given address.
 									</p>
 							</div>
@@ -357,7 +351,7 @@
 
 						<div id="collapse18" class="panel-collapse collapse">
 							<div class="panel-body">
-							<p>Nope! We want to be as transparent and helpful as possible so we've included insurance in the flat rate for each box or bulky item up to the value of Â£100. Your items are covered in transit and also in our warehouse. This covers Â£100 worth of value on the full new replacement of what you store should anything go wrong.</p>
+							<p>Nope! We want to be as transparent and helpful as possible so we've included insurance in the flat rate for each box or bulky item up to the value of £100. Your items are covered in transit and also in our warehouse. This covers £100 worth of value on the full new replacement of what you store should anything go wrong.</p>
 							</div>
 						</div>
 					</div>
@@ -463,9 +457,6 @@
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-
 				</div>
 			</div>
 		</div>

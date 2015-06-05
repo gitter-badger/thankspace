@@ -20,7 +20,7 @@
 						<center>
 							<h4>Berapa banyak storage box/item yang Anda butuhkan?</h4>
 							<hr><img class="img-responsive" src="{{ asset('assets/img/standardBox.png') }}">
-							<h3>STANDARD BOX: Rp.50.000/bulan per box</h3>
+							<h3>Storage Box: Rp.100.000/bulan per box</h3>
 							<p>Our average customer stores 7 boxes</p>
 						</center>
 
@@ -64,7 +64,7 @@
 								<div id="Wowdiv" >
 									<hr>
 									<center>
-										<h3>OVERSIZED ITEM: IDR 150.000/bulan per item</h3>
+										<h3>Oversized Item: IDR 150.000/bulan per item</h3>
 										<p>Berat maksimal 25kg, dengan panjang maksimal 2 meter</p>
 									</center>
 

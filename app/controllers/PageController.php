@@ -32,6 +32,17 @@ class PageController extends BaseController {
 		return View::make('page.faq', $data);
 	}
 
+	public function partnership()
+	{
+		$data = [];
+		return View::make('page.partnership', $data);
+	}
+	public function affiliate()
+	{
+		$data = [];
+		return View::make('page.affiliate', $data);
+	}
+
 
 	public function careers()
 	{

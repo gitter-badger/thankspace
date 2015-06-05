@@ -432,4 +432,8 @@ li:after {
 		padding:12px 20px;
 	}
 }
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+ }
 /* End */

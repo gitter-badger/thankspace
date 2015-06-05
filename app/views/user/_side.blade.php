@@ -1,12 +1,12 @@
 <ul class="nav nav-pills nav-stacked">
 	<li @if(Route::currentRouteName() == 'user.dashboard') class="active" @endif >
 		<a href="{{ route('user.dashboard') }}">
-			Storage Saya
+			My Storage
 		</a>
 	</li>
 	<li @if(Route::currentRouteName() == 'user.invoice') class="active" @endif >
 		<a href="{{ route('user.invoice') }}">
-			Riwayat Invoice
+			My Invoice
 		</a>
 	</li>
 	<li @if(Route::currentRouteName() == 'order.index') class="active" @endif >

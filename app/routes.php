@@ -59,6 +59,8 @@ Route::get('/order/reset', [ 'as' => 'order.reset', 'uses' => 'OrderController@r
 
 /* Static Pages */
 Route::get('/page/faq', [ 'as' => 'page.faq', 'uses' => 'PageController@faq' ]);
+Route::get('/page/partnership', [ 'as' => 'page.partnership', 'uses' => 'PageController@partnership' ]);
+Route::get('/page/affiliate', [ 'as' => 'page.affiliate', 'uses' => 'PageController@affiliate' ]);
 Route::get('/page/about-us', [ 'as' => 'page.about_us', 'uses' => 'PageController@about' ]);
 Route::get('/page/storage-rules', [ 'as' => 'page.storage_rules', 'uses' => 'PageController@storagerules' ]);
 Route::get('/page/contact-us', [ 'as' => 'page.contact_us', 'uses' => 'PageController@contactus' ]);

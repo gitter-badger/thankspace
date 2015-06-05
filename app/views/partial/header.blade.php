@@ -17,31 +17,50 @@
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Help<span class="caret"></span></a>
 					<ul class="dropdown-menu" aria-labelledby="themes">
 						<li><a href="{{ route('page.about_us') }}">About Us</a></li>
+						<li><a href="{{ route('page.careers') }}">Careers</a></li>
+						<li><a href="{{ route('page.partnership') }}">Partnership</a></li>
+						<li><a href="{{ route('page.contact_us') }}">Contact Us</a></li>
 						<li><a href="{{ route('page.faq') }}">FAQ</a></li>
 					</ul>
 				</li>
 				<li>
-					<a href="#sign-in-modal" data-toggle="modal" data-dismiss="modal">Customer Area</a>
+					<a href="#sign-in-modal" data-toggle="modal" data-dismiss="modal">Sign In</a>
 				</li>
 			</ul>
 			@endif
 			
 			@if( Auth::check() )
+
+			<ul class="nav navbar-nav">
+				<li><a href="#location">Location</a></li>
+				<li><a href="#pricing">Pricing</a></li>
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Help<span class="caret"></span></a>
+					<ul class="dropdown-menu" aria-labelledby="themes">
+						<li><a href="{{ route('page.about_us') }}">About Us</a></li>
+						<li><a href="{{ route('page.careers') }}">Careers</a></li>
+						<li><a href="{{ route('page.partnership') }}">Partnership</a></li>
+						<li><a href="{{ route('page.contact_us') }}">Contact Us</a></li>
+						<li><a href="{{ route('page.faq') }}">FAQ</a></li>
+					</ul>
+				</li>
+			</ul>
+
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
 						<a href="{{ route('user.dashboard') }}" class="dropdown-toggle" data-toggle="dropdown" >
-							<i class="fa fa-user" style="font-size: 14pt;"></i> {{ Auth::user()->fullname }}
+							<i class="fa fa-user" style="font-size: 14pt;"></i> {{ Auth::user()->fullname }} <span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu">
 							@if( Auth::user()->type == 'user' )
 								<li>
 									<a href="{{ route('user.dashboard') }}">
-										<i class="fa fa-archive fa-fw"></i> Storage saya
+										<i class="fa fa-archive fa-fw"></i> My Storage
 									</a>
 								</li>
 								<li>
 									<a href="{{ route('user.invoice') }}">
-										<i class="fa fa-archive fa-fw"></i> Riwayat Invoice
+										<i class="fa fa-money fa-fw"></i> My  Invoice
 									</a>
 								</li>
 								<li>
@@ -51,7 +70,7 @@
 								</li>
 								<li>
 									<a href="{{ route('user.setting') }}">
-										<i class="fa fa-gear fa-fw"></i> Pengaturan Akun
+										<i class="fa fa-gear fa-fw"></i> Settings
 									</a>
 								</li>
 								<li class="divider"></li>

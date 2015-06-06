@@ -19,7 +19,7 @@ table.email td { text-align: left;}
 
 <div align="left" valign="top" style="font-size:13px;line-height:1.4em;color:#444">
 
-<p>Hallo {{ $firstname }},</p>
+<p>Hallo {{ $user['firstname'] }},</p>
 
 
 		<p>Kami telah menerima pesanan Anda pada tanggal {{ date('d/m/Y', strtotime($order['updated_at'])) }} dengan informasi detail invoice sebagai berikut :</p>

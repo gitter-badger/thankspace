@@ -16,7 +16,7 @@ class OrderController extends BaseController {
 
 	public function schedule()
 	{
-		if ( empty(Session::get('order.index'))) {
+		if ( !Session::get('order.index')) {
 			return Redirect::route('order.index');
 		}
 
@@ -32,7 +32,7 @@ class OrderController extends BaseController {
 
 	public function payment()
 	{
-		if ( empty(Session::get('order.schedule'))) {
+		if ( !Session::get('order.schedule')) {
 			return Redirect::route('order.schedule');
 		}
 
@@ -47,7 +47,7 @@ class OrderController extends BaseController {
 
 	public function review()
 	{
-		if ( empty(Session::get('order.payment'))) {
+		if ( !Session::get('order.payment')) {
 			return Redirect::route('order.payment');
 		}
 

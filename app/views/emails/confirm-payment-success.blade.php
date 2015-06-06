@@ -29,7 +29,7 @@ table.email td { text-align: left;}
 <td style="background-color:#ffffff;border-top:0px none;border-bottom:0px none;font-family:Arial;font-weight:normal;text-align:left">
 
 <div align="left" valign="top" style="font-size:13px;line-height:1.4em;color:#444">
-<p>Hallo {{ $user['firstname'] }},</p>
+<p>Hallo {{ Auth::user()->firstname }},</p>
 
 		<p>Pembayaran untuk invoice #{{ $code }} sudah kami terima pada tanggal {{ $date }}</p>
 		<p>

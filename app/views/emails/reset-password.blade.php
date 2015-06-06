@@ -18,7 +18,7 @@ table.email td { text-align: left;}
 <td style="background-color:#ffffff;border-top:0px none;border-bottom:0px none;font-family:Arial;font-weight:normal;text-align:left">
 
 <div align="left" valign="top" style="font-size:13px;line-height:1.4em;color:#444">
-<p>Hallo Customer,</p>
+<p>Hallo {{ $firstname }},</p>
 
 		<p>Lupa password Anda? Jangan khawatir, ayo kita buat yang baru.</p>
 		<p>

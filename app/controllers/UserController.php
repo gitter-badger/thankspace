@@ -458,7 +458,8 @@ class UserController extends BaseController {
 			return 'Specify your email first !';
 
 		// check for existance email
-		if ( ! \User::where('email', Input::get('email'))->first() )
+		$user = \User::where('email', Input::get('email'))->first();
+		if ( ! $user )
 		{
 			return 'This email "'. Input::get('email') .'" is not exist on our database';
 		}
@@ -468,8 +469,9 @@ class UserController extends BaseController {
 		$token = Crypt::encrypt($time);
 		$email = Crypt::encrypt(Input::get('email'));
 		$data = [
-			'token' => $token,
-			'email' => $email,
+			'token'		=> $token,
+			'email'		=> $email,
+			'firstname' => $user->firstname,
 			'url_reset_password' => route('user.forgotPasswordForm') .'?token='. $token .'&e='. $email,
 		];
 		

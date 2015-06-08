@@ -527,7 +527,8 @@ class UserController extends BaseController {
 		$user->password = $input['password'];
 		if ($user->save())
 		{
-			\Mail::send('emails.reset-password-success', array('user' => $user), function($message) use($user)
+			$data = [ 'user' => $user ];
+			\Mail::send('emails.reset-password-success', $data, function($message) use($user)
 			{
 				$message->to($user['email'], 'Halo pelanggan setia thankspace')
 						->subject('[ThankSpace] Selamat Reset Password Berhasil');

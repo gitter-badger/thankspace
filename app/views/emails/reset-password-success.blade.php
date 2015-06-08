@@ -1,14 +1,3 @@
-
-{{--*/ $fullname = ucfirst($firstname) .' '. ucfirst($lastname) /*--}}
-
-@if( $type == 'driver' )
-	{{--*/ $utype = 'Delivery Team' /*--}}
-@elseif( $type == 'user' )
-	{{--*/ $utype = 'Customer' /*--}}
-@else
-	{{--*/ $utype = 'Admin' /*--}}
-@endif
-
 <style>
 body,td { font-family: verdana; font-size: 11px; font-weight: normal; }
 a { color: #0000ff;}
@@ -29,7 +18,7 @@ table.email td { text-align: left;}
 <td style="background-color:#ffffff;border-top:0px none;border-bottom:0px none;font-family:Arial;font-weight:normal;text-align:left">
 
 <div align="left" valign="top" style="font-size:13px;line-height:1.4em;color:#444">
-<p>Hallo {{ Auth::user()->firstname }},</p>
+<p>Hallo {{ $user['firstname'] }},</p>
 
 		<p>Anda telah berhasil mengubah password Anda</p>
 		<p>

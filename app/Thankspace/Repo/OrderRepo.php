@@ -298,7 +298,7 @@ class OrderRepo extends BaseRepo
 			$data = [
 				'code'		=>	$order['code'],
 				'date'		=>	date('d/m/Y', strtotime($order['updated_at'])),
-				'fullname'	=>	$fullname,
+				'user'		=>	$order['order']['user'],
 			];
 			
 			\Mail::send('emails.confirm-payment-success', $data, function($message) use ($to)

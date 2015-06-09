@@ -5,7 +5,7 @@
 
 	<div class="page-header" id="banner">
 		<div class="text-center">
-			<h3>Riwayat Invoice</h3>
+			<h3>“Success” is being able to pay the invoices/bills ;-)</h3>
 		</div>
 	</div>
 
@@ -23,13 +23,13 @@
 					<div class="panel panel-default text-center">
 						<div class="panel-body">
 
-							<h3>Riwayat Order Terbaru</h3>
+							<h3>You can read your invoice details here</h3>
 							
 							@if ( Session::has('message') )
 							<p>
 								@if ( Session::get('message') == 'success' )
 								<span class="success-alert">
-									<i class="fa fa-smile-o"></i> Konfirmasi pembayaran sudah dilakukan. Tim Customer Service kami akan melakukan proses verifikasi dan akan memberikan informasi terbaru kepada Anda.
+									<i class="fa fa-smile-o"></i> Hi {{ Auth::user()->fullname }}. Thank you for your payment confirmation. Our Happy Customer Service officer will conduct the verification process and you will receive a confirmation e-mail.
 								</span>
 								@else
 								<span class="error-alert">
@@ -40,16 +40,16 @@
 							@endif
 							
 							{{ Form::open([ 'method' => 'POST', 'class' => 'invoice-form-list' ]) }}
-							<table class="table table-striped table-hover">
+							<table id="sortirtable" class="tablesorter table table-striped table-hover">
 								<thead>
 									<tr>
-										<th>Invoice Code</th>
-										<th>Box</th>
-										<th>Jadwal Box Diantar</th>
-										<th>Jadwal Box Diambil</th>
-										<th>Biaya</th>
+										<th>Invoice</th>
+										<th>Boxes</th>
+										<th>Delivery Date </th>
+										<th>Pickup Date</th>
+										<th>Cost</th>
 										<th>Status</th>
-										<th>Aksi</th>
+										<th>Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -100,6 +100,22 @@
 										</td>
 									</tr>
 									@endforeach
+
+								</tbody>
+							</table>
+							<table class="table table-striped table-hover">
+								<thead>
+									<tr>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
 									<tr>
 										<td class="text-left" colspan="4">
 											{{ $invoices->links() }}
@@ -112,13 +128,14 @@
 													<span class="sr-only">Toggle Dropdown</span>
 												</button>
 												<ul class="dropdown-menu pull-right">
-													<li><a href="#" class="konfirmPayment">Konfirmasi pembayaran</a></li>
+													<li><a href="#" class="konfirmPayment">Confirming my payment</a></li>
 												</ul>
 											</div>
 										</td>
 									</tr>
 								</tbody>
 							</table>
+
 							{{ Form::close() }}
 							<input type="hidden" class="konfirmRoute" value="{{ route('user.confirm_payment') }}" />
 						</div>

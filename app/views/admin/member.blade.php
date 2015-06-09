@@ -49,20 +49,20 @@
 						</p>
 						@endif
 						
-						<div class="table-responsive">
+						<!--<div class="table-responsive">-->
 						@if( count($members) > 0 )
 						
-							<table class="table table-striped table-hover text-center">
+							<table id="sortirtable" class="tablesorter table-striped table-hover text-center">
 								<thead>
 									<tr>
-										<th>Number</th>
-										<th>Nama</th>
+										<th>No.</th>
+										<th>Name</th>
 										<th>Email</th>
-										<th>No. Telepon</th>
-										<th>Alamat</th>
+										<th>Phone</th>
+										<th>Address</th>
 										<th>Gender</th>
 										<th>Type</th>
-										<th>Aksi</th>
+										<th>Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -115,7 +115,7 @@
 							<div class="alert alert-info">Whoops, there are no members yet!</div>
 							
 						@endif
-						</div>
+						<!--</div>-->
 					</div>
 				</div>
 			</div>

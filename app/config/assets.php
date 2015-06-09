@@ -16,11 +16,13 @@ return array(
 		'/assets/css/sweet-alert.css',
 		'/assets/css/lightbox.css',
 		'/assets/css/introjs.css',
+		'/assets/css/sortirtable.css',
 		'/assets/css/custom.css',
 	],
 	
 	'script' => [
 		'/assets/js/jquery-1.11.1.min.js',
+		'/assets/js/jquery.sortirtable.js',
 		'/assets/js/bootstrap.min.js',
 		'/assets/js/sweet-alert.js',
 		'/assets/js/intro.js',

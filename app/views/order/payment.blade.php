@@ -18,9 +18,8 @@
 							</div>
 						@endif
 						<center>
-							<h4>Detail diri Anda</h4><hr>
+							<h4>Your Personal Details</h4><hr>
 						</center>
-						<br><br>
 						{{ Form::model($form_data, ['method' => 'POST', 'route' => 'order.progress', 'class' => 'form-horizontal']) }}
 							{{ Form::hidden('step', 'payment') }}
 							{{ Form::hidden('redirect_to', route('order.review')) }}
@@ -34,11 +33,10 @@
 
 								<hr>
 								<center>
-									<h3>Pilih Cara Pembayaran</h3>
+									<h4>Your Payment Preferences</h4>
 								</center>
-								<br><br>
 								<div class="form-group">
-									<label class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">Metode Pembayaran?</label>
+									<label class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">Payment Method?</label>
 									<div class="col-lg-9 col-md-9col-sm-9 col-xs-9">
 										<div class="radio radio-primary">
 											<label>
@@ -48,7 +46,7 @@
 									</div>
 								</div>
 								<div class="form-group"> 
-									<label class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">Pesan Tambahan</label>
+									<label class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">Additional message</label>
 									<div class="col-lg-9 col-md-9col-sm-9 col-xs-9">
 										{{ Form::textarea('message', null, ['class' => 'form-control', 'placeholder' => 'Optional..']) }} 
 									</div>
@@ -56,7 +54,7 @@
 							</fieldset>
 							<center>
 								<button type="submit" class="btn btn-primary">
-									Lanjutkan
+									Next step
 								</button>
 							</center>
 						</form>

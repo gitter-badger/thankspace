@@ -5,7 +5,7 @@
 
 	<div class="page-header" id="banner">
 		<div class="text-center">
-			<h3>Hai, bagaimana kabar Anda hari ini.</h3>
+			<h3>Hi, {{ Auth::user()->firstname }}, are your personal details accurate? :)</h3>
 		</div>
 	</div>
 

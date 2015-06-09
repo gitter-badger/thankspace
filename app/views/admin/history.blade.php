@@ -12,7 +12,7 @@
 
 	<div class="page-header" id="banner">
 		<div class="row text-center">
-			<h3>Administration Panel</h3>
+			<h3>Hi {{ Auth::user()->firstname }}, Let's make our customer happy! :) always bringing a smile to their faces.</h3>
 		</div>
 	</div>
 	<div class="container">
@@ -28,7 +28,10 @@
 					</div>
 					
 					<div class="col-lg-12 text-center">
-						<h3>Riwayat Order Terbaru</h3>
+						<h3>Newest Order</h3>
+
+						<input type="text" id="searchTerm" class="form-control" onkeyup="doSearch()" placeholder="Just type your search term here" />
+     					<br /><br />
 						
 						@if ( Session::has('message') )
 						<p>
@@ -44,21 +47,21 @@
 						</p>
 						@endif
 						
-						<div class="table-responsive">
+						<!--<div class="table-responsive">-->
 						@if( count($invoices) > 0 )
 						
 							{{ Form::open([ 'method' => 'POST', 'class' => 'invoice-form-list' ]) }}
-							<table class="table table-striped table-hover text-center">
+							<table id="sortirtable" class="tablesorter table table-striped table-hover text-center">
 								<thead>
 									<tr>
-										<th>Order Code</th>
+										<th>Invoice</th>
 										<th>Customer</th>
 										<th>Box</th>
-										<th>Jadwal Box Diantar</th>
-										<th>Jadwal Box Diambil</th>
-										<th>Biaya</th>
+										<th>Delivery Date</th>
+										<th>Pickup Date</th>
+										<th>Cost</th>
 										<th>Status</th>
-										<th>Aksi</th>
+										<th>Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -118,6 +121,12 @@
 										</td>
 									</tr>
 									@endforeach
+								</tbody>
+							</table>
+							<table class=" table table-striped table-hover text-center">
+								<thead>
+								</thead>
+								<tbody>
 									<tr>
 										<td class="text-left" colspan="6">
 											{{ $invoices->links() }}
@@ -130,7 +139,7 @@
 													<span class="sr-only">Toggle Dropdown</span>
 												</button>
 												<ul class="dropdown-menu pull-right">
-													<li><a href="#" class="konfirmPayment">Konfirmasi pembayaran</a></li>
+													<li><a href="#" class="konfirmPayment">Confirming this payment</a></li>
 												</ul>
 											</div>
 										</td>
@@ -145,7 +154,7 @@
 							<div class="alert alert-info">Whoops, there are no transactions yet!</div>
 							
 						@endif
-						</div>
+						<!--</div>-->
 					</div>
 				</div>
 			</div>

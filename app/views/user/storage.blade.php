@@ -5,7 +5,7 @@
 
 	<div class="page-header" id="banner">
 		<div class="text-center">
-			<h3>Hai, bagaimana kabar Anda hari ini.</h3>
+			<h3>Hi, {{ Auth::user()->firstname }}, how are you doing today? :)</h3>
 		</div>
 	</div>
 
@@ -37,7 +37,7 @@
 												<img class="img-responsive" src="{{ url('assets/img/box.png') }}">
 											</td>
 											<td>
-												<h2>Order #{{ $storage->code }}</h2>
+												<h3>Order #{{ $storage->code }}</h3>
 												<p>
 													<a data-toggle="modal" href="{{ route('ajax.modalStorageDetail', $storage->id) }}" data-target="#ajaxModal">
 														Detail

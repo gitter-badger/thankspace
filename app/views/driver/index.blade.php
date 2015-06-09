@@ -5,7 +5,7 @@
 
 	<div class="page-header" id="banner">
 		<div class="text-center">
-			<h3>Delivery Team, Go Go Go</h3>
+			<h3>Hi {{ Auth::user()->firstname }}, are you ready to get behind the wheel and drive like an Champion? :D</h3>
 		</div>
 	</div>
 

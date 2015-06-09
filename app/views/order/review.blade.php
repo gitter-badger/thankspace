@@ -10,10 +10,9 @@
 			<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-centered">
 				<div class="panel panel-default">
 					<div data-step="1" data-intro="This is a tooltip!" class="panel-body text-center">
-						<h4>Review Pesanan Anda</h4>
+						<h4>Review your order</h4>
 						<hr>
-						<p>Anda bisa me-review kembali rincian pesanan yang telah anda lakukan. 
-						Apabila tidak ada perubahan pilih "Checkout"</p>
+						<p> Review your personal and order information to ensure it's accurate, and then click "Checkout"</p>
 
 						<div class="row">
 							<div class="col-lg-4">
@@ -25,7 +24,7 @@
 							</div>
 
 							<div class="col-lg-4">
-								<h3>Jadwal Pengantaran</h3>
+								<h3>Delivery Date</h3>
 								<hr>
 								<p class="text-left">
 									Date: {{ makeFormatTime($review['schedule']['delivery_year'], $review['schedule']['delivery_month'], $review['schedule']['delivery_day']) }}
@@ -35,7 +34,7 @@
 							</div>
 
 							<div class="col-lg-4">
-								<h3>Jadwal Pengambilan</h3>
+								<h3>Pickup Date</h3>
 								<hr>
 								<p class="text-left">
 									@if($review['schedule']['type'] == 'later')
@@ -76,6 +75,15 @@
 											<td>{{ $review['index']['quantity_item'] }}</td>
 											<td style="text-align:left;">{{ calcPrice('item', $review['index']['quantity_item'], true) }}</td>
 										</tr>
+
+										<tr>
+											<th><input type="text" name="coupon" class="form-control" placeholder="Coupon Here"></th>
+											<td></td>
+											<td style="text-align:left;"><button type="submit" class="btn btn-primary" data-loading-text="Authenticating..." style="width:100%;">
+									 Apply
+								</button></td>
+										</tr>
+
 										<tr>
 											<td colspan="3">
 												<h3>
@@ -117,7 +125,7 @@
 
 						<a class="btn btn-primary" href="{{ route('order.completed') }}">Checkout</a>
 						<br>
-						atau
+						or 
 						<a href="{{ route('order.reset') }}">Reset Order</a>
 					</div>
 				</div>

@@ -205,7 +205,8 @@ class UserController extends BaseController {
 
 	public function setting()
 	{
-		$data = [];
+		$cities = getCities();
+		$data = [ 'list_cities' => $cities ];
 		return View::make('user.setting', $data);
 	}
 	

@@ -44,6 +44,14 @@
 			</div>
 			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 				<div class="input-group">
+					<span class="input-group-addon"><i class="fa fa-map-marker fa-fw"></i></span>
+					{{ Form::select('city_id', $list_cities, Auth::user()->city_id, [ 'class' => 'form-control', 'required' => true, 'style' => 'margin-top: 5px;' ]) }}
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<div class="input-group">
 					<span class="input-group-addon"><i class="fa fa-edit fa-fw"></i></span>
 						{{ Form::select('gender', [ 'm' => 'Male', 'f' => 'Female' ], Auth::user()->gender, [ 'name' => 'gender', 'class' => 'form-control', 'placeholder' => 'Gender', 'data-hint' => 'Jenis kelamin' ]) }}
 				</div>

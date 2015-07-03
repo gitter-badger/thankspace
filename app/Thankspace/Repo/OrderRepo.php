@@ -289,8 +289,8 @@ class OrderRepo extends BaseRepo
 	{
 		$order = \Order::with('orderPayment', 'orderSchedule', 'orderStuff', 'user')->find($id);
 		
-		$name	= \Auth::user()->fullname;
-		$email	= "support@thankspace.com;
+		$name	= "ThankSpace Support";
+		$email	= "support@thankspace.com";
 		
 		$to = [
 			'code'		=>	$order['order_payment']['code'],

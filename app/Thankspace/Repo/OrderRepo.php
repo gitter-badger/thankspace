@@ -175,7 +175,11 @@ class OrderRepo extends BaseRepo
 		$this->_save_orderPayment($order->id, $orderData['payment']);
 		
 		$this->_sendInvoiceDetailMail($order->id);
+
+		$this->_sendAdminNewOrderMail($order->id);
+
 	}
+
 
 
 	protected function _save_order($orderIndex)
@@ -278,6 +282,28 @@ class OrderRepo extends BaseRepo
 		{
 			$message->to($to['email'], $to['name'])
 					->subject('[ThankSpace] Detail Order #'.$to['code'].' di ThankSpace');
+		});
+	}
+
+	protected function _sendAdminNewOrderMail($id)
+	{
+		$order = \Order::with('orderPayment', 'orderSchedule', 'orderStuff', 'user')->find($id);
+		
+		$name	= "ThankSpace Support";
+		$email	= "support@thankspace.com";
+		
+		$to = [
+			'code'		=>	$order['order_payment']['code'],
+			'email'		=>	$email,
+			'name'		=>	$name,
+		];
+		
+		$data = [ 'order'	=>	$order ];
+		
+		\Mail::send('emails.admin-new-order', $data, function($message) use ($to)
+		{
+			$message->to($to['email'], $to['name'])
+					->subject('[ThankSpace] Horay!!  There is new order created in ThankSpace');
 		});
 	}
 	

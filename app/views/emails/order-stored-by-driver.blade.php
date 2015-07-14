@@ -4,12 +4,13 @@
 		<td style="background-color:#ffffff;border-top:0px none;border-bottom:0px none;font-family:Arial;font-weight:normal;text-align:left">
 
 			<div align="left" valign="top" style="font-size:13px;line-height:1.4em;color:#444">
-				<p>Hallo {{ $firstname }},</p>
+
+				<p>Hallo ,</p>
 
 				<p>Lupa password Anda? Jangan khawatir, ayo kita buat yang baru.</p>
 				<p>
 					Untuk mereset password Anda, klik link di bawah ini.<br>
-					<a href="{{ $url_reset_password }}" target="_blank">
+					<a href="" target="_blank">
 						<b>Reset Password</b>
 					</a>
 				</p>

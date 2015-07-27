@@ -5,6 +5,13 @@
  */
 include_once(app_path('helpers.php'));
 
+Route::get('/tes', function(){
+	$order = \Order::with('orderPayment', 'orderSchedule', 'orderStuff', 'user')->find(1);
+	
+	$data = [ 'order'	=>	$order ];
+	
+	return View::make('emails.order-stored-by-driver', $data);
+});
 
 /**
  * Register view composer

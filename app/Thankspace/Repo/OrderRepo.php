@@ -344,9 +344,15 @@ class OrderRepo extends BaseRepo
 	 */
 	public function setDeliveryStored(array $input = array())
 	{
-		$confirm = \OrderSchedule::whereIn('id', $input['order_schedule_id'])->update([ 'status' => 1 ]);
+		$confirm = \OrderSchedule::whereIn('id', $input['order_schedule_id'])->update([ 'status' => 1, 'updated_at' => date('Y-m-d H:i:s') ]);
 		if ( $confirm )
-		{	
+		{
+			foreach( $input['order_schedule_id'] as $id )
+			{
+				$order = \OrderSchedule::find($id);
+				$this->_sendDeliveryStoredInfo($order['order_id']);
+			}
+			
 			return $confirm;
 		} else {
 			$this->setErrors([ 'message' => 
@@ -358,6 +364,25 @@ class OrderRepo extends BaseRepo
 			]);
 			return false;
 		}
+	}
+	
+	protected function _sendDeliveryStoredInfo($id)
+	{
+		$order = \Order::with('orderPayment', 'orderSchedule', 'orderStuff', 'user')->find($id);
+		
+		$to = [
+			'code'		=>	$order['order_payment']['code'],
+			'email'		=>	$order['user']['email'],
+			'name'		=>	$order['user']['fullname'],
+		];
+	
+		$data = [ 'order'	=>	$order ];
+		
+		\Mail::send('emails.order-stored-by-driver', $data, function($message) use ($to)
+		{
+			$message->to($to['email'], $to['name'])
+					->subject('[ThankSpace] Order #'.$to['code'].' sudah kami tangani');
+		});
 	}
 
 

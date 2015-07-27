@@ -5,17 +5,22 @@
 
 			<div align="left" valign="top" style="font-size:13px;line-height:1.4em;color:#444">
 
-				<p>Hallo ,</p>
+				<p>Hallo {{ $order['user']['firstname'] }},</p>
 
-				<p>Lupa password Anda? Jangan khawatir, ayo kita buat yang baru.</p>
-				<p>
-					Untuk mereset password Anda, klik link di bawah ini.<br>
-					<a href="" target="_blank">
-						<b>Reset Password</b>
-					</a>
-				</p>
-				<p>Jika Anda tidak lupa password Anda, Anda dapat mengabaikan atau menghapus pesan email ini.</p>
-				<p>Password Anda tidak akan berubah dan Anda masih akan dapat mengakses akun Anda.</p>
+				<p>Kami ingin memberitahukan bahwa order Anda dengan kode seri <strong>#{{ $order['order_payment']['code'] }}</strong> telah berhasil kami simpan di storage / warehouse.</p>
+				<p>Proses penyimpanan terjadi pada :</p>
+				<blockquote>
+					<table>
+						<tr>
+							<td>Tanggal</td>
+							<td>: {{ date('l, d m Y', strtotime($order['order_schedule']['updated_at'])) }}</td>
+						</tr>
+						<tr>
+							<td>Jam</td>
+							<td>: {{ date('H:i a', strtotime($order['order_schedule']['updated_at'])) }}</td>
+						</tr>
+					</table>
+				</blockquote>
 
 				<p>Jika Anda memiliki pertanyaan, silahkan hubungi kami di +62313713603 atau dengan membalas email ini.</p>
 				<p>Terima kasih telah menggunakan layanan ThankSpace.</p>

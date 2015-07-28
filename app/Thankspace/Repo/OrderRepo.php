@@ -130,6 +130,8 @@ class OrderRepo extends BaseRepo
 			if ( $status == 2 )
 			{
 				$this->_sendConfirmPaymentMail($input['order_payment_id']);
+			} else {
+				$this->_sendConfirmPaymentMailAdmin($input['order_payment_id']);
 			}
 			
 			return $confirm;
@@ -331,6 +333,29 @@ class OrderRepo extends BaseRepo
 			{
 				$message->to($to['email'], $to['fullname'])
 						->subject('[ThankSpace] Pembayaran invoice #'.$to['code'].' sudah kami terima');
+			});
+		}
+	}
+	
+	protected function _sendConfirmPaymentMailAdmin(array $id = array())
+	{
+		$orders = \OrderPayment::with('order.user')->whereIn('id', $id)->get();
+		foreach( $orders as $order )
+		{
+			$fullname = ucfirst($order['order']['user']['firstname']) .' '. ucfirst($order['order']['user']['lastname']);
+			
+			$to = [
+				'code'		=>	$order['order_payment']['code'],
+				'email'		=>	'support@thankspace.com',
+				'name'		=>	'ThankSpace Support',
+			];
+			
+			$data = [ 'order' => $order ];
+			
+			\Mail::send('emails.confirm-payment-user', $data, function($message) use ($to)
+			{
+				$message->to($to['email'], $to['name'])
+						->subject('[ThankSpace] Konfirmasi pembayaran invoice #'.$to['code']);
 			});
 		}
 	}

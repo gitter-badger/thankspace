@@ -108,6 +108,8 @@ class UserRepo extends BaseRepo
 			
 			$this->_sendWelcomeMail($input);
 			
+			$this->_sendAdminNewCustomerMail($user->id);
+			
 			if ( $input['via'] != 'admin' ) {
 				$auth = $this->_handleLogin($user->id);
 				return $auth;
@@ -198,6 +200,24 @@ class UserRepo extends BaseRepo
 		{
 			$message->to($to['email'], $to['fullname'])
 					->subject('[ThankSpace] Selamat datang di ThankSpace');
+		});
+	}
+	
+	protected function _sendAdminNewCustomerMail( $user_id )
+	{
+		$user = \User::with('city')->find($user_id);
+		
+		$to = [
+			'email'	=>	'ThankSpace Support',
+			'name'	=>	'support@thankspace.com',
+		];
+		
+		$data = [ 'user' => $user ];
+		
+		\Mail::send('emails.admin-new-user', $data, function($message) use ($to)
+		{
+			$message->to($to['email'], $to['name'])
+					->subject('[ThankSpace] New Customer');
 		});
 	}
 	

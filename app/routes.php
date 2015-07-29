@@ -6,11 +6,11 @@
 include_once(app_path('helpers.php'));
 
 Route::get('/tes', function(){
-	$order = \OrderPayment::with('order.user')->find(1);
+	$order = \User::with('city')->find(1);
+	// return $order;
+	$data = [ 'user' => $order ];
 	
-	$data = [ 'order' => $order ];
-	
-	return View::make('emails.confirm-payment-user', $data);
+	return View::make('emails.admin-new-user', $data);
 });
 
 /**

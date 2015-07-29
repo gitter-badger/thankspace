@@ -39,8 +39,6 @@
 						</tr>
 					</tbody>
 				</table>
-				
-				<br>
 			
 				<p>Demikian pemberitahuan untuk segera di konfirmasi.</p>
 				<p>Salam,</p>

@@ -21,6 +21,10 @@ View::composer(array('partial.modal'), function($view)
     $view->with('list_cities', getCities());
 });
 
+View::composer(array('user._side'), function($view){
+	$view->with('space_credit', getCustomerSpaceCredit());
+});
+
 
 Route::get('/', [ 'as' => 'page.index', 'uses' => 'PageController@index' ]);
 

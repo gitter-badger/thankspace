@@ -69,6 +69,11 @@
 									</a>
 								</li>
 								<li>
+									<a href="{{ route('user.referral') }}">
+										<i class="fa fa-history fa-fw"></i> Referral Program
+									</a>
+								</li>
+								<li>
 									<a href="{{ route('user.setting') }}">
 										<i class="fa fa-gear fa-fw"></i> Settings
 									</a>
@@ -76,20 +81,20 @@
 								<li class="divider"></li>
 							@elseif( Auth::user()->type == 'admin' )
 								<li>
-									<a href="{{ route('user.member_list') }}">
-										<i class="fa fa-users"></i> Member List
-									</a>
-								</li>
-								<li>
 									<a href="{{ route('user.dashboard') }}">
-										<i class="fa fa-history"></i> Order History
+										<i class="fa fa-history"></i> Order Request
 									</a>
 								</li>
 								<li>
 									<a href="{{ route('admin.returnRequest') }}">
 										<i class="fa fa-truck" style="font-size: 14pt;"></i>
 										Returning Request
-										<!-- <span class="label label-danger">20</span> -->
+										<span class="label label-danger">20</span> 
+									</a>
+								</li>
+								<li>
+									<a href="{{ route('user.member_list') }}">
+										<i class="fa fa-users"></i> Member List
 									</a>
 								</li>
 								<li class="divider"></li>

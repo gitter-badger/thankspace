@@ -608,4 +608,12 @@ class UserController extends BaseController {
 		return View::make('modal.returned_stuff', $data);
 	}
 
+	/**
+	 * Referral feature
+	 */
+	public function referral()
+	{
+		return View::make('user.referral');
+	}
+
 }

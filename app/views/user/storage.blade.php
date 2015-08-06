@@ -107,10 +107,10 @@
 					<div class="panel panel-default">
 						<div class="panel-body">
 							<div class="text-center">
-								<h3>Saat ini Anda belum menyimpan sesuatu pada tempat penyimpanan / <i>Warehouse</i> kami.</h3>
-								<p>Pesan storage box sesuai dengan kebutuhan Anda</p>
+								<h3>Anda belum menyimpan storage box atau barang pada tempat penyimpanan kami.</h3>
+								<p>Pesan storage box sesuai dengan kebutuhan Anda sekarang.</p>
 								<p>
-									<a class="btn btn-primary" href="{{ route('order.index') }}">Order Storage Box</a>
+									<a class="btn btn-primary" href="{{ route('order.index') }}">Order Now!</a>
 								</p>
 							</div>
 						</div>

@@ -20,7 +20,9 @@
 								<hr>
 								<p class="text-left">{{ $user['fullname'] }}<br>
 								Phone: {{ $user['phone'] }}<br>
-								Address: {{ $user['address'] }}</p>
+								Address: {{ $user['address'] }}<br>
+								City: {{ $user['city']['name'] }}
+								</p>
 							</div>
 
 							<div class="col-lg-4">
@@ -75,13 +77,34 @@
 											<td>{{ $review['index']['quantity_item'] }}</td>
 											<td style="text-align:left;">{{ calcPrice('item', $review['index']['quantity_item'], true) }}</td>
 										</tr>
-
-										<tr>
+										<!--<tr>
 											<th><input type="text" name="coupon" class="form-control" placeholder="Coupon Here"></th>
 											<td></td>
 											<td style="text-align:left;"><button type="submit" class="btn btn-primary" data-loading-text="Authenticating..." style="width:100%;">
-									 Apply
-								</button></td>
+											Reedem
+											</button></td>
+										</tr>-->
+										<tr>
+											<th>
+											Space Credit
+											<span data-toggle="tooltip" data-placement="top" title="Refer Your Friends & Get Paid! Even better, your friends will get paid too!">
+											<img width="15px" src="{{ url('assets/img/info.png') }}">
+											</span>
+											</span>
+											<br><b>Rp. 50,000,-</b></th>
+											<td></td>
+											<td style="text-align:left;"><button type="submit" class="btn btn-primary" data-loading-text="Authenticating..." style="width:100%;">
+											apply
+											</button></td>
+										</tr>
+
+										<tr>
+											<th>Sub Total</th><td></td>
+											<td style="text-align:left;">Rp 100,000</td>
+										</tr>
+										<tr>
+											<th>Space Credit</th><td></td>
+											<td style="text-align:left;">-Rp 50,000 </td>
 										</tr>
 
 										<tr>

@@ -28,6 +28,19 @@
 							@if ( Session::has('message') )
 							<p>
 								@if ( Session::get('message') == 'success' )
+
+								<script>
+
+								function codeAddress() {
+									swal({
+										title: "Thanks!",
+										text: " Thank you for your payment confirmation. Our Happy Customer Service officer will conduct the verification process and you will receive a confirmation e-mail.",
+										imageUrl: "{{ url('assets/img/order-completed.png') }}"
+										});
+									}
+									window.onload = codeAddress;
+								</script>
+
 								<span class="success-alert">
 									<i class="fa fa-smile-o"></i> Hi {{ Auth::user()->fullname }}. Thank you for your payment confirmation. Our Happy Customer Service officer will conduct the verification process and you will receive a confirmation e-mail.
 								</span>
@@ -38,7 +51,10 @@
 								@endif
 							</p>
 							@endif
-							
+
+
+				<div class="table-responsive">
+								
 							{{ Form::open([ 'method' => 'POST', 'class' => 'invoice-form-list' ]) }}
 							<table id="sortirtable" class="tablesorter table table-striped table-hover">
 								<thead>
@@ -74,7 +90,7 @@
 										</td>
 										<td>
 											@if( !$invoice['order_schedule']['pickup_date'] )
-											At that time
+											Immediately
 											@else
 											{{ $invoice['order_schedule']['delivery_date']->format('l, d m Y') }}
 											<br>
@@ -145,15 +161,18 @@
 					<div class="panel panel-default">
 						<div class="panel-body">
 							<div class="text-center">
-								<h3>Saat ini Anda belum menyimpan sesuatu pada tempat penyimpanan / <i>Warehouse</i> kami.</h3>
-								<p>Pesan storage box sesuai dengan kebutuhan Anda</p>
+								<h3>Anda belum mempunyai riwayat tagihan saat ini .</h3>
+								<p>Pesan storage box sesuai dengan kebutuhan Anda sekarang.</p>
 								<p>
-									<a class="btn btn-primary" href="{{ route('order.index') }}">Order Storage Box</a>
+									<a class="btn btn-primary" href="{{ route('order.index') }}">Order Now!</a>
 								</p>
 							</div>
 						</div>
-					</div>
+					</div>				
 				@endif
+						
+				</div> <!--responsive table-->
+
 			</div>
 
 		</div>

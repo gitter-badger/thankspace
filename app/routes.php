@@ -21,6 +21,7 @@ View::composer(array('partial.modal'), function($view)
     $view->with('list_cities', getCities());
 });
 
+
 Route::get('/', [ 'as' => 'page.index', 'uses' => 'PageController@index' ]);
 
 
@@ -41,6 +42,7 @@ Route::group(['before' => 'auth'], function() {
 	// Route::get('/storage', [ 'as' => 'user.storage', 'uses' => 'UserController@storage' ]);
 	Route::get('/invoice', [ 'as' => 'user.invoice', 'uses' => 'UserController@invoice' ]);
 	Route::get('/setting', [ 'as' => 'user.setting', 'uses' => 'UserController@setting' ]);
+	Route::get('/referral', [ 'as' => 'user.referral', 'uses' => 'UserController@referral' ]);
 	Route::put('/update-profile', [ 'as' => 'user.update_profile', 'uses' => 'UserController@updateProfile' ]);
 	Route::put('/update-password', [ 'as' => 'user.update_password', 'uses' => 'UserController@updatePassword' ]);
 	Route::post('/check-password', [ 'as' => 'user.check_password', 'uses' => 'UserController@checkPassword' ]);
@@ -49,6 +51,7 @@ Route::group(['before' => 'auth'], function() {
 
 	Route::get('/return-request', [ 'as' => 'admin.returnRequest', 'uses' => 'UserController@returnRequest' ]);
 	Route::post('/return-request/{id}', [ 'as' => 'admin.postReturnRequest', 'uses' => 'UserController@postReturnRequest' ]);
+
 });
 
 /* Order Pages */

@@ -53,24 +53,26 @@ return t;
 						<div class="panel-body">
 							<div >
 								<h3>How the referral program works</h3>
+								@if(Session::has('message_success'))
+								<span class="success-alert update-profile-scs"><i class="fa fa-smile-o"></i> {{ Session::get('message_success') }}</span>
+								@endif
 								<p>It's simple. Share your referral code to give your friends Rp 50,000 Space Credit for first-time signs up. When they order a storage box you get Rp.50,000 too!</p>
-
-										<div class="form-group">
-											<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-bottom:20px;">
-												<div class="input-group">
-													<span class="input-group-addon">Your referral link: </span>
-													<input name="firstname" class="form-control" placeholder="First name" type="text" value="http://thankspace.com/?ref=44646464">
-												</div>
-											</div>
+								<div class="form-group">
+									<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-bottom:20px;">
+										<div class="input-group">
+											<span class="input-group-addon">Your referral link: </span>
+											<input name="firstname" class="form-control" placeholder="First name" type="text" value="{{ route('page.index',['ref' => Auth::user()->ref_code]) }}" readonly>
 										</div>
+									</div>
+								</div>
 
-									<hr>
+								<hr>
 
 
-									<div class="fb-share-button" data-href="http://thankspace.com/?ref=44646464" data-layout="button"></div>
-									<a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Use my referral link and get $30 off your first storage box order at ThankSpace Storage on Demand. Redeem it at" data-size="large" data-count="none">Tweet</a>
-									<br><br>	
-									<hr>
+								<div class="fb-share-button" data-href="http://thankspace.com/?ref=44646464" data-layout="button"></div>
+								<a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Use my referral link and get $30 off your first storage box order at ThankSpace Storage on Demand. Redeem it at" data-size="large" data-count="none">Tweet</a>
+								<br><br>
+								<hr>
 
 
 

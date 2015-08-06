@@ -14,7 +14,7 @@ class AddColumnUser extends Migration {
 	{
 		Schema::table('user', function(Blueprint $table)
 		{
-			$table->string('ref')->unique()->nullable();
+			$table->string('ref_code')->unique()->nullable();
 			$table->string('signup_ref')->unique()->nullable();
 		});
 	}
@@ -28,7 +28,7 @@ class AddColumnUser extends Migration {
 	{
 		Schema::table('user', function(Blueprint $table)
 		{
-			$table->dropColumn('ref');
+			$table->dropColumn('ref_code');
 			$table->dropColumn('signup_ref');
 		});
 	}

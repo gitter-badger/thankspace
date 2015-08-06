@@ -47,6 +47,7 @@ Route::group(['before' => 'auth'], function() {
 	Route::get('/invoice', [ 'as' => 'user.invoice', 'uses' => 'UserController@invoice' ]);
 	Route::get('/setting', [ 'as' => 'user.setting', 'uses' => 'UserController@setting' ]);
 	Route::get('/referral', [ 'as' => 'user.referral', 'uses' => 'UserController@referral' ]);
+	Route::put('/referral', [ 'as' => 'user.referral', 'uses' => 'UserController@referral_save' ]);
 	Route::put('/update-profile', [ 'as' => 'user.update_profile', 'uses' => 'UserController@updateProfile' ]);
 	Route::put('/update-password', [ 'as' => 'user.update_password', 'uses' => 'UserController@updatePassword' ]);
 	Route::post('/check-password', [ 'as' => 'user.check_password', 'uses' => 'UserController@checkPassword' ]);

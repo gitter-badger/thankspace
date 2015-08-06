@@ -338,6 +338,33 @@ $(function() {
 			return false;
 		}
 	});
+
+	/* referral */
+	$(document).on('submit', '.change-referral-code-form', function(e){
+		var err = '';
+		e.preventDefault();
+		$('.update-profile').button('loading');
+		$.ajax({
+			url: $(this).attr('action'),
+			type: "POST",
+			data: $(this).serialize(),
+			success: function (result) {
+				if ( result['status'] == 200 ) {
+					//$('.update-profile-scs').html('<i class="fa fa-smile-o"></i> '+result['message']+'<br>');
+					//$('.update-profile-err').html('');
+					location.reload();
+				} else {
+					$('.update-profile-scs').html('');
+					for (var i = 0; i < result.length; i++ ) {
+						err += '<i class="fa fa-meh-o"></i> '+result[i]+'<br>';
+					};
+					$('.update-profile-err').html(err);
+				}
+				$('.update-profile').button('reset');
+			},
+		});
+	});
+
 });
 
 

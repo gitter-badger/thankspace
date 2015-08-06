@@ -1,5 +1,7 @@
 <?php namespace Thankspace\Repo;
 
+use Illuminate\Support\Facades\Redirect;
+
 class UserRepo extends BaseRepo
 {
 	
@@ -275,5 +277,30 @@ class UserRepo extends BaseRepo
 			]);
 			return false;
 		}
+	}
+
+	public function change_ref(array $input = array())
+	{
+		$customrules = [
+			'firstname'	=>	'sometimes',
+			'lastname'	=>	'sometimes',
+			'email'		=>	'sometimes',
+			'phone'		=>	'sometimes',
+			'password'	=> 	'sometimes',
+			'ref_code'	=> 	'required|integer|digits_between:5,10'
+		];
+
+		$validation = $this->model->validate($input, $customrules);
+
+		if ($validation->fails()) {
+			$this->setErrors($validation->messages()->all(':message'));
+			return false;
+		}
+
+		$id 	= \Auth::user()->id;
+		$user 	= $this->_getUserById($id);
+		$user->fill($input)->save();
+
+		return $user;
 	}
 }

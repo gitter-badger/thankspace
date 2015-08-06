@@ -21,7 +21,6 @@ View::composer(array('partial.modal'), function($view)
     $view->with('list_cities', getCities());
 });
 
-
 Route::get('/', [ 'as' => 'page.index', 'uses' => 'PageController@index' ]);
 
 
@@ -50,7 +49,6 @@ Route::group(['before' => 'auth'], function() {
 
 	Route::get('/return-request', [ 'as' => 'admin.returnRequest', 'uses' => 'UserController@returnRequest' ]);
 	Route::post('/return-request/{id}', [ 'as' => 'admin.postReturnRequest', 'uses' => 'UserController@postReturnRequest' ]);
-
 });
 
 /* Order Pages */

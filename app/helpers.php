@@ -121,3 +121,11 @@ function getCities()
 	}
 	return $result;
 }
+
+function getCustomerSpaceCredit()
+{
+	return DB::table('space')
+		->select(DB::raw("ifnull(sum(if(type = 'debet',-abs(nominal),nominal)),0)as `jumlah`"))
+		->where('user_id',Auth::user()->id)
+		->get()[0]->jumlah;
+}

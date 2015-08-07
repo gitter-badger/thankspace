@@ -297,7 +297,7 @@ class UserRepo extends BaseRepo
 			'email'		=>	'sometimes',
 			'phone'		=>	'sometimes',
 			'password'	=> 	'sometimes',
-			'ref_code'	=> 	'required|integer|digits_between:5,10'
+			'ref_code'	=> 	'required|integer|digits_between:5,10|unique:user'
 		];
 
 		$validation = $this->model->validate($input, $customrules);

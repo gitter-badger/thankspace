@@ -621,7 +621,8 @@ class UserController extends BaseController {
 			->with([
 				'space_credit' => getCustomerSpaceCredit(),
 				'customer_join'=> getCustomerJoinReferral(),
-				'space'	=> Space::where('user_id',Auth::user()->id)->get(),
+				'space'	=> Space::where('user_id',Auth::user()->id)
+										->orderBy('created_at','desc')->get(),
 			]);
 	}
 

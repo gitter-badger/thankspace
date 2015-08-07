@@ -19,14 +19,14 @@ $javaScript = Config::get('assets.script');
 	</script>
 
 @if(Input::get('modal') == 'sign-in-modal')
-	
+
 	<script type="text/javascript">
 		$('#sign-in-modal').modal('show');
 	</script>
-	
+
 @endif
 
-@if(Input::has('ref'))
+@if(!Auth::user() && Input::has('ref'))
 
 <script type="text/javascript">
 

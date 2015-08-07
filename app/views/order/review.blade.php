@@ -91,7 +91,7 @@
 											<img width="15px" src="{{ url('assets/img/info.png') }}">
 											</span>
 											</span>
-											<br><b>Rp. 50,000,-</b></th>
+											<br><b> {{ "Rp. ".number_format($space_credit, 0) }},-</b></th>
 											<td></td>
 											<td style="text-align:left;"><button type="submit" class="btn btn-primary" data-loading-text="Authenticating..." style="width:100%;">
 											apply
@@ -133,7 +133,7 @@
 								</div>
 
 								<br><br>
-								<h3>Total: 
+								<h3>Total:
 
 								</h3> --}}
 							</div>
@@ -148,7 +148,7 @@
 
 						<a class="btn btn-primary" href="{{ route('order.completed') }}">Checkout</a>
 						<br>
-						or 
+						or
 						<a href="{{ route('order.reset') }}">Reset Order</a>
 					</div>
 				</div>

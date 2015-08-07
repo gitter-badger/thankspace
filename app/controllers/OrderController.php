@@ -55,6 +55,7 @@ class OrderController extends BaseController {
 			'title' => __FUNCTION__,
 			'review' => Session::get('order'),
 			'user' => Auth::user(),
+			'space_credit' => getCustomerSpaceCredit(),
 		];
 		return View::make('order.review', $data);
 	}
@@ -71,7 +72,7 @@ class OrderController extends BaseController {
 
 		// delete order data
 		Session::forget('order');
-		
+
 		$data = [
 			'title' => __FUNCTION__,
 		];
@@ -81,7 +82,7 @@ class OrderController extends BaseController {
 
 	/**
 	 * For handle order step by step
-	 * 
+	 *
 	 * @return Redirect
 	 */
 	public function progress()
@@ -95,7 +96,7 @@ class OrderController extends BaseController {
 					'type', 'quantity_box', 'quantity_custom', 'quantity_item', 'description'
 				]));
 			break;
-			
+
 			case 'schedule':
 
 				$delivery_date = Input::get('delivery_year') .'-'. Input::get('delivery_month') .'-'. Input::get('delivery_day');
@@ -121,9 +122,9 @@ class OrderController extends BaseController {
 					'type', 'pickup_day', 'pickup_month', 'pickup_year', 'pickup_time',
 				]));
 			break;
-			
+
 			case 'payment':
-				
+
 				if ( ! Auth::check())
 				{
 					$userRepo = app('UserRepo');
@@ -156,7 +157,7 @@ class OrderController extends BaseController {
 				]));
 
 			break;
-			
+
 			case 'review':
 				# code...
 			break;
@@ -189,40 +190,40 @@ class OrderController extends BaseController {
 
 		return true;
 	}
-	
-	
+
+
 	public function modalOrderGallery($id)
 	{
 		if ( ! Request::ajax()) {
 			return App::abort(404);
 		}
-		
+
 		$storage = app('UserRepo')->getStorageDetail($id);
 		$gallery = app('OrderRepo')->getOrderGallery([ 'order_id' => $id ]);
-		
+
 		$data = [
 			'storage'		=> $storage,
 			'gallery'		=> $gallery,
 			'modal_title'	=> 'Gallery Order #'. $storage['order_payment']['code'],
 		];
-		
+
 		return View::make('modal.order_gallery', $data);
 	}
-	
-	
+
+
 	public function modalOrderGalleryUpload($id)
 	{
 		if ( ! Request::ajax()) {
 			return App::abort(404);
 		}
-		
+
 		$storage = app('UserRepo')->getStorageDetail($id);
-		
+
 		$data = [
 			'id'			=> $id,
 			'modal_title'	=> 'Upload Image(s) to Order #'. $storage['order_payment']['code'],
 		];
-		
+
 		return View::make('modal.order_gallery_upload', $data);
 	}
 

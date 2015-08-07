@@ -13,7 +13,7 @@ class UserController extends BaseController {
 			case 'admin':
 				return $this->_adminDashboard();
 			break;
-			
+
 			// default for user
 			default:
 				return $this->_userDashboard();
@@ -35,14 +35,14 @@ class UserController extends BaseController {
 	public function _driverDashboard()
 	{
 		$orderRepo = app('OrderRepo');
-		
+
 		if ( Input::has('sch') && Input::get('sch') == 'return' )
 		{
 			$data = [
 				'schedules'	=> $orderRepo->getReturnSchedule([ 'is_paginated' => 1, 'page_name' => 'page_schedule' ]),
 				'tasks'		=> $orderRepo->getReturnSchedule([ 'is_paginated' => 1, 'page_name' => 'page_task', 'user_id' => Auth::user()->id ]),
 			];
-			
+
 			return View::make('driver.index_return', $data);
 		} else {
 			$data = [
@@ -76,7 +76,7 @@ class UserController extends BaseController {
 
 	/**
 	 * [postReturnRequest description]
-	 * 
+	 *
 	 * @param  integer $id return_request_id
 	 * @return Redirect
 	 */
@@ -100,8 +100,8 @@ class UserController extends BaseController {
 
 		return Redirect::route('admin.returnRequest')->withMessage(['success' => 'Return request telah sukses terkonfirmasi']);
 	}
-	
-	
+
+
 	public function memberList()
 	{
 		$userRepo = app('UserRepo');
@@ -110,18 +110,18 @@ class UserController extends BaseController {
 		];
 		return View::make('admin.member', $data);
 	}
-	
-	
+
+
 	public function memberAdd()
 	{
 		$cities = getCities();
 		$data = [ 'list_cities' => $cities ];
 		return View::make('admin.member-add', $data);
 	}
-	
-	
+
+
 	public function memberAddPost()
-	{	
+	{
 		$userRepo = app('UserRepo');
 		$input = Input::get();
 		$input += [ 'password' => generate_random_code(6) ];
@@ -134,8 +134,8 @@ class UserController extends BaseController {
 			->withInput()
 			->with([ 'alert' => 'error', 'messages' => $userRepo->getErrors() ]);
 	}
-	
-	
+
+
 	public function memberEdit($id)
 	{
 		$user = app('UserRepo')->_getUserById($id);
@@ -146,8 +146,8 @@ class UserController extends BaseController {
 		];
 		return View::make('admin.member-edit', $data);
 	}
-	
-	
+
+
 	public function memberEditPut($id)
 	{
 		$userRepo = app('UserRepo');
@@ -162,8 +162,8 @@ class UserController extends BaseController {
 			->withInput()
 			->with([ 'alert' => 'error', 'messages' => $userRepo->getErrors() ]);
 	}
-	
-	
+
+
 	public function memberDelete($id)
 	{
 		$userRepo = app('UserRepo');
@@ -185,14 +185,14 @@ class UserController extends BaseController {
 		];
 		return View::make('user.invoice', $data);
 	}
-	
-	
+
+
 	public function confirmPayment()
 	{
 		if ( !Input::has('order_payment_id') ) {
 			return Redirect::back()->with('message', 'No invoice selected');
 		}
-		
+
 		$orderRepo = app('OrderRepo');
 		$input = Input::get();
 		if ( $orderRepo->confirmPayment($input) )
@@ -209,8 +209,8 @@ class UserController extends BaseController {
 		$data = [ 'list_cities' => $cities ];
 		return View::make('user.setting', $data);
 	}
-	
-	
+
+
 	public function signin()
 	{
 		if ( ! Request::ajax()) {
@@ -225,8 +225,8 @@ class UserController extends BaseController {
 		}
 		return $userRepo->getErrors();
 	}
-	
-	
+
+
 	public function signup()
 	{
 		if ( ! Request::ajax()) {
@@ -248,14 +248,14 @@ class UserController extends BaseController {
 		Auth::logout();
 		return Redirect::route('page.index');
 	}
-	
-	
+
+
 	public function updateProfile()
 	{
 		if ( ! Request::ajax()) {
 			return App::abort(404);
 		}
-		
+
 		$userRepo = app('UserRepo');
 		$input = Input::get();
 		if ( $userRepo->updateProfile($input) )
@@ -264,14 +264,14 @@ class UserController extends BaseController {
 		}
 		return $userRepo->getErrors();
 	}
-	
-	
+
+
 	public function updatePassword()
 	{
 		if ( ! Request::ajax()) {
 			return App::abort(404);
 		}
-		
+
 		$userRepo = app('UserRepo');
 		$input = Input::get();
 		if ( $userRepo->updatePassword($input) )
@@ -280,14 +280,14 @@ class UserController extends BaseController {
 		}
 		return $userRepo->getErrors();
 	}
-	
-	
+
+
 	public function checkPassword()
 	{
 		if ( ! Request::ajax()) {
 			return App::abort(404);
 		}
-		
+
 		$userRepo = app('UserRepo');
 		$input = Input::get();
 		if ( $userRepo->checkPassword($input) )
@@ -296,8 +296,8 @@ class UserController extends BaseController {
 		}
 		return $userRepo->getErrors();
 	}
-	
-	
+
+
 	public function modalInvoiceDetail($id)
 	{
 		$invoice = app('UserRepo')->getInvoiceDetail($id);
@@ -307,8 +307,8 @@ class UserController extends BaseController {
 		];
 		return View::make('modal.invoice_detail', $data);
 	}
-	
-	
+
+
 	public function modalReturnRequestConfirmation($return_id)
 	{
 		$return = app('OrderRepo')->getReturnSchedule(['id' => $return_id, 'status' => 0]);
@@ -369,7 +369,7 @@ class UserController extends BaseController {
 		if ( ! Request::ajax()) {
 			return App::abort(404);
 		}
-		
+
 		$input = Input::get();
 		$input['status'] = 0;
 		$orderRepo = app('OrderRepo');
@@ -391,12 +391,12 @@ class UserController extends BaseController {
 		}
 		return Redirect::route('user.dashboard');
 	}
-	
-	
+
+
 	public function setDeliveryStored()
 	{
 		if ( !Input::has('order_schedule_id') ) {
-			return Redirect::back()->with([ 'message' => 
+			return Redirect::back()->with([ 'message' =>
 				[
 					'ico'	=> 'meh',
 					'msg'	=> 'No delivery schedule selected',
@@ -404,12 +404,12 @@ class UserController extends BaseController {
 				]
 			]);
 		}
-		
+
 		$orderRepo = app('OrderRepo');
 		$input = Input::get();
 		if ( $orderRepo->setDeliveryStored($input) )
 		{
-			return Redirect::back()->with([ 'message' => 
+			return Redirect::back()->with([ 'message' =>
 				[
 					'ico'	=> 'smile',
 					'msg'	=> 'Your selected delivery schedule has been set stored',
@@ -419,12 +419,12 @@ class UserController extends BaseController {
 		}
 		return Redirect::back()->with($orderRepo->getErrors());
 	}
-	
-	
+
+
 	public function assignDelivery()
 	{
 		if ( !Input::has('order_id') ) {
-			return Redirect::back()->with([ 'message' => 
+			return Redirect::back()->with([ 'message' =>
 				[
 					'ico'	=> 'meh',
 					'msg'	=> 'No order selected',
@@ -432,12 +432,12 @@ class UserController extends BaseController {
 				]
 			]);
 		}
-		
+
 		$userRepo = app('UserRepo');
 		$input = Input::get();
 		if ( $userRepo->assignDelivery($input) )
 		{
-			return Redirect::back()->with([ 'message' => 
+			return Redirect::back()->with([ 'message' =>
 				[
 					'ico'	=> 'smile',
 					'msg'	=> 'Your selected order has been assigned to delivery',
@@ -475,7 +475,7 @@ class UserController extends BaseController {
 			'firstname' => $user->firstname,
 			'url_reset_password' => route('user.forgotPasswordForm') .'?token='. $token .'&e='. $email,
 		];
-		
+
 		// send user email with link and token to reset password form
 		\Mail::send('emails.reset-password', $data, function($message)
 		{
@@ -540,12 +540,12 @@ class UserController extends BaseController {
 		}
 
 	}
-	
-	
+
+
 	public function setReturnedSet()
 	{
 		if ( !Input::has('return_schedule_id') ) {
-			return Redirect::back()->with([ 'message' => 
+			return Redirect::back()->with([ 'message' =>
 				[
 					'ico'	=> 'meh',
 					'msg'	=> 'No return schedule selected',
@@ -553,12 +553,12 @@ class UserController extends BaseController {
 				]
 			]);
 		}
-		
+
 		$orderRepo = app('OrderRepo');
 		$input = Input::get();
 		if ( $orderRepo->setReturnedSet($input) )
 		{
-			return Redirect::back()->with([ 'message' => 
+			return Redirect::back()->with([ 'message' =>
 				[
 					'ico'	=> 'smile',
 					'msg'	=> 'Your selected return schedule has been set returned',
@@ -568,12 +568,12 @@ class UserController extends BaseController {
 		}
 		return Redirect::back()->with($orderRepo->getErrors());
 	}
-	
-	
+
+
 	public function assignReturn()
 	{
 		if ( !Input::has('return_schedule_id') ) {
-			return Redirect::back()->with([ 'message' => 
+			return Redirect::back()->with([ 'message' =>
 				[
 					'ico'	=> 'meh',
 					'msg'	=> 'No schedule selected',
@@ -581,12 +581,12 @@ class UserController extends BaseController {
 				]
 			]);
 		}
-		
+
 		$userRepo = app('UserRepo');
 		$input = Input::get();
 		if ( $userRepo->assignReturn($input) )
 		{
-			return Redirect::back()->with([ 'message' => 
+			return Redirect::back()->with([ 'message' =>
 				[
 					'ico'	=> 'smile',
 					'msg'	=> 'Your selected schedule has been assigned to you',
@@ -596,8 +596,8 @@ class UserController extends BaseController {
 		}
 		return Redirect::back()->with($userRepo->getErrors());
 	}
-	
-	
+
+
 	public function modalReturnedStuff($id)
 	{
 		$stuff = app('OrderRepo')->getReturnedStuffs($id);
@@ -634,6 +634,19 @@ class UserController extends BaseController {
 		}
 
 		return $userRepo->getErrors();
+	}
+
+	public function ref_code_check($code)
+	{
+		if ( ! Request::ajax()) {
+			return App::abort(404);
+		}
+
+		if( User::where('ref_code',$code)->count() ){
+			return [ 'status' => 200, 'message' => 'Isi data Anda untuk pendaftaran dan dapatkan space credit Rp 50.000' ];
+		}else{
+			return [ 'status' => 404];
+		}
 	}
 
 }

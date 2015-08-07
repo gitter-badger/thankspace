@@ -25,3 +25,29 @@ $javaScript = Config::get('assets.script');
 	</script>
 	
 @endif
+
+@if(Input::has('ref'))
+
+<script type="text/javascript">
+
+	var code = {{ Input::get('ref') }};
+	$.ajax({
+		type : "GET",
+		url  : "{{ route('user.referral_check', Input::get('ref')) }}",
+		success : function(result) {
+			if ( result['status'] == 200 ) {
+				$('<input>').attr({
+					type: 'hidden',
+					id: 'signup_ref',
+					name: 'signup_ref',
+					value : code
+				}).appendTo('#sign-up-form');
+				$("#head_signup").html(result['message']);
+				$('#sign-up-modal').modal('show');
+			}
+		}
+	});
+
+</script>
+
+@endif

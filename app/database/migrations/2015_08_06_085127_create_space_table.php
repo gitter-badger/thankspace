@@ -18,6 +18,7 @@ class CreateSpaceTable extends Migration {
 			$table->integer('user_id');
 			$table->string('type')->default('credit');
 			$table->integer('nominal');
+			$table->text('keterangan');
 			$table->timestamps();
 		});
 	}

@@ -4,29 +4,29 @@ use Illuminate\Support\Facades\Redirect;
 
 class UserRepo extends BaseRepo
 {
-	
+
 	public function __construct(\User $user)
 	{
 		$this->model = $user;
 	}
-	
-	
+
+
 	public function getMemberList()
 	{
 		$user = $this->model->where('status', 1)->paginate(20);
-		
+
 		if ( $user ) {
 			return $user;
 		} else {
 			return false;
 		}
 	}
-	
-	
+
+
 	public function deleteUser($id)
 	{
 		$user = $this->_getUserById($id);
-		
+
 		if ( $user ) {
 			\Order::where('user_id', $user->id)->update([ 'status' => 0 ]);
 			$user->update([ 'status' => 0 ]);
@@ -36,19 +36,19 @@ class UserRepo extends BaseRepo
 			return false;
 		}
 	}
-	
-	
+
+
 	public function updateProfile(array $input = array())
 	{
 		$id = ( isset($input['user_id']) ? $input['user_id'] : \Auth::user()->id );
-		
+
 		$customrules = [
 			'email'		=>	'required|email|unique:user,email,'.$id,
 			'password'	=>	'sometimes'
 		];
 
 		$validation = $this->model->validate($input, $customrules);
-		
+
 		if ( $validation->passes() ) {
 			$user = $this->_getUserById($id);
 			$user->fill($input)->save();
@@ -58,20 +58,20 @@ class UserRepo extends BaseRepo
 			return false;
 		}
 	}
-	
-	
+
+
 	public function checkPassword(array $input = array())
 	{
 		$id = ( isset($input['user_id']) ? $input['user_id'] : \Auth::user()->id );
 		$user = $this->_getUserById($id);
 		return ( \Hash::check( $input['old_password'], $user->password ) ? true : false );
 	}
-	
-	
+
+
 	public function updatePassword(array $input = array())
 	{
 		$id = ( isset($input['user_id']) ? $input['user_id'] : \Auth::user()->id );
-		
+
 		$customrules = [
 			'firstname'			=>	'sometimes',
 			'lastname'			=>	'sometimes',
@@ -82,7 +82,7 @@ class UserRepo extends BaseRepo
 		];
 
 		$validation = $this->model->validate($input, $customrules);
-		
+
 		if ( $validation->passes() ) {
 			$user = $this->_getUserById($id);
 			$user->fill($input)->save();
@@ -100,18 +100,28 @@ class UserRepo extends BaseRepo
 			'email'	=>	'required|email|unique:user,email',
 		];
 
-		$input['type'] = (isset($input['type'])) ? $input['type'] : 'user';
-		$input['via'] = (isset($input['via'])) ? $input['via'] : 'register';
+		$input['type'] 			= (isset($input['type'])) ? $input['type'] : 'user';
+		$input['via'] 			= (isset($input['via'])) ? $input['via'] : 'register';
+		$input['signup_ref'] 	= (isset($input['signup_ref'])) ? $input['signup_ref'] : null;
 
 		$validation = $this->model->validate($input, $customrules);
-		
+
 		if ( $validation->passes() ) {
 			$user = $this->model->create($input);
-			
+
 			$this->_sendWelcomeMail($input);
-			
+
+			if( $input['signup_ref'] != null ) {
+				\Space::create([
+					'user_id'	=> $user->id,
+					'type'		=> 'credit',
+					'nominal'	=> '50000',
+					'keterangan'=> 'Space Credit for sign up from link referral',
+				]);
+			}
+
 			$this->_sendAdminNewCustomerMail($user->id);
-			
+
 			if ( $input['via'] != 'admin' ) {
 				$auth = $this->_handleLogin($user->id);
 				return $auth;
@@ -134,11 +144,11 @@ class UserRepo extends BaseRepo
 		$this->setErrors([ '<i class="fa fa-meh-o fa-4"></i> Maaf, kombinasi email dan password Anda salah.' ]);
 		return false;
 	}
-	
-	
+
+
 	/**
 	 * Get invoice detail
-	 * 
+	 *
 	 * @param  integer $id
 	 * @return \Illuminate\Database\Eloquent\Model
 	 */
@@ -150,7 +160,7 @@ class UserRepo extends BaseRepo
 
 	/**
 	 * Get order detail
-	 * 
+	 *
 	 * @param  integer $id
 	 * @return \Illuminate\Database\Eloquent\Model
 	 */
@@ -162,7 +172,7 @@ class UserRepo extends BaseRepo
 
 	/**
 	 * Get order stuff
-	 * 
+	 *
 	 * @param  integer $id
 	 * @return \Illuminate\Database\Eloquent\Model
 	 */
@@ -181,8 +191,8 @@ class UserRepo extends BaseRepo
 
 		return false;
 	}
-	
-	
+
+
 	public function _getUserById($id)
 	{
 		$user = $this->model->find($id);
@@ -197,36 +207,36 @@ class UserRepo extends BaseRepo
 			'email'		=>	$input['email'],
 			'fullname'	=>	ucfirst($input['firstname']) .' '. ucfirst($input['lastname']),
 		];
-		
+
 		\Mail::send('emails.welcome', $input, function($message) use ($to)
 		{
 			$message->to($to['email'], $to['fullname'])
 					->subject('[ThankSpace] Selamat datang di ThankSpace');
 		});
 	}
-	
+
 	protected function _sendAdminNewCustomerMail( $user_id )
 	{
 		$user = \User::with('city')->find($user_id);
-		
+
 		$to = [
 			'email'	=>	'ThankSpace Support',
 			'name'	=>	'support@thankspace.com',
 		];
-		
+
 		$data = [ 'user' => $user ];
-		
+
 		\Mail::send('emails.admin-new-user', $data, function($message) use ($to)
 		{
 			$message->to($to['email'], $to['name'])
 					->subject('[ThankSpace] New Customer');
 		});
 	}
-	
-	
+
+
 	/**
 	 * For assign delivery schedule for driver
-	 * 
+	 *
 	 * @param  array  $input
 	 * @return mix \Illuminate\Database\Eloquent\Model|false
 	 */
@@ -244,7 +254,7 @@ class UserRepo extends BaseRepo
 			}
 			return true;
 		} else {
-			$this->setErrors([ 'message' => 
+			$this->setErrors([ 'message' =>
 				[
 					'ico'	=> 'meh',
 					'msg'	=> 'No order selected',
@@ -254,10 +264,10 @@ class UserRepo extends BaseRepo
 			return false;
 		}
 	}
-	
+
 	/**
 	 * For assign return schedule for driver
-	 * 
+	 *
 	 * @param  array  $input
 	 * @return mix \Illuminate\Database\Eloquent\Model|false
 	 */
@@ -268,7 +278,7 @@ class UserRepo extends BaseRepo
 			\ReturnSchedule::whereIn('id', $input['return_schedule_id'])->update([ 'user_id' => \Auth::user()->id ]);
 			return true;
 		} else {
-			$this->setErrors([ 'message' => 
+			$this->setErrors([ 'message' =>
 				[
 					'ico'	=> 'meh',
 					'msg'	=> 'No schedule selected',

@@ -9,7 +9,7 @@ Route::get('/tes', function(){
 	$order = \User::with('city')->find(1);
 	// return $order;
 	$data = [ 'user' => $order ];
-	
+
 	return View::make('emails.admin-new-user', $data);
 });
 
@@ -85,6 +85,7 @@ Route::get('/page/terms-and-conditions', [ 'as' => 'page.tos', 'uses' => 'PageCo
 Route::get('/signout', [ 'as' => 'user.signout', 'uses' => 'UserController@signout' ]);
 Route::post('/signin', [ 'as' => 'user.signin', 'uses' => 'UserController@signin' ]);
 Route::post('/signup', [ 'as' => 'user.signup', 'uses' => 'UserController@signup' ]);
+Route::get('/referral_check/{code}', [ 'as' => 'user.referral_check', 'uses' => 'UserController@ref_code_check' ]);
 Route::put('/storage/{id}/update', ['as' => 'user.storageUpdate', 'uses' => 'UserController@storageUpdate']);
 
 Route::post('/storage/{id}/return-process', ['as' => 'user.storageReturnProcess', 'uses' => 'UserController@storageReturnProcess']);
@@ -100,7 +101,7 @@ Route::group(['prefix' => 'ajax', 'before' => 'ajax'], function() {
 	Route::get('/storage/{id}/return', ['as' => 'ajax.modalStorageReturn', 'uses' => 'UserController@modalStorageReturn']);
 	Route::get('/storage/{id}/edit', ['as' => 'ajax.modalStorageEdit', 'uses' => 'UserController@modalStorageEdit']);
 	Route::get('/returned-stuff/{id}', [ 'as' => 'ajax.modalReturnedStuff', 'uses' => 'UserController@modalReturnedStuff' ]);
-	
+
 	Route::get('/order-gallery/{id}', [ 'as' => 'ajax.modalOrderGallery', 'uses' => 'OrderController@modalOrderGallery' ]);
 	Route::get('/order-gallery/{id}/upload', [ 'as' => 'ajax.modalOrderGalleryUpload', 'uses' => 'OrderController@modalOrderGalleryUpload' ]);
 

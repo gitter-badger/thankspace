@@ -58,10 +58,10 @@
 				<h4 class="modal-title" id="myModalLabel">Pendaftaran Customer</h4><hr>
 			</div>
 			<div class="modal-body" style="padding:0px 24px;">
-				{{ Form::open([ 'method' => 'POST', 'route' => 'user.signup', 'class' => 'form-horizontal sign-up-form' ]) }}
+				{{ Form::open([ 'method' => 'POST', 'route' => 'user.signup', 'class' => 'form-horizontal sign-up-form', 'id' => 'sign-up-form' ]) }}
 					<fieldset>
 						<span class="error-alert regis-err"></span>
-						<p>Isi data Anda untuk pendaftaran </p>
+						<p id="head_signup">Isi data Anda untuk pendaftaran </p>
 						<div class="form-group">                    
 							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="padding-bottom:20px;">
 								<div class="input-group">

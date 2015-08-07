@@ -617,7 +617,12 @@ class UserController extends BaseController {
 			return View::make('user.input-referral');
 		}
 
-		return View::make('user.referral');
+		return View::make('user.referral')
+			->with([
+				'space_credit' => getCustomerSpaceCredit(),
+				'customer_join'=> getCustomerJoinReferral(),
+				'space'	=> Space::where('user_id',Auth::user()->id)->get(),
+			]);
 	}
 
 	public function referral_save()

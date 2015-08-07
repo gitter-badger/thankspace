@@ -31,7 +31,7 @@ t._e.push(f);
 };
 return t;
 }(document, "script", "twitter-wjs"));</script>
-									
+
 <link rel="canonical" href="http://thankspace.com/?ref=44646464">
 
 	<div class="page-header" id="banner">
@@ -43,7 +43,7 @@ return t;
 
 	<div class="container">
 		<div class="row">
-			
+
 			<div class="col-lg-3">
 				@include('user._side')
 			</div>
@@ -84,7 +84,7 @@ return t;
 												<div class="panel-body">
 													<div class="text-center">
 													<h4>Referral:</h4>
-													<h2>2 Persons</h2>
+													<h2>{{ $customer_join }} Persons</h2>
 													<p>Join this site via your referral link. Thank you!</p>
 													</div>
 												</div>
@@ -95,7 +95,7 @@ return t;
 												<div class="panel-body">
 													<div class="text-center">
 													<h4>Current Credit Balance * :</h4>
-													<h2>Rp 50,000</h2>
+													<h2>{{ "Rp ".number_format($space_credit, 0, '', '.') }}</h2>
 													<!--<p><a href="">Redeem your credit for merchandise >> </a></p>-->
 													</div>
 												</div>
@@ -115,7 +115,7 @@ return t;
 								</div>
 
 				<div class="table-responsive">
-								
+
 							<table id="sortirtable" class="tablesorter table table-striped table-hover">
 								<thead>
 									<tr>
@@ -126,36 +126,28 @@ return t;
 									</tr>
 								</thead>
 								<tbody>
+                  @foreach($space as $s)
+                  @if($s->type == 'credit')
 									<tr class="success">
-										<td>July 03 2015</td>
-										<td>Commision earned for new customer first order </td>
-										<td>Rp 50.000,-</td>
-										<td>Credit</td>
+										<td>{{ Carbon\Carbon::parse($s->created_at)->format('M d Y') }}</td>
+										<td>{{ $s->keterangan }} </td>
+										<td>{{ "Rp ".number_format($s->nominal, 0, '', '.') }}</td>
+										<td>{{ ucfirst($s->type) }}</td>
 									</tr>
-									<tr class="success">
+                  @else
+                  <tr class="danger">
 										<td>May 27 2014</td>
-										<td>Commision earned for new customer first order </td>
-										<td>Rp 50.000,-</td>
-										<td>Credit</td>
+                    <td>{{ $s->keterangan }} </td>
+										<td>{{ "Rp ".number_format(-abs($s->nominal), 0, '', '.') }}</td>
+										<td>{{ ucfirst($s->type) }}</td>
 									</tr>
-									<tr class="danger">
-										<td>May 27 2014</td>
-										<td>Credit used for purchases order </td>
-										<td>- Rp 50.000,-</td>
-										<td>Debit</td>
-									</tr>
-									<tr class="success">
-										<td>May 01 2014</td>
-										<td>Credit earned for becoming a new member</td>
-										<td>Rp 50.000,-</td>
-										<td>Credit</td>
-									</tr>
-									
+                  @endif
+                  @endforeach
 								</tbody>
 							</table>
 
 
-										
+
 				</div> <!--responsive table-->
 
 
@@ -168,7 +160,7 @@ return t;
 					</div>
 
 
-					
+
 			</div>
 
 		</div>

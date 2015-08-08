@@ -3,43 +3,11 @@
 
 @section('content')
 
-
-
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4&appId=173043832715243";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
-
-</script>
-
-
-<script>window.twttr = (function(d, s, id) {
-var js, fjs = d.getElementsByTagName(s)[0],
-t = window.twttr || {};
-if (d.getElementById(id)) return t;
-js = d.createElement(s);
-js.id = id;
-js.src = "https://platform.twitter.com/widgets.js";
-fjs.parentNode.insertBefore(js, fjs);
-t._e = [];
-t.ready = function(f) {
-t._e.push(f);
-};
-return t;
-}(document, "script", "twitter-wjs"));</script>
-
-<link rel="canonical" href="http://thankspace.com/?ref=44646464">
-
 	<div class="page-header" id="banner">
 		<div class="text-center">
 			<h2>Referral Program</h2>
 		</div>
 	</div>
-
 
 	<div class="container">
 		<div class="row">
@@ -68,9 +36,16 @@ return t;
 
 								<hr>
 
+									<a href="https://www.facebook.com/sharer/sharer.php?u={{ route('page.index',['ref' => Auth::user()->ref_code]) }}" target="_blank" class="btn-share">
+										<img src="http://localhost/thankspace/public/assets/img/social-fb.png" />
+									</a>
+									<a href="https://twitter.com/share?url={{ route('page.index',['ref' => Auth::user()->ref_code]) }}" target="_blank" class="btn-share">
+										<img src="http://localhost/thankspace/public/assets/img/social-tw.png" />
+									</a>
+									<a href="https://plus.google.com/share?url={{ route('page.index',['ref' => Auth::user()->ref_code]) }}" target="_blank" class="btn-share">
+										<img src="http://localhost/thankspace/public/assets/img/social-g+.png" />
+									</a>
 
-								<div class="fb-share-button" data-href="http://thankspace.com/?ref=44646464" data-layout="button"></div>
-								<a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Use my referral link and get $30 off your first storage box order at ThankSpace Storage on Demand. Redeem it at" data-size="large" data-count="none">Tweet</a>
 								<br><br>
 								<hr>
 
@@ -146,14 +121,7 @@ return t;
 								</tbody>
 							</table>
 
-
-
 				</div> <!--responsive table-->
-
-
-
-
-
 
 							</div>
 						</div>
@@ -187,6 +155,12 @@ return t;
 		{
 			$(this).removeData('bs.modal');
 		});
+
+		$('.btn-share').click(function(e) {
+        e.preventDefault();
+        window.open($(this).attr('href'), 'Share Window', 'height=450, width=550, top=' + ($(window).height() / 2 - 275) + ', left=' + ($(window).width() / 2 - 225) + ', toolbar=0, location=0, menubar=0, directories=0, scrollbars=0');
+        return false;
+    });
 
 	</script>
 @stop

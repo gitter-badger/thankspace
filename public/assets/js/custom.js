@@ -343,7 +343,7 @@ $(function() {
 	$(document).on('submit', '.change-referral-code-form', function(e){
 		var err = '';
 		e.preventDefault();
-		$('.update-profile').button('loading');
+		$('#btnLinkRef').button('loading');
 		$.ajax({
 			url: $(this).attr('action'),
 			type: "POST",
@@ -360,7 +360,7 @@ $(function() {
 					};
 					$('.update-profile-err').html(err);
 				}
-				$('.update-profile').button('reset');
+				$('#btnLinkRef').button('reset');
 			},
 		});
 	});

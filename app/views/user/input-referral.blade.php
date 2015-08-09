@@ -43,7 +43,7 @@
 
                                 <div class="form-group">
                                     <div class="col-lg-12">
-                                        <button type="submit" class="btn btn-primary" data-loading-text="Menyimpan...">
+                                        <button type="submit" class="btn btn-primary" id="btnLinkRef" data-loading-text="Menyimpan...">
                                             <i class="fa fa-check-square-o"></i> Simpan
                                         </button>
                                     </div>

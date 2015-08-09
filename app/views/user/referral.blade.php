@@ -111,7 +111,7 @@
 									</tr>
                   @else
                   <tr class="danger">
-										<td>May 27 2014</td>
+										<td>{{ Carbon\Carbon::parse($s->created_at)->format('M d Y') }}</td>
                     <td>{{ $s->keterangan }} </td>
 										<td>{{ "Rp ".number_format(-abs($s->nominal), 0, '', '.') }}</td>
 										<td>{{ ucfirst($s->type) }}</td>

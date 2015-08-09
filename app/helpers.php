@@ -61,7 +61,11 @@ function getTotalTransactions( $id = NULL ) {
 				})
 				->count() * Config::get('thankspace.item.price');
 
-	$total = ( $box + $item ) - Order::find($id)->space_credit_used;
+	$total = ( $box + $item );
+	$order = Order::find($id);
+	if ($order) {
+		$total -= $order->space_credit_used;
+	};
 
 	if ( $id ) {
 		$code = DB::table('order_payment')->where('order_id', $id)->first();

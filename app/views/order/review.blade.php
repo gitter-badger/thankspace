@@ -91,27 +91,47 @@
 											<img width="15px" src="{{ url('assets/img/info.png') }}">
 											</span>
 											</span>
-											<br><b> {{ "Rp. ".number_format($space_credit, 0) }},-</b></th>
+											<br><b id="space_credit">
+												@if(!Session::has('order.space_credit_used'))
+												{{ "Rp. ".number_format($space_credit, 0) }},-
+												@else
+												{{ "Rp. ".number_format($space_credit-Session::get('order.space_credit_used'), 0) }},-
+												@endif
+											</b></th>
+											<input type="hidden" name="space_credit" id="space_credit_in" value="{{ $space_credit }}" />
 											<td></td>
-											<td style="text-align:left;"><button type="submit" class="btn btn-primary" data-loading-text="Authenticating..." style="width:100%;">
-											apply
-											</button></td>
+											<td style="text-align:left;">
+												<button type="button" id="btnSpaceCredit" class="btn btn-primary"
+													data-loading-text="saving..."
+													data-url="{{ route('order.progress') }}"
+													style="width:100%;">
+													apply
+												</button>
+											</td>
 										</tr>
 
 										<tr>
 											<th>Sub Total</th><td></td>
-											<td style="text-align:left;">Rp 100,000</td>
+											<td style="text-align:left;">Rp. {{ number_format(calcPrice('box', $review['index']['quantity_box']) + calcPrice('item', $review['index']['quantity_item'])) }},-</td>
 										</tr>
-										<tr>
+										@if(Session::has('order.space_credit_used'))
+										<tr id="rowSpaceCredit">
 											<th>Space Credit</th><td></td>
-											<td style="text-align:left;">-Rp 50,000 </td>
+											<td style="text-align:left;">-{{ "Rp. ".number_format(Session::get('order.space_credit_used'), 0) }} </td>
 										</tr>
+										@endif
 
 										<tr>
 											<td colspan="3">
-												<h3>
+												<h3 id="total">
+													{{--*/
+														$space_credit_used = 0;
+														if(Session::has('order.space_credit_used')){
+															$space_credit_used = Session::get('order.space_credit_used');
+														}
+													/*--}}
 													Total:
-													Rp. {{ number_format(calcPrice('box', $review['index']['quantity_box']) + calcPrice('item', $review['index']['quantity_item'])) }},-
+													Rp. {{ number_format((calcPrice('box', $review['index']['quantity_box']) + calcPrice('item', $review['index']['quantity_item']))-$space_credit_used) }},-
 												</h3>
 											</td>
 										</tr>
@@ -146,10 +166,10 @@
 						</div>
 						<!-- end row -->
 
-						<a class="btn btn-primary" href="{{ route('order.completed') }}">Checkout</a>
+						<a class="btn btn-primary" href="{{ route('order.completed') }}" onclick="return confirm('Checkout order ??')">Checkout</a>
 						<br>
 						or
-						<a href="{{ route('order.reset') }}">Reset Order</a>
+						<a href="{{ route('order.reset') }}" onclick="return confirm('Reset order ??')">Reset Order</a>
 					</div>
 				</div>
 			</div>

@@ -88,6 +88,7 @@ class OrderController extends BaseController {
 	public function progress()
 	{
 		$order_session = Session::all();
+		$data_ret = [];
 
 		switch (Input::get('step'))
 		{
@@ -159,12 +160,36 @@ class OrderController extends BaseController {
 			break;
 
 			case 'review':
-				# code...
+				# save space credit used
+				$space_credit = getCustomerSpaceCredit();
+				$order_index = Session::get('order.index');
+				$total = calcPrice('box', $order_index['quantity_box']) + calcPrice('item', $order_index['quantity_item']);
+				if ( $total > $space_credit ) {
+					$data_ret['total'] = "Total : Rp. ".number_format($total - $space_credit,0,',','.').',-';
+					$data_ret['space_credit_sisa'] = "Rp. ".number_format(0,0,',','.').',-';
+					$data_ret['space_credit_used'] = "Rp. ".number_format($space_credit,0,',','.').',-';
+					Session::put('order.space_credit_used',$space_credit);
+				} else {
+					$data_ret['total'] = "Total : Rp. ".number_format(0,0,',','.').',-';
+					$data_ret['space_credit_sisa'] = "Rp. ".number_format($space_credit - $total,0,',','.').',-';
+					$data_ret['space_credit_used'] = "Rp. ".number_format($total,0,',','.').',-';
+					Session::put('order.space_credit_used',$total);
+				}
 			break;
 		}
 
-		$redirectTo = Input::get('redirect_to');
-		return Redirect::to($redirectTo);
+		if (Request::ajax()) {
+		  /*return [
+				'space_credit_sisa'	=> 'Rp. 0,-',
+				'space_credit_used'	=> 'Rp. 100.000,-',
+				'total'							=> 'Rp. 350.000,-'
+			];*/
+
+			return $data_ret;
+		} else {
+			$redirectTo = Input::get('redirect_to');
+			return Redirect::to($redirectTo);
+		}
 	}
 
 

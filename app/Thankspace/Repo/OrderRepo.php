@@ -2,16 +2,16 @@
 
 class OrderRepo extends BaseRepo
 {
-	
+
 	public function __construct(\Order $order)
 	{
 		$this->model = $order;
 	}
-	
-	
+
+
 	/**
 	 * Get user available storage on warehouse
-	 * 
+	 *
 	 * @param  array  $option
 	 * @return \Illuminate\Database\Eloquent\Model
 	 */
@@ -19,11 +19,11 @@ class OrderRepo extends BaseRepo
 	{
 		$user_type = \Auth::user()->type;
 		$user_id = ( isset($option['user_id']) ? $option['user_id'] : \Auth::user()->id );
-		
+
 		$order = \Order::with('OrderSchedule', 'OrderStuff', 'ReturnSchedule')
 					->join('order_payment', 'order_payment.order_id', '=', 'order.id')
 					->where('order_payment.status', 2);
-		
+
 		/**
 		 * For user list page
 		 */
@@ -51,9 +51,9 @@ class OrderRepo extends BaseRepo
 		{
 			$order = $order->with('User', 'deliverySchedule.user');
 		}
-		
+
 		$order = $order->where('order.status', 1)->paginate(20);
-		
+
 		if ( $order ) {
 			return $order;
 		} else {
@@ -68,55 +68,55 @@ class OrderRepo extends BaseRepo
 		{
 			\Paginator::setPageName($option['page_name']);
 		}
-			
+
 		$order = \DeliverySchedule::with('order.user', 'order.orderSchedule')
 			->join('order_payment', 'order_payment.order_id', '=', 'delivery_schedule.order_id')
 			->join('order_schedule', 'order_schedule.order_id', '=', 'delivery_schedule.order_id')
 			->select('delivery_schedule.*', 'order_schedule.*', 'order_payment.code');
-		
+
 		if (!empty($option['user_id']))
 		{
 			$order = $order->where('user_id', $option['user_id']);
 		}
-		
+
 		$order = $order->paginate(20);
 
 		return $order;
 	}
 
-	
+
 	/**
 	 * User order/transaction history
-	 * 
+	 *
 	 * @param  array  $option
 	 * @return \Illuminate\Database\Eloquent\Model
 	 */
 	public function getOrderList(array $option = array())
 	{
 		$user_id = ( isset($option['user_id']) ? $option['user_id'] : \Auth::user()->id );
-		
+
 		$order = \Order::with('OrderSchedule', 'OrderPayment', 'ReturnSchedule')->orderBy('id', 'desc');
-		
+
 		if( \Auth::user()->type == 'user' )
 		{
 			$order = $order->where('user_id', $user_id);
 		} else {
 			$order = $order->with('User');
 		}
-		
+
 		$order = $order->where('order.status', 1)->paginate(20);
-		
+
 		if ( $order ) {
 			return $order;
 		} else {
 			return false;
 		}
 	}
-	
+
 
 	/**
 	 * For confirmation payment user and admin
-	 * 
+	 *
 	 * @param  array  $input
 	 * @return mix \Illuminate\Database\Eloquent\Model|false
 	 */
@@ -126,14 +126,14 @@ class OrderRepo extends BaseRepo
 		$confirm = \OrderPayment::whereIn('id', $input['order_payment_id'])->update([ 'status' => $status ]);
 		if ( $confirm )
 		{
-			
+
 			if ( $status == 2 )
 			{
 				$this->_sendConfirmPaymentMail($input['order_payment_id']);
 			} else {
 				$this->_sendConfirmPaymentMailAdmin($input['order_payment_id']);
 			}
-			
+
 			return $confirm;
 		} else {
 			$this->setErrors('No invoice selected');
@@ -145,7 +145,7 @@ class OrderRepo extends BaseRepo
 	public function quantity_box_dropdown()
 	{
 		$list = array();
-		for ($i=1; $i <= 20; $i++) { 
+		for ($i=1; $i <= 20; $i++) {
 			$list[$i] = $i;
 		}
 		$list[21] = 'saya butuh lebih 20';
@@ -170,19 +170,29 @@ class OrderRepo extends BaseRepo
 	 */
 	public function save($orderData)
 	{
-		$order = $this->_save_order($orderData['index']);
+		$orderIndex = $orderData['index'];
+
+		$orderIndex['space_credit_used'] = isset($orderData['space_credit_used']) ? $orderData['space_credit_used'] : 0;
+
+		$order = $this->_save_order($orderIndex);
 
 		$this->_save_orderSchedule($order->id, $orderData['schedule']);
 
-		$this->_save_orderPayment($order->id, $orderData['payment']);
-		
+		$orderPayment = $this->_save_orderPayment($order->id, $orderData['payment']);
+		if (isset($orderData['space_credit_used'])) {
+			\Space::create([
+				'user_id'	=> \Auth::user()->id,
+				'type'		=> 'debet',
+				'nominal'	=> $orderData['space_credit_used'],
+				'keterangan'=> 'Credit used for purchases order #'.$orderPayment->code,
+			]);
+		}
+
 		$this->_sendInvoiceDetailMail($order->id);
 
 		$this->_sendAdminNewOrderMail($order->id);
 
 	}
-
-
 
 	protected function _save_order($orderIndex)
 	{
@@ -226,7 +236,7 @@ class OrderRepo extends BaseRepo
 		// insert to order stuff by quantity custom if needed
 		if ($orderIndex['quantity_item'] > 0) {
 			for ($i=0; $i < $orderIndex['quantity_item']; $i++)
-			{ 
+			{
 				\OrderStuff::create(array(
 					'order_id' => $order['id'],
 					'type' => 'item'
@@ -263,23 +273,23 @@ class OrderRepo extends BaseRepo
 		];
 		return \OrderPayment::create($input);
 	}
-	
-	
+
+
 	protected function _sendInvoiceDetailMail($id)
 	{
 		$order = \Order::with('orderPayment', 'orderSchedule', 'orderStuff', 'user')->find($id);
-		
+
 		$name	= \Auth::user()->fullname;
 		$email	= \Auth::user()->email;
-		
+
 		$to = [
 			'code'		=>	$order['order_payment']['code'],
 			'email'		=>	$email,
 			'name'		=>	$name,
 		];
-		
+
 		$data = [ 'order'	=>	$order ];
-		
+
 		\Mail::send('emails.order-invoice-detail', $data, function($message) use ($to)
 		{
 			$message->to($to['email'], $to['name'])
@@ -290,45 +300,45 @@ class OrderRepo extends BaseRepo
 	protected function _sendAdminNewOrderMail($id)
 	{
 		$order = \Order::with('orderPayment', 'orderSchedule', 'orderStuff', 'user')->find($id);
-		
+
 		$name	= "ThankSpace Support";
 		$email	= "support@thankspace.com";
-		
+
 		$to = [
 			'code'		=>	$order['order_payment']['code'],
 			'email'		=>	$email,
 			'name'		=>	$name,
 		];
-		
+
 		$data = [ 'order'	=>	$order ];
-		
+
 		\Mail::send('emails.admin-new-order', $data, function($message) use ($to)
 		{
 			$message->to($to['email'], $to['name'])
 					->subject('[ThankSpace] Horay!!  There is new order created in ThankSpace');
 		});
 	}
-	
-	
+
+
 	protected function _sendConfirmPaymentMail(array $id = array())
 	{
 		$orders = \OrderPayment::with('order.user')->whereIn('id', $id)->get();
 		foreach( $orders as $order )
 		{
 			$fullname = ucfirst($order['order']['user']['firstname']) .' '. ucfirst($order['order']['user']['lastname']);
-			
+
 			$to = [
 				'code'		=>	$order['code'],
 				'email'		=>	$order['order']['user']['email'],
 				'fullname'	=>	$fullname,
 			];
-			
+
 			$data = [
 				'code'		=>	$order['code'],
 				'date'		=>	date('d/m/Y', strtotime($order['updated_at'])),
 				'user'		=>	$order['order']['user'],
 			];
-			
+
 			\Mail::send('emails.confirm-payment-success', $data, function($message) use ($to)
 			{
 				$message->to($to['email'], $to['fullname'])
@@ -336,22 +346,22 @@ class OrderRepo extends BaseRepo
 			});
 		}
 	}
-	
+
 	protected function _sendConfirmPaymentMailAdmin(array $id = array())
 	{
 		$orders = \OrderPayment::with('order.user')->whereIn('id', $id)->get();
 		foreach( $orders as $order )
 		{
 			$fullname = ucfirst($order['order']['user']['firstname']) .' '. ucfirst($order['order']['user']['lastname']);
-			
+
 			$to = [
 				'code'		=>	$order['order_payment']['code'],
 				'email'		=>	'support@thankspace.com',
 				'name'		=>	'ThankSpace Support',
 			];
-			
+
 			$data = [ 'order' => $order ];
-			
+
 			\Mail::send('emails.confirm-payment-user', $data, function($message) use ($to)
 			{
 				$message->to($to['email'], $to['name'])
@@ -359,11 +369,11 @@ class OrderRepo extends BaseRepo
 			});
 		}
 	}
-	
-	
+
+
 	/**
 	 * For order schedule set stored for driver
-	 * 
+	 *
 	 * @param  array  $input
 	 * @return mix \Illuminate\Database\Eloquent\Model|false
 	 */
@@ -377,10 +387,10 @@ class OrderRepo extends BaseRepo
 				$order = \OrderSchedule::find($id);
 				$this->_sendDeliveryStoredInfo($order['order_id']);
 			}
-			
+
 			return $confirm;
 		} else {
-			$this->setErrors([ 'message' => 
+			$this->setErrors([ 'message' =>
 				[
 					'ico'	=> 'meh',
 					'msg'	=> 'No delivery schedule selected',
@@ -390,19 +400,19 @@ class OrderRepo extends BaseRepo
 			return false;
 		}
 	}
-	
+
 	protected function _sendDeliveryStoredInfo($id)
 	{
 		$order = \Order::with('orderPayment', 'orderSchedule', 'orderStuff', 'user')->find($id);
-		
+
 		$to = [
 			'code'		=>	$order['order_payment']['code'],
 			'email'		=>	$order['user']['email'],
 			'name'		=>	$order['user']['fullname'],
 		];
-	
+
 		$data = [ 'order'	=>	$order ];
-		
+
 		\Mail::send('emails.order-stored-by-driver', $data, function($message) use ($to)
 		{
 			$message->to($to['email'], $to['name'])
@@ -440,18 +450,18 @@ class OrderRepo extends BaseRepo
 		}
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Get available & driver return schedule
-	 * 
+	 *
 	 * @param  array  $option [id, user_id, status, is_paginated]
 	 * @return \Illuminate\Database\Eloquent\Model
 	 */
 	public function getReturnSchedule(array $option = array())
 	{
 		$schedule = \ReturnSchedule::with('order.orderPayment', 'order.user', 'stuffs');
-	
+
 		if ( isset($option['user_id']) )
 		{
 			$schedule = $schedule->where('user_id', $option['user_id']);
@@ -463,7 +473,7 @@ class OrderRepo extends BaseRepo
 		{
 			$schedule = $schedule->where('status', $option['status']);
 		}
-		
+
 		if (! empty($option['id'])) {
 			$schedule = $schedule->find($option['id']);
 		}
@@ -473,18 +483,18 @@ class OrderRepo extends BaseRepo
 		} else {
 			$schedule = $schedule->get();
 		}
-		
+
 		if ( $schedule ) {
 			return $schedule;
 		} else {
 			return false;
 		}
 	}
-	
-	
+
+
 	/**
 	 * For return schedule set returned for driver
-	 * 
+	 *
 	 * @param  array  $input
 	 * @return mix \Illuminate\Database\Eloquent\Model|false
 	 */
@@ -497,19 +507,19 @@ class OrderRepo extends BaseRepo
 			for ($i = 0; $i < count($schedule); $i++)
 			{
 				\OrderStuff::where('return_schedule_id', $schedule[$i])->update([ 'status' => 2 ]);
-				
+
 				$return = \ReturnSchedule::where('id', $schedule[$i])->first();
 				$stuff_count = \OrderStuff::where('order_id', $return->order_id)->where('status', 1)->count();
-				
+
 				if ( $stuff_count == 0)
 				{
 					\Order::where('id', $return->order_id)->update([ 'is_returned' => 1 ]);
 				}
 			}
-			
+
 			return $confirm;
 		} else {
-			$this->setErrors([ 'message' => 
+			$this->setErrors([ 'message' =>
 				[
 					'ico'	=> 'meh',
 					'msg'	=> 'No return schedule selected',
@@ -519,11 +529,11 @@ class OrderRepo extends BaseRepo
 			return false;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Get returned stuff from return schedule
-	 * 
+	 *
 	 * @param  array  $option
 	 * @return \Illuminate\Database\Eloquent\Model
 	 */
@@ -531,25 +541,25 @@ class OrderRepo extends BaseRepo
 	{
 		return \ReturnSchedule::with('order.orderPayment', 'order.user', 'stuffs')->find($id);
 	}
-	
-	
+
+
 	/**
 	 * User order/gallery
-	 * 
+	 *
 	 * @param  array  $option
 	 * @return \Illuminate\Database\Eloquent\Model
 	 */
 	public function getOrderGallery(array $option = array())
 	{
 		$gallery = \OrderGallery::orderBy('id', 'desc');
-		
+
 		if( isset($option['order_id']) )
 		{
 			$gallery = $gallery->where('order_id', $option['order_id']);
 		}
-		
+
 		$gallery = $gallery->paginate(20);
-		
+
 		if ( $gallery ) {
 			return $gallery;
 		} else {

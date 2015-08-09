@@ -365,6 +365,33 @@ $(function() {
 		});
 	});
 
+	/* order use credit space */
+	$(document).on('click', '#btnSpaceCredit', function(e){
+		//e.preventDefault();
+		if(parseInt($("#space_credit_in").val()) > 0){
+			if(!$('#rowSpaceCredit').length){
+				var _btn = $(this);
+				_btn.button('loading');
+
+				$.ajax({
+					url: $(this).attr('data-url'),
+					type: "POST",
+					data: { 'step' : 'review' },
+					success: function (result) {
+						$("#space_credit").html(result['space_credit_sisa']);
+						$('.table tr:last').before('<tr id="rowSpaceCredit"><th>Space Credit</th><td></td><td style="text-align:left;">-'+result['space_credit_used']+'<td></tr>');
+						$("#total").html(result['total']);
+						_btn.button('reset');
+					},
+				});
+			}else{
+				alert('Anda sudah menggunakan space credit anda :)');
+			}
+		}else{
+			alert('Anda tidak punya space credit yang\ndapat digunakan :(');
+		}
+	});
+
 });
 
 

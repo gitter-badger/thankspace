@@ -124,12 +124,14 @@ class OrderRepo extends BaseRepo
 	{
 		$status = ( \Auth::user()->type == 'admin' ? 2 : 1 );
 		$confirm = \OrderPayment::whereIn('id', $input['order_payment_id'])->update([ 'status' => $status ]);
-		if ( $confirm )
-		{
+		if ( $confirm ) {
 
-			if ( $status == 2 )
-			{
-				$this->_sendConfirmPaymentMail($input['order_payment_id']);
+			if ( $status == 2 ) {
+				$user_ids = $this->_sendConfirmPaymentMail($input['order_payment_id']);
+				$userHasCommision = getUserHasCommison($user_ids);
+				if (!empty($userHasCommision)) {
+					$this->_sendCommisionFirstOrderMail($userHasCommision);
+				}
 			} else {
 				$this->_sendConfirmPaymentMailAdmin($input['order_payment_id']);
 			}
@@ -323,9 +325,12 @@ class OrderRepo extends BaseRepo
 	protected function _sendConfirmPaymentMail(array $id = array())
 	{
 		$orders = \OrderPayment::with('order.user')->whereIn('id', $id)->get();
+		$user_ids = [];
 		foreach( $orders as $order )
 		{
 			$fullname = ucfirst($order['order']['user']['firstname']) .' '. ucfirst($order['order']['user']['lastname']);
+
+			array_push($user_ids,$order['order']['user_id']);
 
 			$to = [
 				'code'		=>	$order['code'],
@@ -345,6 +350,7 @@ class OrderRepo extends BaseRepo
 						->subject('[ThankSpace] Pembayaran invoice #'.$to['code'].' sudah kami terima');
 			});
 		}
+		return $user_ids;
 	}
 
 	protected function _sendConfirmPaymentMailAdmin(array $id = array())
@@ -370,6 +376,46 @@ class OrderRepo extends BaseRepo
 		}
 	}
 
+	protected function _sendCommisionFirstOrderMail(array $data = array())
+	{
+		// before send mail, insert data commision
+		$commision = [
+			'type'	=> 'credit',
+			'nominal'	=> \Config::get('thankspace.space_credit.commision'),
+			'keterangan' => 'Commision earned for new customer first order',
+		];
+
+		$space = [];
+		foreach ($data as $d) {
+			array_push($space, array_merge(
+				array('user_id' => $d->ref_code_user_id),
+				$commision
+			));
+		}
+
+		\Space::insert($space);
+
+		 // send mail
+		foreach ( $data as $d ) {
+			$fullname = ucfirst($d->ref_code_firstname) .' '. ucfirst($d->ref_code_lastname);
+
+			$to = [
+				'email'		=>	$d->ref_code_email,
+				'name'		=>	$fullname,
+			];
+
+			$data_mail = [
+				'name'	=> $fullname,
+				'commision'	=> \Config::get('thankspace.space_credit.commision'),
+			];
+
+			\Mail::send('emails.commision-first-order', $data_mail, function($message) use ($to)
+			{
+				$message->to($to['email'], $to['name'])
+						->subject('[ThankSpace] Komisi order pertama dari pelanggan baru');
+			});
+		}
+	}
 
 	/**
 	 * For order schedule set stored for driver

@@ -6,7 +6,7 @@
 <div class="page-header" id="banner">
     <div class="text-center">
         <h3>Hi, {{ Auth::user()->firstname }}, you can change your referral code here :)</h3>
-        <p>Share your referral code to your friends, and get Rp.50,000 When they order a storage box!</p>
+        <p>Share your referral code to your friends, and get {{ 'Rp. '.number_format(Config::get('thankspace.space_credit.commision'),0,'','.') }} When they order a storage box!</p>
     </div>
 </div>
 

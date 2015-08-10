@@ -24,7 +24,7 @@
 								@if(Session::has('message_success'))
 								<span class="success-alert update-profile-scs"><i class="fa fa-smile-o"></i> {{ Session::get('message_success') }}</span>
 								@endif
-								<p>It's simple. Share your referral code to give your friends Rp 50,000 Space Credit for first-time signs up. When they order a storage box you get Rp.50,000 too!</p>
+								<p>It's simple. Share your referral code to give your friends {{ 'Rp. '.number_format(Config::get('thankspace.space_credit.signup'),0,'','.') }} Space Credit for first-time signs up. When they order a storage box you get {{ 'Rp. '.number_format(Config::get('thankspace.space_credit.commision'),0,'','.') }} too!</p>
 								<div class="form-group">
 									<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-bottom:20px;">
 										<div class="input-group">

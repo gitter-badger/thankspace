@@ -115,7 +115,7 @@ class UserRepo extends BaseRepo
 				\Space::create([
 					'user_id'	=> $user->id,
 					'type'		=> 'credit',
-					'nominal'	=> '50000',
+					'nominal'	=> \Config::get('thankspace.space_credit.signup'),
 					'keterangan'=> 'Space Credit for sign up from link referral',
 				]);
 			}

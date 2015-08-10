@@ -5,7 +5,7 @@
 
 			<div align="left" valign="top" style="font-size:13px;line-height:1.4em;color:#444">
 				<p>Hallo {{ $name }},</p>
-				<p>Anda mendapat komisi order pertama sebesar {{ 'Rp. '.number_format($commision,0,'','.') }} dari salah customer yang mendaftar menggunakan link referral anda.</p>
+				<p>Anda mendapat komisi order pertama sebesar {{ 'Rp. '.number_format($commision,0,'','.') }} dari salah satu customer yang mendaftar menggunakan link referral anda.</p>
 
 				<p>Demikian pemberitahuan kami.</p>
 				<p>Salam,</p>

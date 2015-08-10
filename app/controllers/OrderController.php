@@ -55,7 +55,7 @@ class OrderController extends BaseController {
 			'title' => __FUNCTION__,
 			'review' => Session::get('order'),
 			'user' => Auth::user(),
-			'space_credit' => getCustomerSpaceCredit(),
+			'space_credit' => app('UserRepo')->getCustomerSpaceCredit(),
 		];
 		return View::make('order.review', $data);
 	}
@@ -161,7 +161,7 @@ class OrderController extends BaseController {
 
 			case 'review':
 				# save space credit used
-				$space_credit = getCustomerSpaceCredit();
+				$space_credit = app('UserRepo')->getCustomerSpaceCredit();
 				$order_index = Session::get('order.index');
 				$total = calcPrice('box', $order_index['quantity_box']) + calcPrice('item', $order_index['quantity_item']);
 				if ( $total > $space_credit ) {
@@ -179,12 +179,6 @@ class OrderController extends BaseController {
 		}
 
 		if (Request::ajax()) {
-		  /*return [
-				'space_credit_sisa'	=> 'Rp. 0,-',
-				'space_credit_used'	=> 'Rp. 100.000,-',
-				'total'							=> 'Rp. 350.000,-'
-			];*/
-
 			return $data_ret;
 		} else {
 			$redirectTo = Input::get('redirect_to');

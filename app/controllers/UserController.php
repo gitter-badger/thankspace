@@ -617,10 +617,12 @@ class UserController extends BaseController {
 			return View::make('user.input-referral');
 		}
 
+		$userRepo = app('UserRepo');
+
 		return View::make('user.referral')
 			->with([
-				'space_credit' => getCustomerSpaceCredit(),
-				'customer_join'=> getCustomerJoinReferral(),
+				'space_credit' => $userRepo->getCustomerSpaceCredit(),
+				'customer_join'=> $userRepo->getCustomerJoinReferral(),
 				'space'	=> Space::where('user_id',Auth::user()->id)
 										->orderBy('created_at','desc')->get(),
 			]);

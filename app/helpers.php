@@ -125,36 +125,3 @@ function getCities()
 	}
 	return $result;
 }
-
-function getCustomerSpaceCredit()
-{
-	return DB::table('space')
-		->select(DB::raw("ifnull(sum(if(type = 'debet',-abs(nominal),nominal)),0)as `jumlah`"))
-		->where('user_id',Auth::user()->id)
-		->get()[0]->jumlah;
-}
-
-function getCustomerJoinReferral()
-{
-	return DB::table('user')
-		->where('signup_ref',Auth::user()->ref_code)
-		->count();
-}
-
-function getUserHasCommison($user_ids)
-{
-	return DB::table('user')
-		->select(['user.id', 'user.email', 'user.signup_ref', DB::raw("count(order.id)as `jumlah`"),
-			'user_temp.email as ref_code_email', 'user_temp.id as ref_code_user_id',
-			'user_temp.firstname as ref_code_firstname', 'user_temp.lastname as ref_code_lastname'])
-		->join('order', 'user.id', '=', 'order.user_id')
-		->join('user as user_temp', function($join) {
-			$join->on('user.signup_ref', '=', 'user_temp.ref_code');
-		})
-		->where('user.type','user')
-		->whereNotNull('user.signup_ref')
-		->whereIn('user.id',$user_ids)
-		->groupBy('user.id')
-		->having('jumlah', '=', 1)
-		->get();
-}

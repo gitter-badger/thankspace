@@ -22,7 +22,7 @@ View::composer(array('partial.modal'), function($view)
 });
 
 View::composer(array('user._side'), function($view){
-	$view->with('space_credit', getCustomerSpaceCredit());
+	$view->with('space_credit', app('UserRepo')->getCustomerSpaceCredit());
 });
 
 

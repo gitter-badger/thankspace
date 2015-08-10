@@ -128,7 +128,7 @@ class OrderRepo extends BaseRepo
 
 			if ( $status == 2 ) {
 				$user_ids = $this->_sendConfirmPaymentMail($input['order_payment_id']);
-				$userHasCommision = getUserHasCommison($user_ids);
+				$userHasCommision = app('UserRepo')->getUserHasCommison($user_ids);
 				if (!empty($userHasCommision)) {
 					$this->_sendCommisionFirstOrderMail($userHasCommision);
 				}

@@ -383,6 +383,8 @@ class OrderRepo extends BaseRepo
 			'type'	=> 'credit',
 			'nominal'	=> \Config::get('thankspace.space_credit.commision'),
 			'keterangan' => 'Commision earned for new customer first order',
+			'created_at'	=> date('Y-m-d h:i:s'),
+			'updated_at'	=> date('Y-m-d h:i:s'),
 		];
 
 		$space = [];

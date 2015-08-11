@@ -9,7 +9,7 @@ Route::get('/tes', function(){
 	$order = \User::with('city')->find(1);
 	// return $order;
 	$data = [ 'user' => $order ];
-	
+
 	return View::make('emails.admin-new-user', $data);
 });
 
@@ -19,6 +19,10 @@ Route::get('/tes', function(){
 View::composer(array('partial.modal'), function($view)
 {
     $view->with('list_cities', getCities());
+});
+
+View::composer(array('user._side'), function($view){
+	$view->with('space_credit', app('UserRepo')->getCustomerSpaceCredit());
 });
 
 
@@ -42,6 +46,8 @@ Route::group(['before' => 'auth'], function() {
 	// Route::get('/storage', [ 'as' => 'user.storage', 'uses' => 'UserController@storage' ]);
 	Route::get('/invoice', [ 'as' => 'user.invoice', 'uses' => 'UserController@invoice' ]);
 	Route::get('/setting', [ 'as' => 'user.setting', 'uses' => 'UserController@setting' ]);
+	Route::get('/referral', [ 'as' => 'user.referral', 'uses' => 'UserController@referral' ]);
+	Route::put('/referral', [ 'as' => 'user.referral', 'uses' => 'UserController@referral_save' ]);
 	Route::put('/update-profile', [ 'as' => 'user.update_profile', 'uses' => 'UserController@updateProfile' ]);
 	Route::put('/update-password', [ 'as' => 'user.update_password', 'uses' => 'UserController@updatePassword' ]);
 	Route::post('/check-password', [ 'as' => 'user.check_password', 'uses' => 'UserController@checkPassword' ]);
@@ -79,6 +85,7 @@ Route::get('/page/terms-and-conditions', [ 'as' => 'page.tos', 'uses' => 'PageCo
 Route::get('/signout', [ 'as' => 'user.signout', 'uses' => 'UserController@signout' ]);
 Route::post('/signin', [ 'as' => 'user.signin', 'uses' => 'UserController@signin' ]);
 Route::post('/signup', [ 'as' => 'user.signup', 'uses' => 'UserController@signup' ]);
+Route::get('/referral_check/{code}', [ 'as' => 'user.referral_check', 'uses' => 'UserController@ref_code_check' ]);
 Route::put('/storage/{id}/update', ['as' => 'user.storageUpdate', 'uses' => 'UserController@storageUpdate']);
 
 Route::post('/storage/{id}/return-process', ['as' => 'user.storageReturnProcess', 'uses' => 'UserController@storageReturnProcess']);
@@ -94,7 +101,7 @@ Route::group(['prefix' => 'ajax', 'before' => 'ajax'], function() {
 	Route::get('/storage/{id}/return', ['as' => 'ajax.modalStorageReturn', 'uses' => 'UserController@modalStorageReturn']);
 	Route::get('/storage/{id}/edit', ['as' => 'ajax.modalStorageEdit', 'uses' => 'UserController@modalStorageEdit']);
 	Route::get('/returned-stuff/{id}', [ 'as' => 'ajax.modalReturnedStuff', 'uses' => 'UserController@modalReturnedStuff' ]);
-	
+
 	Route::get('/order-gallery/{id}', [ 'as' => 'ajax.modalOrderGallery', 'uses' => 'OrderController@modalOrderGallery' ]);
 	Route::get('/order-gallery/{id}/upload', [ 'as' => 'ajax.modalOrderGalleryUpload', 'uses' => 'OrderController@modalOrderGalleryUpload' ]);
 

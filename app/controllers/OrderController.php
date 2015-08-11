@@ -55,6 +55,7 @@ class OrderController extends BaseController {
 			'title' => __FUNCTION__,
 			'review' => Session::get('order'),
 			'user' => Auth::user(),
+			'space_credit' => app('UserRepo')->getCustomerSpaceCredit(),
 		];
 		return View::make('order.review', $data);
 	}
@@ -71,7 +72,7 @@ class OrderController extends BaseController {
 
 		// delete order data
 		Session::forget('order');
-		
+
 		$data = [
 			'title' => __FUNCTION__,
 		];
@@ -81,12 +82,13 @@ class OrderController extends BaseController {
 
 	/**
 	 * For handle order step by step
-	 * 
+	 *
 	 * @return Redirect
 	 */
 	public function progress()
 	{
 		$order_session = Session::all();
+		$data_ret = [];
 
 		switch (Input::get('step'))
 		{
@@ -95,7 +97,7 @@ class OrderController extends BaseController {
 					'type', 'quantity_box', 'quantity_custom', 'quantity_item', 'description'
 				]));
 			break;
-			
+
 			case 'schedule':
 
 				$delivery_date = Input::get('delivery_year') .'-'. Input::get('delivery_month') .'-'. Input::get('delivery_day');
@@ -121,9 +123,9 @@ class OrderController extends BaseController {
 					'type', 'pickup_day', 'pickup_month', 'pickup_year', 'pickup_time',
 				]));
 			break;
-			
+
 			case 'payment':
-				
+
 				if ( ! Auth::check())
 				{
 					$userRepo = app('UserRepo');
@@ -156,14 +158,32 @@ class OrderController extends BaseController {
 				]));
 
 			break;
-			
+
 			case 'review':
-				# code...
+				# save space credit used
+				$space_credit = app('UserRepo')->getCustomerSpaceCredit();
+				$order_index = Session::get('order.index');
+				$total = calcPrice('box', $order_index['quantity_box']) + calcPrice('item', $order_index['quantity_item']);
+				if ( $total > $space_credit ) {
+					$data_ret['total'] = "Total : Rp. ".number_format($total - $space_credit,0,',','.').',-';
+					$data_ret['space_credit_sisa'] = "Rp. ".number_format(0,0,',','.').',-';
+					$data_ret['space_credit_used'] = "Rp. ".number_format($space_credit,0,',','.').',-';
+					Session::put('order.space_credit_used',$space_credit);
+				} else {
+					$data_ret['total'] = "Total : Rp. ".number_format(0,0,',','.').',-';
+					$data_ret['space_credit_sisa'] = "Rp. ".number_format($space_credit - $total,0,',','.').',-';
+					$data_ret['space_credit_used'] = "Rp. ".number_format($total,0,',','.').',-';
+					Session::put('order.space_credit_used',$total);
+				}
 			break;
 		}
 
-		$redirectTo = Input::get('redirect_to');
-		return Redirect::to($redirectTo);
+		if (Request::ajax()) {
+			return $data_ret;
+		} else {
+			$redirectTo = Input::get('redirect_to');
+			return Redirect::to($redirectTo);
+		}
 	}
 
 
@@ -189,40 +209,40 @@ class OrderController extends BaseController {
 
 		return true;
 	}
-	
-	
+
+
 	public function modalOrderGallery($id)
 	{
 		if ( ! Request::ajax()) {
 			return App::abort(404);
 		}
-		
+
 		$storage = app('UserRepo')->getStorageDetail($id);
 		$gallery = app('OrderRepo')->getOrderGallery([ 'order_id' => $id ]);
-		
+
 		$data = [
 			'storage'		=> $storage,
 			'gallery'		=> $gallery,
 			'modal_title'	=> 'Gallery Order #'. $storage['order_payment']['code'],
 		];
-		
+
 		return View::make('modal.order_gallery', $data);
 	}
-	
-	
+
+
 	public function modalOrderGalleryUpload($id)
 	{
 		if ( ! Request::ajax()) {
 			return App::abort(404);
 		}
-		
+
 		$storage = app('UserRepo')->getStorageDetail($id);
-		
+
 		$data = [
 			'id'			=> $id,
 			'modal_title'	=> 'Upload Image(s) to Order #'. $storage['order_payment']['code'],
 		];
-		
+
 		return View::make('modal.order_gallery_upload', $data);
 	}
 

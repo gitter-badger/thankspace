@@ -13,7 +13,7 @@ function getTotalStored($type = 'box') {
 						->where('order_stuff.type', '=', $type);
 				})
 				->count();
-	
+
 	return $total;
 }
 
@@ -22,15 +22,15 @@ function getTotalCustomers() {
 }
 
 function getTotalTransactions( $id = NULL ) {
-	
+
 	$opr = ( $id ? '<=' : '=' );
-	
+
 	$box = DB::table('order');
-	
+
 	if ( $id ) {
 		$box = $box->where('order.id', $id);
 	}
-	
+
 	$box = $box->join('order_payment', function($join) use ($opr)
 				{
 					$join->on('order.id', '=', 'order_payment.order_id')
@@ -42,13 +42,13 @@ function getTotalTransactions( $id = NULL ) {
 						->where('order_stuff.type', '=', 'box');
 				})
 				->count() * Config::get('thankspace.box.price');
-	
+
 	$item = DB::table('order');
-	
+
 	if ( $id ) {
 		$item = $item->where('order.id', $id);
 	}
-	
+
 	$item = $item->join('order_payment', function($join) use ($opr)
 				{
 					$join->on('order.id', '=', 'order_payment.order_id')
@@ -60,18 +60,22 @@ function getTotalTransactions( $id = NULL ) {
 						->where('order_stuff.type', '=', 'item');
 				})
 				->count() * Config::get('thankspace.item.price');
-	
-	$total = $box + $item;
-	
+
+	$total = ( $box + $item );
+	$order = Order::find($id);
+	if ($order) {
+		$total -= $order->space_credit_used;
+	};
+
 	if ( $id ) {
 		$code = DB::table('order_payment')->where('order_id', $id)->first();
 		$ucode = $code->unique;
 	} else {
 		$ucode = 0;
 	}
-	
+
 	$grand_total = $total + $ucode;
-	
+
 	return number_format($grand_total, 0, '', '.');
 }
 
@@ -95,7 +99,7 @@ function generate_random_code( $length = 8 ) {
 
 /**
  * Calculating price by type
- * 
+ *
  * @param  string $type [box|item]
  * @param  numeric $qty  [description]
  * @param  bool $withCurrency

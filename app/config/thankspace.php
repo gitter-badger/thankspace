@@ -20,4 +20,9 @@ return array(
 		'price' => '150000',
 	),
 
+	'space_credit'	=> array(
+		'signup'	=> '50000',
+		'commision'	=> '50000'
+	)
+
 );

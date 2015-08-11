@@ -14,6 +14,11 @@
 			Order Storage Box
 		</a>
 	</li>
+	<li @if(Route::currentRouteName() == 'user.referral') class="active" @endif >
+		<a href="{{ route('user.referral') }}">
+			Referral Program
+		</a>
+	</li>
 	<li @if(Route::currentRouteName() == 'user.setting') class="active" @endif >
 		<a href="{{ route('user.setting') }}">
 			Settings
@@ -25,3 +30,21 @@
 		</a>
 	</li>
 </ul>
+
+<div class="row">
+	<div class="col-lg-12">
+		<!--<div class="panel panel-default">-->
+		<div class="panel-body">
+			<div class="text-center">
+				<h4>Your Space Credits
+					<span data-toggle="tooltip" data-placement="top" title="Refer your friends & get paid! Even better, your friends will get paid too!">
+						<img src="{{ url('assets/img/info.png') }}">
+					</span>
+				</h4>
+				<h3> {{ "Rp ".number_format($space_credit, 0, '', '.') }}</h3>
+				<p><a href="{{ route('user.referral') }}">Refer your friends today!</a></p>
+			</div>
+		</div>
+		<!--</div>-->
+	</div>
+</div>

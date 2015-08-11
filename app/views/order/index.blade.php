@@ -10,7 +10,7 @@
 			<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-centered">
 				<div class="panel panel-default">
 					<div class="panel-body">
-						
+
 						@if( Session::has('errors'))
 							<div class="alert alert-danger">
 								{{ Session::get('errors') }}
@@ -35,7 +35,7 @@
 									</div>
 								</div>
 
-								<div id="many_box" class="form-group" style="display: none;"> 
+								<div id="many_box" class="form-group" style="display: none;">
 									<label for="textArea" class="col-lg-4 col-md-4 col-sm-4 col-xs-4 control-label">
 										Jumlah
 									</label>

@@ -26,11 +26,11 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(array(
 
-	'local'	=> array('ubuntu'), // homestead
+	// 'local'	=> array('ubuntu'), // homestead
 
-	//'local' => array('WHITERUN', 'antoni-K46CB', 'Human', 'Ghost-PC'),
+	'local' => array('WHITERUN', 'antoni-K46CB', 'Human', 'Ghost-PC'),
 
-	//'production' => array('server1'),
+	'production' => array('server1'),
 
 ));
 

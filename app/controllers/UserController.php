@@ -613,11 +613,12 @@ class UserController extends BaseController {
 	 */
 	public function referral()
 	{
-		if(Auth::user()->ref_code == null || Auth::user()->ref_code == ''){
-			return View::make('user.input-referral');
-		}
-
 		$userRepo = app('UserRepo');
+
+		if(Auth::user()->ref_code == null || Auth::user()->ref_code == ''){
+			$userRepo->saveRefCodeCustomer();
+			return Redirect::route('user.referral');
+		}
 
 		return View::make('user.referral')
 			->with([
@@ -636,6 +637,7 @@ class UserController extends BaseController {
 
 		$userRepo = app('UserRepo');
 		$input = Input::get();
+		$input['ref_code_editable'] = 0;
 		if ( $userRepo->change_ref($input) )
 		{
 			return [ 'status' => 200, 'message' => 'Kode referral anda berhasil diatur' ];

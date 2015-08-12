@@ -102,7 +102,8 @@ class UserRepo extends BaseRepo
 
 		$input['type'] 			= (isset($input['type'])) ? $input['type'] : 'user';
 		$input['via'] 			= (isset($input['via'])) ? $input['via'] : 'register';
-		$input['signup_ref'] 	= (isset($input['signup_ref'])) ? $input['signup_ref'] : null;
+		$input['signup_ref']= (isset($input['signup_ref'])) ? $input['signup_ref'] : null;
+		$input['ref_code']	= $this->_refCodeGenerator();
 
 		$validation = $this->model->validate($input, $customrules);
 
@@ -293,6 +294,26 @@ class UserRepo extends BaseRepo
 	* Referral Repo
 	*/
 
+	public function _refCodeGenerator()
+	{
+		$cek = 1;
+		$ref_code = '';
+		while ($cek) {
+			$ref_code = strtolower(str_random(10));
+			$cek = \User::where('ref_code',$ref_code)->count();
+		}
+
+		return $ref_code;
+	}
+
+	public function saveRefCodeCustomer($data = null)
+	{
+		$data = isset($data) ? $data : ['ref_code' => $this->_refCodeGenerator()];
+		$user = $this->_getUserById(\Auth::user()->id);
+		$user->fill($data)->save();
+		return $user;
+	}
+
 	public function getCustomerSpaceCredit()
 	{
 		return \DB::table('space')
@@ -334,7 +355,7 @@ class UserRepo extends BaseRepo
 			'email'		=>	'sometimes',
 			'phone'		=>	'sometimes',
 			'password'	=> 	'sometimes',
-			'ref_code'	=> 	'required|integer|digits_between:5,10|unique:user'
+			'ref_code'	=> 	'required|alpha_num|min:5|max:10|unique:user'
 		];
 
 		$validation = $this->model->validate($input, $customrules);
@@ -344,10 +365,6 @@ class UserRepo extends BaseRepo
 			return false;
 		}
 
-		$id 	= \Auth::user()->id;
-		$user 	= $this->_getUserById($id);
-		$user->fill($input)->save();
-
-		return $user;
+		return $this->saveRefCodeCustomer($input);
 	}
 }

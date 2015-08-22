@@ -2,7 +2,7 @@
 
 class Order extends \Eloquent {
 
-	protected $fillable = ['user_id', 'quantity', 'space_credit_used'];
+	protected $fillable = ['user_id', 'quantity'];
 
 	protected $table = 'order';
 

@@ -372,6 +372,7 @@ class UserController extends BaseController {
 
 		$input = Input::get();
 		$input['status'] = 0;
+		return $input;
 		$orderRepo = app('OrderRepo');
 		if ( $orderRepo->createReturnSchedule($input))
 		{

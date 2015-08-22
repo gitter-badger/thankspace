@@ -22,17 +22,17 @@
 					<div class="col-lg-12">
 						@include('admin._stats')
 					</div>
-					
+
 					<div class="col-lg-12">
 						<hr>
 					</div>
-					
+
 					<div class="col-lg-12 text-center">
 						<h3>Newest Order</h3>
 
 						<input type="text" id="searchTerm" class="form-control" onkeyup="doSearch()" placeholder="Just type your search term here" />
      					<br /><br />
-						
+
 						@if ( Session::has('message') )
 						<p>
 							@if ( Session::get('message') == 'success' )
@@ -46,10 +46,10 @@
 							@endif
 						</p>
 						@endif
-						
+
 						<!--<div class="table-responsive">-->
 						@if( count($invoices) > 0 )
-						
+
 							{{ Form::open([ 'method' => 'POST', 'class' => 'invoice-form-list' ]) }}
 							<table id="sortirtable" class="tablesorter table table-striped table-hover text-center">
 								<thead>
@@ -98,7 +98,7 @@
 											{{ $invoice['order_schedule']['pickup_time'] }}
 											@endif
 										</td>
-										<td>Rp {{ getTotalTransactions($invoice['id']) }}</td>
+										<td>Rp {{ getTotalTransactions($invoice['order_payment']['id']) }}</td>
 										<td>
 											@if( $invoice['is_returned'] == 1 )
 											<span class="label label-default">Returned</span>
@@ -148,11 +148,11 @@
 							</table>
 							{{ Form::close() }}
 							<input type="hidden" class="konfirmRoute" value="{{ route('user.confirm_payment') }}" />
-						
+
 						@else
-							
+
 							<div class="alert alert-info">Whoops, there are no transactions yet!</div>
-							
+
 						@endif
 						<!--</div>-->
 					</div>

@@ -172,15 +172,26 @@ class OrderRepo extends BaseRepo
 	 */
 	public function save($orderData)
 	{
-		$orderIndex = $orderData['index'];
-
-		$orderIndex['space_credit_used'] = isset($orderData['space_credit_used']) ? $orderData['space_credit_used'] : 0;
-
-		$order = $this->_save_order($orderIndex);
+		$order = $this->_save_order($orderData['index']);
 
 		$this->_save_orderSchedule($order->id, $orderData['schedule']);
 
-		$orderPayment = $this->_save_orderPayment($order->id, $orderData['payment']);
+		$orderPayment = $orderData['payment'];
+
+		$orderPayment['box'] = $orderData['index']['quantity_box'];
+		$orderPayment['item'] = $orderData['index']['quantity_item'];
+		$orderPayment['space_credit_used'] = isset($orderData['space_credit_used'])
+							? $orderData['space_credit_used'] : 0;
+		if ( $orderData['schedule']['type'] == 'later' ) {
+			$orderPayment['used_start'] = $orderData['schedule']['pickup_year'] .'-'.
+				$orderData['schedule']['pickup_month'] .'-'. $orderData['schedule']['pickup_day'];
+		} else {
+			$orderPayment['used_start'] = $orderData['schedule']['delivery_year'] .'-'.
+				$orderData['schedule']['delivery_month'] .'-'. $orderData['schedule']['delivery_day'];
+		}
+
+		$orderPayment = $this->_save_orderPayment($order->id, $orderPayment);
+
 		if (isset($orderData['space_credit_used'])) {
 			\Space::create([
 				'user_id'	=> \Auth::user()->id,
@@ -430,11 +441,15 @@ class OrderRepo extends BaseRepo
 		$confirm = \OrderSchedule::whereIn('id', $input['order_schedule_id'])->update([ 'status' => 1, 'updated_at' => date('Y-m-d H:i:s') ]);
 		if ( $confirm )
 		{
+			$orderIds = [];
 			foreach( $input['order_schedule_id'] as $id )
 			{
 				$order = \OrderSchedule::find($id);
 				$this->_sendDeliveryStoredInfo($order['order_id']);
+				array_push($orderIds, $order['order_id']);
 			}
+
+			\OrderPayment::whereIn('order_id', $orderIds)->update([ 'used_start' => date('Y-m-d H:i:s') ]);
 
 			return $confirm;
 		} else {
@@ -613,5 +628,228 @@ class OrderRepo extends BaseRepo
 		} else {
 			return false;
 		}
+	}
+
+	public function GetInvoiceAlmostExpired()
+	{
+		$orderPayments = \DB::table('order_payment as payment_1')
+			->leftJoin('order_payment as payment_2', 'payment_1.code', '=', 'payment_2.payment_reff')
+			->join('order_schedule', 'payment_1.order_id', '=', 'order_schedule.order_id')
+			->join('order_stuff', 'payment_1.order_id', '=', 'order_stuff.order_id')
+			->join('order', 'payment_1.order_id', '=', 'order.id')
+			->where('payment_1.status', '=', '2')
+			->where(function($query){
+				$query->where('payment_2.status', '!=', '2')
+							->orWhereNull('payment_2.status');
+			})
+			->where('order_schedule.status', '=', '1')
+			->whereNull('order_stuff.return_schedule_id')
+			->select([
+				'order.user_id',
+				'payment_1.order_id',
+				'payment_1.code AS invoice_code',
+				'payment_1.used_start',
+				'payment_2.code AS next_invoice',
+				'order_schedule.pickup_date',
+				'order_schedule.delivery_date',
+			])
+			->groupBy('payment_1.order_id')
+			->get();
+
+			$data = $this->_getInvoiceInfo($orderPayments);
+
+			foreach ( $data as $d ) {
+				$temp = $d;
+
+				$interaval_info = [ -7, -3, 0, 1 ];
+				if ( in_array($temp['expired_on'], $interaval_info ) ){
+					$lunas = false; // langsung lunas
+					// cek, apakah sudah punya invoice apa tidak. jika tidak, buatkan !
+					if( $temp['next_invoice'] == null ) {
+						// ambil space credit user_id
+						$space_credit = app('UserRepo')->getCustomerSpaceCredit( $temp['user_id'] );
+						// ambil total biaya
+						$totalBiaya = array_sum( array_column( $temp['stuff'], 'subtotal' ) );
+						// ambil input new_invoice_input ( order_payment )
+						$newPayment = $temp['new_invoice_input'];
+
+						if ( $space_credit != 0) {
+							if ( $space_credit >= $totalBiaya ) {
+								$newPayment += [
+									'space_credit_used' => $totalBiaya,
+									'status' => '2'
+								];
+								$lunas = true;
+							} else {
+								$newPayment += [
+									'space_credit_used'	=> $space_credit
+								];
+							}
+						}
+
+						$newInvoice = $this->_save_orderPayment($temp['order_id'], $newPayment);
+						$temp['next_invoice'] = $newInvoice->code;
+						$temp['new_invoice'] = $newInvoice;
+
+						if ( $newInvoice->space_credit_used != 0 ){
+							\Space::create([
+									'user_id'	=> $temp['user_id'],
+									'type'		=> 'debet',
+									'nominal'	=> $newInvoice->space_credit_used,
+									'keterangan'=> 'Credit used for purchases invoice #'.$newInvoice->code,
+							]);
+						}
+					}
+
+					if ( $lunas ) {
+						// kirim email langsung lunas
+						$this->_sendRecurringInvoiceLunasMail( $temp );
+					} else {
+						// kirim email invoice expired & invoice baru
+						$this->_sendRecurringInvoiceMail( $temp );
+					}
+				} elseif ( $temp['expired_on'] == 3 ) {
+					// lakukan pengembalian barang
+					$returnScheduleInput = [
+						'order_id'			=> $temp['order_id'],
+						'return_date'		=> $temp['expired_date']->addDays(4)->format('Y-m-d'),
+						'return_time' 	=> '08:00am - 10:00am',
+						'stuffs' 				=> explode(',', implode(',', array_column( $temp['stuff'], 'ids' ) ) ),
+						'city_id' 			=> '',
+						'other_address' => '',
+						'status' 				=> 0,
+					];
+					$this->createReturnSchedule( $returnScheduleInput );
+
+					// cek apakah invoice baru menggunakan space credit, jika iya, hapus space debet nya untuk invoice ini.
+					$_newInvoice = $temp['new_invoice'];
+					if ( $_newInvoice->space_credit_used != 0 ) {
+						\Space::where('keterangan', 'like ', '%#'.$_newInvoice->code.'%')->delete();
+					}
+
+					// kirim email pengembalian barang
+					$this->_sendRecurringInvoiceKirimBarangMail( $temp );
+				}
+			}
+
+			return $data;
+	}
+
+	protected function _getInvoiceInfo($orderPayments)
+	{
+		$data = [];
+
+		foreach ( $orderPayments as $payment ) {
+			$temp = (array)$payment;
+
+			// get user info
+			$temp['user_info'] = \User::find($payment->user_id);
+
+			/**
+			** Menentukan date invoice used, expired date dan expired on dengan Carbon
+			*/
+			// get date of invoice used
+			if ( $payment->used_start == null ) {
+				if ( $payment->pickup_date == null ){
+					$temp['date_invoice_used'] = $payment->delivery_date;
+				} else {
+					$temp['date_invoice_used'] = $payment->pickup_date;
+				}
+			} else {
+				$temp['date_invoice_used'] = $payment->used_start;
+			}
+
+			// get expired date of invoice
+			$temp['expired_date'] = \Carbon\Carbon::parse($temp['date_invoice_used'])->addDays(31);
+
+			// get interval day to expired date
+			$now = \Carbon\Carbon::parse( date('Y-m-d') );
+			$temp['expired_on'] = \Carbon\Carbon::parse( $temp['expired_date'] )->diffInDays( $now, false );
+
+
+			// get stuff invoice
+			$temp['stuff'] = \OrderStuff::where('order_id', $payment->order_id)
+					->whereNull('return_schedule_id')
+					->select([
+							'type', \DB::raw("COUNT(*) jumlah"),
+							\DB::raw("if(type = 'box','".\Config::get('thankspace.box.price')."','".\Config::get('thankspace.item.price')."') price"),
+							\DB::raw("(COUNT(*) * if(type = 'box','".\Config::get('thankspace.box.price')."','".\Config::get('thankspace.item.price')."')) subtotal"),
+							\DB::raw("GROUP_CONCAT(description SEPARATOR ',') barang "),
+							\DB::raw("GROUP_CONCAT(id SEPARATOR ',') ids ")
+					])
+					->groupBy('type')
+					->get()
+					->toArray();
+
+			// set input for new invoice
+			$temp['new_invoice_input'] = [ 'payment_reff' => $payment->invoice_code,
+							'used_start' => $temp['expired_date']->format('Y-m-d') ];
+			foreach ($temp['stuff'] as $val) {
+				$type = $val['type'];
+				$temp['new_invoice_input'][$type] = $val['jumlah'];
+			}
+
+			// new invoice
+			$temp['new_invoice'] = null;
+			if ( $temp['next_invoice'] != null ) {
+				$temp['new_invoice'] = OrderPayment::where('code', $temp['next_invoice'])->first();
+			}
+
+			// push to array for return data
+			array_push($data, $temp);
+		}
+
+		return $data;
+	}
+
+	protected function _sendRecurringInvoiceMail($params)
+	{
+		$to = [
+			'code'		=>	$params['invoice_code'],
+			'email'		=>	$params['user_info']['email'],
+			'name'		=>	$params['user_info']['firstname'].' '.$params['user_info']['lastname'],
+		];
+
+		$data = $params;
+
+		\Mail::send('emails.recurring-invoice.notif-recurring-invoice', $data, function($message) use ($to)
+		{
+			$message->to($to['email'], $to['name'])
+					->subject('[ThankSpace] Recurring invoice #'.$to['code'].' di ThankSpace');
+		});
+	}
+
+	protected function _sendRecurringInvoiceLunasMail($params)
+	{
+		$to = [
+			'code'		=>	$params['invoice_code'],
+			'email'		=>	$params['user_info']['email'],
+			'name'		=>	$params['user_info']['firstname'].' '.$params['user_info']['lastname'],
+		];
+
+		$data = $params;
+
+		\Mail::send('emails.recurring-invoice.langsung-lunas', $data, function($message) use ($to)
+		{
+			$message->to($to['email'], $to['name'])
+					->subject('[ThankSpace] Recurring invoice #'.$to['code'].' di ThankSpace');
+		});
+	}
+
+	protected function _sendRecurringInvoiceKirimBarangMail($params)
+	{
+		$to = [
+			'code'		=>	$params['invoice_code'],
+			'email'		=>	$params['user_info']['email'],
+			'name'		=>	$params['user_info']['firstname'].' '.$params['user_info']['lastname'],
+		];
+
+		$data = $params;
+
+		\Mail::send('emails.recurring-invoice.kirim-barang', $data, function($message) use ($to)
+		{
+			$message->to($to['email'], $to['name'])
+					->subject('[ThankSpace] Recurring invoice #'.$to['code'].' di ThankSpace');
+		});
 	}
 }

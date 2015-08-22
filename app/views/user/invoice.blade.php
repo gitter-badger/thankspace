@@ -12,7 +12,7 @@
 
 	<div class="container">
 		<div class="row">
-			
+
 			<div class="col-lg-3">
 				@include('user._side')
 			</div>
@@ -24,7 +24,7 @@
 						<div class="panel-body">
 
 							<h3>You can read your invoice details here</h3>
-							
+
 							@if ( Session::has('message') )
 							<p>
 								@if ( Session::get('message') == 'success' )
@@ -54,7 +54,7 @@
 
 
 				<div class="table-responsive">
-								
+
 							{{ Form::open([ 'method' => 'POST', 'class' => 'invoice-form-list' ]) }}
 							<table id="sortirtable" class="tablesorter table table-striped table-hover">
 								<thead>
@@ -97,7 +97,7 @@
 											{{ $invoice['order_schedule']['pickup_time'] }}
 											@endif
 										</td>
-										<td>Rp {{ getTotalTransactions($invoice['id']) }}</td>
+										<td>Rp {{ getTotalTransactions($invoice['order_payment']['id']) }}</td>
 										<td>
 											@if( $invoice['order_payment']['status'] == 2 )
 											<span class="label label-success">Completed Payment</span>
@@ -168,9 +168,9 @@
 								</p>
 							</div>
 						</div>
-					</div>				
+					</div>
 				@endif
-						
+
 				</div> <!--responsive table-->
 
 			</div>

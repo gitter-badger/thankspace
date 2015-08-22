@@ -23,12 +23,18 @@ function getTotalCustomers() {
 
 function getTotalTransactions( $id = NULL ) {
 
+	$OrderPayment = null;
+
+	if( $id ) {
+		$OrderPayment = OrderPayment::find($id);
+	}
+
 	$opr = ( $id ? '<=' : '=' );
 
 	$box = DB::table('order');
 
 	if ( $id ) {
-		$box = $box->where('order.id', $id);
+		$box = $box->where('order.id', $OrderPayment->order_id);
 	}
 
 	$box = $box->join('order_payment', function($join) use ($opr)
@@ -46,7 +52,7 @@ function getTotalTransactions( $id = NULL ) {
 	$item = DB::table('order');
 
 	if ( $id ) {
-		$item = $item->where('order.id', $id);
+		$item = $item->where('order.id', $OrderPayment->order_id);
 	}
 
 	$item = $item->join('order_payment', function($join) use ($opr)
@@ -62,14 +68,20 @@ function getTotalTransactions( $id = NULL ) {
 				->count() * Config::get('thankspace.item.price');
 
 	$total = ( $box + $item );
-	$order = Order::find($id);
-	if ($order) {
-		$total -= $order->space_credit_used;
+
+	if ( $id ) {
+		if ( $OrderPayment->box == 0 && $OrderPayment->item == 0 ) {
+		} else {
+			$box = $OrderPayment->box * Config::get('thankspace.box.price');
+			$item = $OrderPayment->item * Config::get('thankspace.item.price');
+			$total = ( $box + $item );
+		}
+
+		$total -= $OrderPayment->space_credit_used;
 	};
 
 	if ( $id ) {
-		$code = DB::table('order_payment')->where('order_id', $id)->first();
-		$ucode = $code->unique;
+		$ucode = $OrderPayment->unique;
 	} else {
 		$ucode = 0;
 	}

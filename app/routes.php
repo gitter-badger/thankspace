@@ -67,6 +67,7 @@ Route::get('/order/review', [ 'as' => 'order.review', 'uses' => 'OrderController
 Route::get('/order/completed', [ 'as' => 'order.completed', 'uses' => 'OrderController@completed' ]);
 Route::post('/order/progress', [ 'as' => 'order.progress', 'uses' => 'OrderController@progress' ]);
 Route::get('/order/reset', [ 'as' => 'order.reset', 'uses' => 'OrderController@reset' ]);
+Route::get('/recurring-invoice', [ 'as' => 'invoice.recurring', 'uses' => 'OrderController@RecurringInvoice' ]);
 /* End Order Pages */
 
 

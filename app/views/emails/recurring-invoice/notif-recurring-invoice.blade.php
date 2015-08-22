@@ -5,39 +5,29 @@
 
 			<div align="left" valign="top" style="font-size:13px;line-height:1.4em;color:#444">
 
-				<p>Hallo {{ Auth::user()->firstname }},</p>
+				<p>Hallo {{ $user_info['firstname'].' '.$user_info['lastname'] }},</p>
 
-				<p>Kami telah menerima pesanan Anda pada tanggal {{ date('d/m/Y', strtotime($order['updated_at'])) }} dengan informasi detail invoice sebagai berikut :</p>
-				<p><b>Alamat Pengiriman</b></p>
-				<p>{{ Auth::user()->fullname }}</p>
-				<p>Phone : {{ Auth::user()->phone }}</p>
-				<p>Address : {{ Auth::user()->address }}</p>
+				@if ( $expired_on == -7 || $expired_on == -3 )
+				<p>Masa penyimpanan anda untuk invoice #{{ $invoice_code }} akan segera berakhir dalam <strong>{{ abs( $expired_on ) }}</strong> hari. Mohon segera lakukan perpanjangan dengan melakukan pembayaran dengan invoice <strong>#{{ $next_invoice }}</strong>.</p>
+				@elseif ( $expired_on == 0 )
+        <p>Masa penyimpanan anda untuk invoice #{{ $invoice_code }} berakhir hari ini. Mohon segera lakukan perpanjangan dengan melakukan pembayaran dengan invoice <strong>#{{ $next_invoice }}</strong>.</p>
+				@elseif ( $expired_on == 1 )
+        <p>Masa penyimpanan anda untuk invoice #{{ $invoice_code }} sudah berakhir pada <strong>{{ $expired_date->format('d M Y') }}</strong>. Mohon segera lakukan perpanjangan dengan melakukan pembayaran dengan invoice <strong>#{{ $next_invoice }}</strong>. Anda diberi waktu 3 hari untuk melakukan pembayaran.</p>
+        @endif
+				<p>Jika anda tidak ingin memperpanjang masa penyimpanan, abaikan saja pesan ini</p>
 
+        <p><b>Jumlah Barang</b></p>
 				<table width="100%">
-					<thead>
-						<tr>
-							<th>Jadwal Pengantaran</th>
-							<th>Jadwal Pengambilan</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
+					@foreach ( $stuff as $s )
+            <tr>
 							<td>
-								Date : {{ date('l, d m Y', strtotime($order['order_schedule']['delivery_date'])) }}
-								<br>
-								Time : {{ $order['order_schedule']['delivery_time'] }}
+                {{ ucfirst($s['type']) }}
 							</td>
 							<td>
-								@if( $order['order_schedule']['pickup_date'] )
-									Date : {{ date('l, d m Y', strtotime($order['order_schedule']['pickup_date'])) }}
-									<br>
-									Time : {{ $order['order_schedule']['pickup_time'] }}
-								@else
-									Pada saat itu juga
-								@endif
+                {{ $s['jumlah']." (".$s['barang'].") " }}
 							</td>
 						</tr>
-					</tbody>
+					@endforeach
 				</table>
 
 				<br>
@@ -81,19 +71,8 @@
 					A / N : Deny Setiawan
 				</p>
 
-				@if( $order['order_payment']['message'] )
 				<p>
-					<b>Message</b>
-				</p>
-				<p>{{ $order['order_payment']['message'] }}</p>
-				@endif
-
-				<p>
-					<b>Storage Box(es) : {{ $order['quantity'] }}</b>
-				</p>
-
-				<p>
-					<b>Total Biaya : </b>Rp {{ getTotalTransactions($order['order_payment']['id']) }}
+					<b>Total Biaya : </b>Rp {{ getTotalTransactions( $next_invoice ) }}
 				</p>
 
 				<p>Setelah Anda melakukan pembayaran, silahkan melakukan konfirmasi melalui beberapa cara berikut :</p>
@@ -105,7 +84,7 @@
 							Silahkan masuk ke halaman Customer Area dan masuk halaman Riwayat Invoice, centang pada Invoice yang Anda pilih dan klik tombol Konfirmasi Pembayaran.
 						</li>
 						<li>
-							Silahkan kirimkan SMS ke nomor 085732649156 dengan format : BAYAR < spasi > INV < spasi > #{{ $order['order_payment']['code'] }} < spasi > Rp. 55.000,00 < spasi > BCA < spasi > Nama Pengirim
+							Silahkan kirimkan SMS ke nomor 085732649156 dengan format : BAYAR < spasi > INV < spasi > #{{ $next_invoice }}  < spasi > Rp. 55.000,00 < spasi > BCA < spasi > Nama Pengirim
 						</li>
 					</ol>
 				</p>

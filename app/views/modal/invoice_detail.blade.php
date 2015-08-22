@@ -8,7 +8,7 @@
 	<p>{{ $invoice['user']['fullname'] }}</p>
 	<p>Phone : {{ $invoice['user']['phone'] }}</p>
 	<p>Address : {{ $invoice['user']['address'] }}</p>
-	
+
 	<table width="100%">
 		<thead>
 			<tr>
@@ -35,14 +35,14 @@
 			</tr>
 		</tbody>
 	</table>
-	
+
 	<br>
-	
+
 	<p>
 		<b>Metode Pembayaran</b>
 	</p>
 	<p>Bank Transfer / ATM / M-Banking / I-Banking</p>
-	
+
 	<table width="100%">
 		<thead>
 			<tr>
@@ -65,9 +65,9 @@
 			</tr>
 		</tbody>
 	</table>
-	
+
 	<br>
-	
+
 	<p>
 		<b>Bank BCA</b>
 	</p>
@@ -76,14 +76,14 @@
 		<br>
 		A / N : Deny Setiawan
 	</p>
-	
+
 	@if( $invoice['order_payment']['message'] )
 	<p>
 		<b>Message</b>
 	</p>
 	<p>{{ $invoice['order_payment']['message'] }}</p>
 	@endif
-	
+
 	@if( ! Input::get('without_detail_stuff') )
 		<p>
 			<b>Detail Barang</b>
@@ -94,11 +94,11 @@
 			</a>
 		</p>
 	@endif
-	
+
 	<p>
-		<b>Total Biaya : </b>Rp {{ getTotalTransactions($invoice['id']) }}
+		<b>Total Biaya : </b>Rp {{ getTotalTransactions($invoice['order_payment']['id']) }}
 	</p>
-	
+
 	@if( Auth::user()->type == 'user' )
 	<p>Setelah Anda melakukan pembayaran, silahkan melakukan konfirmasi melalui beberapa cara berikut :</p>
 	<p>

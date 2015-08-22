@@ -652,8 +652,12 @@ class OrderRepo extends BaseRepo
 				'payment_2.code AS next_invoice',
 				'order_schedule.pickup_date',
 				'order_schedule.delivery_date',
+				\DB::raw('DATEDIFF(CURDATE(),DATE_ADD(DATE_FORMAT(IF(payment_1.used_start IS NULL,
+				    IF(order_schedule.pickup_date IS NULL, order_schedule.delivery_date,order_schedule.pickup_date),
+				    payment_1.used_start),"%Y-%m-%d"),INTERVAL 31 DAY))AS expired_on'),
 			])
 			->groupBy('payment_1.order_id')
+			->having('expired_on','>=',-50)
 			->get();
 
 			$data = $this->_getInvoiceInfo($orderPayments);

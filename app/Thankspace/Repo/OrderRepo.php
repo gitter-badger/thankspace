@@ -650,12 +650,12 @@ class OrderRepo extends BaseRepo
 	 */
 	public function GetInvoiceAlmostExpired()
 	{
-		$interval_info 			= [ -7, -3, 0, 1 ];
+		$interval_info 			= [ -39, -7, -3, 0, 1 ];
 		$interval_returned 	= 3;
 
 		$orderPayments = $this->_GetStorages()
 			->whereNull('order_stuff.return_schedule_id')
-			->having('expired_on', '>=', array_shift( $interval_info ))
+			->having('expired_on', '>=', $interval_info[0])
 			->get();
 
 			$data = $this->_getInvoiceInfo($orderPayments);

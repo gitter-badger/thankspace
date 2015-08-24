@@ -650,7 +650,7 @@ class OrderRepo extends BaseRepo
 	 */
 	public function GetInvoiceAlmostExpired()
 	{
-		$interval_info 			= [ -39, -7, -3, 0, 1 ];
+		$interval_info 			= [ -7, -3, 0, 1 ];
 		$interval_returned 	= 3;
 
 		$orderPayments = $this->_GetStorages()

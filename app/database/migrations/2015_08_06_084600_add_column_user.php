@@ -16,6 +16,7 @@ class AddColumnUser extends Migration {
 		{
 			$table->string('ref_code')->unique()->nullable();
 			$table->string('signup_ref')->unique()->nullable();
+			$table->enum('ref_code_editable', [1, 0])->default(1);
 		});
 	}
 
@@ -30,6 +31,7 @@ class AddColumnUser extends Migration {
 		{
 			$table->dropColumn('ref_code');
 			$table->dropColumn('signup_ref');
+			$table->dropColumn('ref_code_editable');
 		});
 	}
 

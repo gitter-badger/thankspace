@@ -78,7 +78,7 @@
 									<tr class="danger">
 									@endif
 										<td>
-											<a data-toggle="modal" href="{{ route('ajax.modalInvoiceDetail', $invoice['order']['id']) }}" data-target="#ajaxModal">
+											<a data-toggle="modal" href="{{ route('ajax.modalInvoiceDetail', $invoice['id']) }}" data-target="#ajaxModal">
 												#{{ $invoice['code'] }}
 											</a>
 										</td>

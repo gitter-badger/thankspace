@@ -21,7 +21,7 @@ function getTotalCustomers() {
 	return DB::table('user')->where('type', 'user')->count();
 }
 
-function getTotalTransactions( $id = NULL, $useCode = false )
+function getTotalTransactions( $id = NULL, $useCode = false, $withCurrency = true )
 {
 	if ( $id ) {
 		$key = 'id';
@@ -55,7 +55,11 @@ function getTotalTransactions( $id = NULL, $useCode = false )
 		}
 	}
 
-	return number_format($total, 0, '', '.');
+	if ( $withCurrency ){
+			return number_format($total, 0, '', '.');
+	}
+
+	return $total;
 }
 
 function getTotalFromCountStuff ($stuff, $withCurrency = false)
@@ -87,6 +91,19 @@ function getTotalFromNewInvoiceObject ( $newInvoice, $withCurrency = false)
 		'originalTotal'	=> $originalTotal,
 		'totalWithCredit'	=> $totalWithCredit,
 	];
+}
+
+function GetLastInvoiceOrder( $id )
+{
+	return \OrderPayment::where(
+			function( $query ){
+					$query->where('status', 2)
+					->orWhereNull('payment_reff');
+			}
+		)
+		->where('order_id', $id)
+		->orderBy('id', 'desc')
+		->first();
 }
 
 function makeFormatTime($y, $m = null, $d = null)

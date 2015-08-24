@@ -155,7 +155,11 @@ class UserRepo extends BaseRepo
 	 */
 	public function getInvoiceDetail($id)
 	{
-		return \Order::with('orderPayment', 'orderSchedule', 'orderStuff', 'user')->find($id);
+		return \OrderPayment::with([
+				'Order'	=> function( $query ){
+						$query->with('orderSchedule', 'orderStuff', 'user');
+				}
+			])->find($id);
 	}
 
 
@@ -167,7 +171,12 @@ class UserRepo extends BaseRepo
 	 */
 	public function getStorageDetail($id)
 	{
-		return \Order::with('orderPayment', 'orderSchedule', 'orderStuff')->find($id);
+		$data = \Order::with('orderSchedule', 'orderStuff')
+						->find($id);
+
+		$data['order_payment'] = GetLastInvoiceOrder( $id );
+
+		return $data;
 	}
 
 

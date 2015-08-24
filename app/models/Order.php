@@ -23,7 +23,7 @@ class Order extends \Eloquent {
 
 	public function orderPayment()
 	{
-		return $this->hasOne('OrderPayment', 'order_id');
+		return $this->hasMany('OrderPayment', 'order_id');
 	}
 
 	public function orderSchedule()

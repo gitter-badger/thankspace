@@ -494,7 +494,7 @@ class OrderRepo extends BaseRepo
 	 */
 	public function getReturnSchedule(array $option = array())
 	{
-		$schedule = \ReturnSchedule::with('order.orderPayment', 'order.user', 'stuffs');
+		$schedule = \ReturnSchedule::with('order.user', 'stuffs');
 
 		if ( isset($option['user_id']) )
 		{

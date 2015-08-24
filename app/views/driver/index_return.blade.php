@@ -11,14 +11,14 @@
 
 	<div class="container">
 		<div class="row">
-			
+
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<p>
 							<a href="{{ route('user.dashboard') }}">Jadwal Pengiriman Box</a>
 						</p>
-						
+
 						@if ( Session::has('message') )
 						<p class="text-center">
 							<span class="{{ Session::get('message.type') }}-alert">
@@ -26,7 +26,7 @@
 							</span>
 						</p>
 						@endif
-						
+
 						<h3>Jadwal yang Anda tangani</h3>
 						<div class="table-responsive">
 							{{ Form::open([ 'route' => 'user.return.set', 'method' => 'POST', 'class' => 'return-form-list' ]) }}
@@ -47,7 +47,7 @@
 								@if( count($tasks) > 0 )
 								@foreach( $tasks as $t )
 									<tr>
-										<td>#{{ $t['order']['order_payment']['code'] }}</td>
+										<td>#{{ GetLastInvoiceOrder($t['order']['id'])->code }}</td>
 										<td>{{ $t['order']['user']['fullname'] }}</td>
 										<td>{{ $t['order']['user']['phone'] }}</td>
 										<td>
@@ -109,7 +109,7 @@
 										</td>
 									</tr>
 								@endif
-								
+
 								</tbody>
 							</table>
 							{{ Form::close() }}
@@ -136,7 +136,7 @@
 									@foreach($schedules as $s)
 										@if( !$s['delivery_schedule'] )
 										<tr>
-											<td>#{{ $s['order']['order_payment']['code'] }}</td>
+											<td>#{{ GetLastInvoiceOrder($s['order']['id'])->code }}</td>
 											<td>{{ $s['order']['user']['fullname'] }}</td>
 											<td>{{ $s['order']['user']['phone'] }}</td>
 											<td>
@@ -190,7 +190,7 @@
 											</td>
 										</tr>
 									@endif
-									
+
 								</tbody>
 							</table>
 							{{ Form::close() }}

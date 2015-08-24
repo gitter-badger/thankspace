@@ -11,7 +11,7 @@
 
 	<div class="container">
 		<div class="row">
-			
+
 			<div class="col-lg-3">
 				@include('user._side')
 			</div>
@@ -37,54 +37,55 @@
 												<img class="img-responsive" src="{{ url('assets/img/box.png') }}">
 											</td>
 											<td>
-												<h3>Order #{{ $storage->code }}</h3>
+												<h3>Order #{{ $storage->invoice_code }}</h3>
+												{{--*/
+														$date_start = '';
+														if ( $storage->pickup_date == null ){
+															$date_start = \Carbon\Carbon::parse($storage->delivery_date);
+														} else {
+															$date_start = \Carbon\Carbon::parse($storage->pickup_date);
+														}
+
+														$date_invoice_used = '';
+														if ( $storage->used_start == null ) {
+															if ( $storage->pickup_date == null ){
+																$date_invoice_used = \Carbon\Carbon::parse($storage->delivery_date);
+															} else {
+																$date_invoice_used = \Carbon\Carbon::parse($storage->pickup_date);
+															}
+														} else {
+															$date_invoice_used = \Carbon\Carbon::parse($storage->used_start);
+														}
+												/*--}}
+												<p>  {{ $date_start->format('d M Y').' - '.$date_invoice_used->addDays(31)->format('d M Y') }} </p>
 												<p>
-													<a data-toggle="modal" href="{{ route('ajax.modalStorageDetail', $storage->id) }}" data-target="#ajaxModal">
+													<a data-toggle="modal" href="{{ route('ajax.modalStorageDetail', $storage->order_id) }}" data-target="#ajaxModal">
 														Detail
 													</a>
-													@if( $storage->order_schedule->status != 1 )
+													@if( $storage->order_schedule_status != 1 )
 													&nbsp;&nbsp;
-													<a data-toggle="modal" href="{{ route('ajax.modalStorageEdit', $storage->id) }}" data-target="#ajaxModal">
+													<a data-toggle="modal" href="{{ route('ajax.modalStorageEdit', $storage->order_id) }}" data-target="#ajaxModal">
 														Edit Stuff
 													</a>
 													@endif
 													&nbsp;&nbsp;
-													<a data-toggle="modal" href="{{ route('ajax.modalOrderGallery', $storage->id) }}" data-target="#ajaxModal2">
+													<a data-toggle="modal" href="{{ route('ajax.modalOrderGallery', $storage->order_id) }}" data-target="#ajaxModal2">
 														Gallery
 													</a>
 												</p>
-
-												@if( $storage->type == 'item' )
-													Item : {{ $storage->description }}
-												@else
-													<?php $i = 1 ?>
-													@foreach( $storage->order_stuff->take(5) as $stuff )
-													@if( $stuff->description AND ! $stuff['return_schedule_id'] || $storage->is_returned == 1 )
-														<h4 style="margin: 3px 0px;">
-															{{ ucfirst($stuff->type) }} {{ $i++ }} : {{ $stuff->description }}
-														</h4>
-													@endif
-													@endforeach
-
-													@if(count($storage->order_stuff) > 5)
-														<a data-toggle="modal" href="{{ route('ajax.modalStorageDetail', $storage->id) }}" data-target="#ajaxModal">
-															see more...
-														</a>
-													@endif
-												@endif
 											</td>
 											<td>
 												@if( $storage->is_returned == 1 )
 												<span class="label label-default">Returned</span>
-												@elseif( $storage->order_schedule->status == 1 )
+												@elseif( $storage->order_schedule_status == 1 )
 												<span class="label label-success">Stored</span>
 												@else
 												<span class="label label-warning">On Delivery</span>
 												@endif
 											</td>
 											<td>
-												@if( $storage->order_schedule->status == 1 && $storage->is_returned == 0 )
-												<a data-toggle="modal" href="{{ route('ajax.modalStorageReturn', $storage->id) }}" data-target="#ajaxModal">
+												@if( $storage->order_schedule_status == 1 && $storage->is_returned == 0 )
+												<a data-toggle="modal" href="{{ route('ajax.modalStorageReturn', $storage->order_id) }}" data-target="#ajaxModal">
 													<i class="fa fa-sign-out"></i>
 													Kembalikan
 												</a>
@@ -92,7 +93,7 @@
 											</td>
 										</tr>
 									@endforeach
-										
+
 									<tr>
 										<td class="text-left" colspan="4">
 											{{ $storages->links() }}
@@ -134,7 +135,7 @@
 	        </div>
 	    </div>
 	</div>
-	
+
 	<div class="modal fade" id="ajaxModal2" tabindex="-1" role="dialog" aria-labelledby="ajaxModalLabel2" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
@@ -151,7 +152,7 @@
 		{
 			$(this).removeData('bs.modal');
 		});
-		
+
 		$('#ajaxModal2').on('shown.bs.modal', function ()
 		{
 			$(this).removeData('bs.modal');

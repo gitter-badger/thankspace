@@ -28,6 +28,7 @@ class UserController extends BaseController {
 		$data = [
 			'storages' => $orderRepo->getStorageList()
 		];
+
 		return View::make('user.storage', $data);
 	}
 
@@ -43,10 +44,12 @@ class UserController extends BaseController {
 				'tasks'		=> $orderRepo->getReturnSchedule([ 'is_paginated' => 1, 'page_name' => 'page_task', 'user_id' => Auth::user()->id ]),
 			];
 
+
+
 			return View::make('driver.index_return', $data);
 		} else {
 			$data = [
-				'storages'	=> $orderRepo->getStorageList([ 'page_name' => 'page_queue' ]),
+				'storages'	=> $orderRepo->GetInvoiceList([ 'page_name' => 'page_queue' ]),
 				'tasks'		=> $orderRepo->getDeliverySchedule([ 'page_name' => 'page_task', 'user_id' => Auth::user()->id ]),
 			];
 
@@ -59,7 +62,7 @@ class UserController extends BaseController {
 	{
 		$orderRepo = app('OrderRepo');
 		$data = [
-			'invoices' => $orderRepo->getOrderList()
+			'invoices' => $orderRepo->GetInvoiceList()
 		];
 		return View::make('admin.history', $data);
 	}
@@ -92,7 +95,7 @@ class UserController extends BaseController {
 			$user = $return['order']['user'];
 
 			$message->to($user['email'], $user['name'])
-					->subject('[ThankSpace] Confirmation return #'. $return['order']['order_payment']['code'].' di ThankSpace');
+					->subject('[ThankSpace] Confirmation return #'. GetLastInvoiceOrder( $return['order']['id'] )->code .' di ThankSpace');
 		});
 
 		// update the return schedule
@@ -181,8 +184,9 @@ class UserController extends BaseController {
 	{
 		$orderRepo = app('OrderRepo');
 		$data = [
-			'invoices' => $orderRepo->getOrderList()
+			'invoices' => $orderRepo->GetInvoiceList()
 		];
+
 		return View::make('user.invoice', $data);
 	}
 
@@ -302,9 +306,10 @@ class UserController extends BaseController {
 	{
 		$invoice = app('UserRepo')->getInvoiceDetail($id);
 		$data = [
-			'modal_title'	=> 'Order #'. $invoice['orderPayment']['code'],
+			'modal_title'	=> 'Order #'. $invoice['code'],
 			'invoice'		=> $invoice,
 		];
+
 		return View::make('modal.invoice_detail', $data);
 	}
 
@@ -324,7 +329,7 @@ class UserController extends BaseController {
 	{
 		$storage = app('UserRepo')->getStorageDetail($id);
 		$data = [
-			'modal_title'	=> 'Order #'. $storage['orderPayment']['code'],
+			'modal_title'	=> 'Order #'. $storage['order_payment']['code'],
 			'storage'		=> $storage,
 		];
 		return View::make('modal.storage_detail', $data);
@@ -335,7 +340,7 @@ class UserController extends BaseController {
 	{
 		$storage = app('UserRepo')->getStorageDetail($id);
 		$data = [
-			'modal_title' => 'Order #'. $storage['orderPayment']['code'] . ' - Stuffs',
+			'modal_title' => 'Order #'. $storage['order_payment']['code'] . ' - Stuffs',
 			'storage' => $storage,
 			'stuffs' => $storage['orderStuff'],
 		];
@@ -372,6 +377,7 @@ class UserController extends BaseController {
 
 		$input = Input::get();
 		$input['status'] = 0;
+		return $input;
 		$orderRepo = app('OrderRepo');
 		if ( $orderRepo->createReturnSchedule($input))
 		{
@@ -602,7 +608,7 @@ class UserController extends BaseController {
 	{
 		$stuff = app('OrderRepo')->getReturnedStuffs($id);
 		$data = [
-			'modal_title'	=> 'Returned Stuffs from Order #'. $stuff['order']['order_payment']['code'],
+			'modal_title'	=> 'Returned Stuffs from Order #'. GetLastInvoiceOrder( $stuff['order']['id'] )->code,
 			'stuffs'		=> $stuff,
 		];
 		return View::make('modal.returned_stuff', $data);

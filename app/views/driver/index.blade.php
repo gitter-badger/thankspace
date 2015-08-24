@@ -1,6 +1,5 @@
 @extends('layout.default')
 
-
 @section('content')
 
 	<div class="page-header" id="banner">
@@ -11,14 +10,14 @@
 
 	<div class="container">
 		<div class="row">
-			
+
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<p>
 							<a href="{{ route('user.dashboard') }}?sch=return">Jadwal Pengembalian Barang</a>
 						</p>
-						
+
 						@if ( Session::has('message') )
 						<p class="text-center">
 							<span class="{{ Session::get('message.type') }}-alert">
@@ -26,7 +25,7 @@
 							</span>
 						</p>
 						@endif
-						
+
 						<h3>Order yang Anda tangani</h3>
 						<div class="table-responsive">
 							{{ Form::open([ 'route' => 'user.delivery.stored', 'method' => 'POST', 'class' => 'delivery-form-list' ]) }}
@@ -115,7 +114,7 @@
 										</td>
 									</tr>
 								@endif
-								
+
 								</tbody>
 							</table>
 							{{ Form::close() }}
@@ -131,7 +130,6 @@
 										<th>Customer</th>
 										<th>Phone</th>
 										<th>Alamat</th>
-										<th>Box</th>
 										<th>Jadwal Box Diantar</th>
 										<th>Jadwal Box Diambil</th>
 										<th>Aksi</th>
@@ -141,31 +139,30 @@
 
 									@if( count($storages) > 0 )
 									@foreach($storages as $s)
-										@if( !$s['delivery_schedule'] )
+										@if( !$s['order']['delivery_schedule'] )
 										<tr>
 											<td>#{{ $s['code'] }}</td>
-											<td>{{ $s['user']['fullname'] }}</td>
-											<td>{{ $s['user']['phone'] }}</td>
-											<td>{{ $s['user']['address'] }}</td>
-											<td>{{ $s['quantity'] }}</td>
+											<td>{{ $s['order']['user']['fullname'] }}</td>
+											<td>{{ $s['order']['user']['phone'] }}</td>
+											<td>{{ $s['order']['user']['address'] }}</td>
 											<td>
-												{{ $s['order_schedule']['delivery_date']->format('l, d m Y') }}
+												{{ $s['order']['order_schedule']['delivery_date'] }}
 												<br>
-												{{ $s['order_schedule']['delivery_time'] }}
+												{{ $s['order']['order_schedule']['delivery_time'] }}
 											</td>
 											<td>
-												@if( !$s['order_schedule']['pickup_date'] )
+												@if( !$s['order']['order_schedule']['pickup_date'] )
 												At that time
 												@else
-												{{ $s['order_schedule']['delivery_date']->format('l, d m Y') }}
+												{{ $s['order']['order_schedule']['delivery_date'] }}
 												<br>
-												{{ $s['order_schedule']['pickup_time'] }}
+												{{ $s['order']['order_schedule']['pickup_time'] }}
 												@endif
 											</td>
 											<td>
 												<div class="checkbox">
 													<label>
-														{{ Form::checkbox('order_id[]', $s['id'], null, []) }}
+														{{ Form::checkbox('order_id[]', $s['order_id'], null, []) }}
 													</label>
 												</div>
 											</td>
@@ -196,7 +193,7 @@
 											</td>
 										</tr>
 									@endif
-									
+
 								</tbody>
 							</table>
 							{{ Form::close() }}
@@ -214,7 +211,7 @@
 
 @section('foot')
 	@parent
-	
+
 	<div class="modal fade" id="ajaxModal2" tabindex="-1" role="dialog" aria-labelledby="ajaxModalLabel2" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">

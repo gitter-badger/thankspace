@@ -246,4 +246,11 @@ class OrderController extends BaseController {
 		return View::make('modal.order_gallery_upload', $data);
 	}
 
+	/* Recurring invoice */
+
+	public function RecurringInvoice()
+	{
+		return app('OrderRepo')->GetInvoiceAlmostExpired();
+	}
+
 }

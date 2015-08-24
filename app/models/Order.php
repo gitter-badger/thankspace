@@ -2,7 +2,7 @@
 
 class Order extends \Eloquent {
 
-	protected $fillable = ['user_id', 'quantity', 'space_credit_used'];
+	protected $fillable = ['user_id', 'quantity'];
 
 	protected $table = 'order';
 
@@ -23,7 +23,7 @@ class Order extends \Eloquent {
 
 	public function orderPayment()
 	{
-		return $this->hasOne('OrderPayment', 'order_id');
+		return $this->hasMany('OrderPayment', 'order_id');
 	}
 
 	public function orderSchedule()

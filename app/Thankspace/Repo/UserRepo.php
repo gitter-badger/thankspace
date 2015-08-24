@@ -155,7 +155,11 @@ class UserRepo extends BaseRepo
 	 */
 	public function getInvoiceDetail($id)
 	{
-		return \Order::with('orderPayment', 'orderSchedule', 'orderStuff', 'user')->find($id);
+		return \OrderPayment::with([
+				'Order'	=> function( $query ){
+						$query->with('orderSchedule', 'orderStuff', 'user');
+				}
+			])->find($id);
 	}
 
 
@@ -167,7 +171,12 @@ class UserRepo extends BaseRepo
 	 */
 	public function getStorageDetail($id)
 	{
-		return \Order::with('orderPayment', 'orderSchedule', 'orderStuff')->find($id);
+		$data = \Order::with('orderSchedule', 'orderStuff')
+						->find($id);
+
+		$data['order_payment'] = GetLastInvoiceOrder( $id );
+
+		return $data;
 	}
 
 
@@ -314,11 +323,12 @@ class UserRepo extends BaseRepo
 		return $user;
 	}
 
-	public function getCustomerSpaceCredit()
+	public function getCustomerSpaceCredit($user_id = null)
 	{
+		$user_id = isset( $user_id ) ? $user_id : \Auth::user()->id;
 		return \DB::table('space')
 			->select(\DB::raw("ifnull(sum(if(type = 'debet',-abs(nominal),nominal)),0)as `jumlah`"))
-			->where('user_id',\Auth::user()->id)
+			->where('user_id', $user_id)
 			->get()[0]->jumlah;
 	}
 

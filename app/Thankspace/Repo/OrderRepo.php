@@ -716,7 +716,7 @@ class OrderRepo extends BaseRepo
 					$returnScheduleInput = [
 						'user_id'				=> $temp['user_id'],
 						'order_id'			=> $temp['order_id'],
-						'return_date'		=> $temp['expired_date']->addDays(4)->format('Y-m-d'),
+						'return_date'		=> \Carbon\Carbon::parse( $temp['expired_date'] )->addDays(4)->format('Y-m-d'),
 						'return_time' 	=> '08:00am - 10:00am',
 						'stuffs' 				=> explode(',', implode(',', array_column( $temp['stuff'], 'ids' ) ) ),
 						'city_id' 			=> '',

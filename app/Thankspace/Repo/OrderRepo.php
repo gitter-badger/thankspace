@@ -650,9 +650,12 @@ class OrderRepo extends BaseRepo
 	 */
 	public function GetInvoiceAlmostExpired()
 	{
+		$interval_info 			= [ -7, -3, 0, 1 ];
+		$interval_returned 	= 3;
+
 		$orderPayments = $this->_GetStorages()
 			->whereNull('order_stuff.return_schedule_id')
-			->having('expired_on', '>=', -50)
+			->having('expired_on', '>=', array_shift( $interval_info ))
 			->get();
 
 			$data = $this->_getInvoiceInfo($orderPayments);
@@ -660,7 +663,6 @@ class OrderRepo extends BaseRepo
 			foreach ( $data as $d ) {
 				$temp = $d;
 
-				$interval_info = [ -7, -3, 0, 1 ];
 				if ( in_array( $temp['expired_on'], $interval_info ) ){
 					$lunas = false; // langsung lunas
 					// cek, apakah sudah punya invoice baru apa tidak. jika tidak, buatkan !
@@ -709,7 +711,7 @@ class OrderRepo extends BaseRepo
 						// kirim email invoice expired & invoice baru
 						$this->_sendRecurringInvoiceMail( $temp );
 					}
-				} elseif ( $temp['expired_on'] == 3 ) {
+				} elseif ( $temp['expired_on'] == $interval_returned ) {
 					// lakukan pengembalian barang
 					$returnScheduleInput = [
 						'user_id'				=> $temp['user_id'],

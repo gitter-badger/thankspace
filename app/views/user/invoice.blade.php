@@ -60,9 +60,9 @@
 								<thead>
 									<tr>
 										<th>Invoice</th>
-										<th>Boxes</th>
-										<th>Delivery Date </th>
-										<th>Pickup Date</th>
+										<!--<th>Delivery Date </th>
+										<th>Pickup Date</th>-->
+										<th>Storage Period</th>
 										<th>Cost</th>
 										<th>Status</th>
 										<th>Action</th>
@@ -70,47 +70,61 @@
 								</thead>
 								<tbody>
 									@foreach( $invoices as $invoice )
-									@if( $invoice['order_payment']['status'] == 2 )
+									@if( $invoice['status'] == 2 )
 									<tr class="success">
-									@elseif( $invoice['order_payment']['status'] == 1 )
+									@elseif( $invoice['status'] == 1 )
 									<tr class="info">
 									@else
 									<tr class="danger">
 									@endif
 										<td>
-											<a data-toggle="modal" href="{{ route('ajax.modalInvoiceDetail', $invoice['id']) }}" data-target="#ajaxModal">
-												#{{ $invoice['order_payment']['code'] }}
+											<a data-toggle="modal" href="{{ route('ajax.modalInvoiceDetail', $invoice['order']['id']) }}" data-target="#ajaxModal">
+												#{{ $invoice['code'] }}
 											</a>
 										</td>
-										<td>{{ $invoice['quantity'] }}</td>
-										<td>
-											{{ $invoice['order_schedule']['delivery_date']->format('l, d m Y') }}
+										<!--<td>
+											{{ $invoice['order']['order_schedule']['delivery_date'] }}
 											<br>
-											{{ $invoice['order_schedule']['delivery_time'] }}
+											{{ $invoice['order']['order_schedule']['delivery_time'] }}
 										</td>
 										<td>
-											@if( !$invoice['order_schedule']['pickup_date'] )
+											@if( !$invoice['order']['order_schedule']['pickup_date'] )
 											Immediately
 											@else
-											{{ $invoice['order_schedule']['delivery_date']->format('l, d m Y') }}
+											{{ $invoice['order']['order_schedule']['delivery_date'] }}
 											<br>
-											{{ $invoice['order_schedule']['pickup_time'] }}
+											{{ $invoice['order']['order_schedule']['pickup_time'] }}
 											@endif
-										</td>
-										<td>Rp {{ getTotalTransactions($invoice['order_payment']['id']) }}</td>
+										</td>-->
 										<td>
-											@if( $invoice['order_payment']['status'] == 2 )
+											{{--*/
+													$date_invoice_used = '';
+													if ( $invoice['used_start'] == null ) {
+														if ( $invoice['order']['order_schedule']['pickup_date'] == null ){
+															$date_invoice_used = \Carbon\Carbon::parse( $invoice['order']['order_schedule']['delivery_date'] );
+														} else {
+															$date_invoice_used = \Carbon\Carbon::parse( $invoice['order']['order_schedule']['pickup_date'] );
+														}
+													} else {
+														$date_invoice_used = \Carbon\Carbon::parse( $invoice['used_start'] );
+													}
+											/*--}}
+											{{ $date_invoice_used->format('d M Y').' - '.$date_invoice_used->addDays(31)->format('d M Y') }}
+										</td>
+										<td>Rp {{ getTotalTransactions($invoice['id']) }}</td>
+										<td>
+											@if( $invoice['status'] == 2 )
 											<span class="label label-success">Completed Payment</span>
-											@elseif( $invoice['order_payment']['status'] == 1 )
+											@elseif( $invoice['status'] == 1 )
 											<span class="label label-info">Waiting Confirmation</span>
 											@else
 											<span class="label label-danger">Pending Payment</span>
 											@endif
 										</td>
 										<td>
-											@if( $invoice['order_payment']['status'] == 0 )
+											@if( $invoice['status'] == 0 )
 											<div class="checkbox">
-												<label><input name="order_payment_id[]" type="checkbox" value="{{ $invoice['order_payment']['id'] }}" /></label>
+												<label><input name="order_payment_id[]" type="checkbox" value="{{ $invoice['id'] }}" /></label>
 											</div>
 											@endif
 										</td>

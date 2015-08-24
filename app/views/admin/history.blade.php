@@ -56,7 +56,6 @@
 									<tr>
 										<th>Invoice</th>
 										<th>Customer</th>
-										<th>Box</th>
 										<th>Delivery Date</th>
 										<th>Pickup Date</th>
 										<th>Cost</th>
@@ -68,54 +67,61 @@
 									@foreach( $invoices as $invoice )
 									@if( $invoice->is_returned == 1 )
 									<tr>
-									@elseif( $invoice['order_schedule']['status'] == 1 )
+									@elseif( $invoice['order']['order_schedule']['status'] == 1 && $invoice['status'] == 2 )
 									<tr class="success">
-									@elseif( $invoice['order_payment']['status'] == 1 )
+									@elseif( $invoice['status'] == 1 )
 									<tr class="warning">
-									@elseif( $invoice['order_payment']['status'] == 2 )
+									@elseif( $invoice['status'] == 2 )
 									<tr class="info">
 									@else
 									<tr class="danger">
 									@endif
 										<td>
-											<a data-toggle="modal" href="{{ route('ajax.modalInvoiceDetail', $invoice['id']) }}" data-target="#ajaxModal">
-												#{{ $invoice['order_payment']['code'] }}
+											<a data-toggle="modal" href="{{ route('ajax.modalInvoiceDetail', $invoice['order']['id']) }}" data-target="#ajaxModal">
+												#{{ $invoice['code'] }}
 											</a>
 										</td>
-										<td>{{ $invoice['user']['fullname'] }}</td>
-										<td>{{ $invoice['quantity'] }}</td>
+										<td>{{ $invoice['order']['user']['fullname'] }}</td>
+										@if ( $invoice['payment_reff'] == null )
 										<td>
-											{{ $invoice['order_schedule']['delivery_date']->format('l, d m Y') }}
-											<br>
-											{{ $invoice['order_schedule']['delivery_time'] }}
+												{{ $invoice['order']['order_schedule']['delivery_date'] }}
+												<br>
+												{{ $invoice['order']['order_schedule']['delivery_time'] }}
 										</td>
 										<td>
-											@if( !$invoice['order_schedule']['pickup_date'] )
-											At that time
-											@else
-											{{ $invoice['order_schedule']['delivery_date']->format('l, d m Y') }}
-											<br>
-											{{ $invoice['order_schedule']['pickup_time'] }}
-											@endif
+												@if( !$invoice['order']['order_schedule']['pickup_date'] )
+												At that time
+												@else
+												{{ $invoice['order']['order_schedule']['delivery_date'] }}
+												<br>
+												{{ $invoice['order']['order_schedule']['pickup_time'] }}
+												@endif
 										</td>
-										<td>Rp {{ getTotalTransactions($invoice['order_payment']['id']) }}</td>
+										@else
+										<td colspan="2">
+												Perpanjangan dari Invoice Lama
+												<br />
+												#{{ $invoice['payment_reff'] }}
+										</td>
+										@endif
+										<td>Rp {{ getTotalTransactions($invoice['id']) }}</td>
 										<td>
-											@if( $invoice['is_returned'] == 1 )
+											@if( $invoice['order']['is_returned'] == 1 )
 											<span class="label label-default">Returned</span>
-											@elseif( $invoice['order_schedule']['status'] == 1 )
+											@elseif( $invoice['order']['order_schedule']['status'] == 1 && $invoice['status'] == 2 )
 											<span class="label label-success">Stored</span>
-											@elseif( $invoice['order_payment']['status'] == 1 )
+											@elseif( $invoice['status'] == 1 )
 											<span class="label label-warning">Waiting Confirmation</span>
-											@elseif( $invoice['order_payment']['status'] == 2 )
+											@elseif( $invoice['status'] == 2 )
 											<span class="label label-info">Completed Payment</span>
 											@else
 											<span class="label label-danger">Pending Payment</span>
 											@endif
 										</td>
 										<td>
-											@if( $invoice['order_payment']['status'] == 1 )
+											@if( $invoice['status'] == 1 )
 											<div class="checkbox">
-												<label><input name="order_payment_id[]" type="checkbox" value="{{ $invoice['order_payment']['id'] }}" /></label>
+												<label><input name="order_payment_id[]" type="checkbox" value="{{ $invoice['id'] }}" /></label>
 											</div>
 											@endif
 										</td>

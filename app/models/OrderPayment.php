@@ -10,7 +10,7 @@ class OrderPayment extends \Eloquent {
 
 	public function setCodeAttribute($value)
 	{
-		$this->attributes['code'] = 'TH'. substr(date('Y'), 2) . $this->attributes['order_id'];
+		$this->attributes['code'] = 'TH'. date('ym') . $this->attributes['order_id'];
 	}
 
 	public function setUniqueAttribute($value)

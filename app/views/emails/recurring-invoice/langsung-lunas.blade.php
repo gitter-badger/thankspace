@@ -7,7 +7,9 @@
 
 				<p>Hallo {{ $user_info['firstname'].' '.$user_info['lastname'] }},</p>
 
-				<p>Masa penyimpanan anda untuk invoice #{{ $invoice_code }} akan segera berakhir dalam <strong>{{ abs( $expired_on ) }}</strong> hari. Anda mempunyai space credit yang cukup untuk biaya perpanjangan, maka kami lakukan perpanjangan dengan memotong space credit anda. invoice perpanjangan anda adalah <strong>#{{ $next_invoice }}</strong>.</p>
+				<p>Masa penyimpanan anda untuk invoice <strong>#{{ $invoice_code }}</strong> akan segera berakhir dalam <strong>{{ abs( $expired_on ) }}</strong> hari. Anda mempunyai space credit yang cukup untuk biaya perpanjangan, maka kami lakukan perpanjangan dengan memotong space credit anda. invoice perpanjangan anda adalah <strong>#{{ $next_invoice }}</strong>.</p>
+
+				<br />
 
 				<p><b>Jumlah Barang</b></p>
 				<table width="100%">
@@ -25,9 +27,23 @@
 
 				<br>
 
+				{{--*/
+						$total = getTotalFromNewInvoiceObject( $new_invoice, true );
+				/*--}}
+
+				@if( $new_invoice->space_credit_used != 0 )
 				<p>
-					<b>Total Biaya : </b>Rp {{ getTotalTransactions( $next_invoice ) }}
+					<b>Total Asli : </b>Rp {{ $total->originalTotal }}
 				</p>
+				<p>
+					<b>Space Credit : </b>Rp {{ number_format( $new_invoice->space_credit_used ). ',-' }}
+				</p>
+				@endif
+				<p>
+					<b>Total Biaya : </b>Rp {{ $total->totalWithCredit }}
+				</p>
+
+				<br />
 
 				<p>Demikian informasi dari kami mengenai invoice atas layanan yang Anda digunakan.</p>
 

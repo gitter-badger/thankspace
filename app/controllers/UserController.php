@@ -28,6 +28,7 @@ class UserController extends BaseController {
 		$data = [
 			'storages' => $orderRepo->getStorageList()
 		];
+
 		return View::make('user.storage', $data);
 	}
 
@@ -46,7 +47,7 @@ class UserController extends BaseController {
 			return View::make('driver.index_return', $data);
 		} else {
 			$data = [
-				'storages'	=> $orderRepo->getStorageList([ 'page_name' => 'page_queue' ]),
+				'storages'	=> $orderRepo->GetInvoiceList([ 'page_name' => 'page_queue' ]),
 				'tasks'		=> $orderRepo->getDeliverySchedule([ 'page_name' => 'page_task', 'user_id' => Auth::user()->id ]),
 			];
 
@@ -59,7 +60,7 @@ class UserController extends BaseController {
 	{
 		$orderRepo = app('OrderRepo');
 		$data = [
-			'invoices' => $orderRepo->getOrderList()
+			'invoices' => $orderRepo->GetInvoiceList()
 		];
 		return View::make('admin.history', $data);
 	}
@@ -181,8 +182,9 @@ class UserController extends BaseController {
 	{
 		$orderRepo = app('OrderRepo');
 		$data = [
-			'invoices' => $orderRepo->getOrderList()
+			'invoices' => $orderRepo->GetInvoiceList()
 		];
+
 		return View::make('user.invoice', $data);
 	}
 

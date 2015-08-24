@@ -6,9 +6,9 @@
 	<h2>{{ getTotalStored('item') }} Item</h2>
 	<p>Total barang oversized telah tersimpan <i>Warehouse</i></p>
 </div>
-<div class="col-lg-3 text-center">   
+<div class="col-lg-3 text-center">
 	<h2>IDR {{ getTotalTransactions() }}</h2>
-	<p>Total transaksi yang terjadi di ThankSpace</p>         
+	<p>Total transaksi yang terjadi di ThankSpace</p>
 </div>
 <div class="col-lg-3 text-center">
 	<h2>{{ getTotalCustomers() }} Customer</h2>

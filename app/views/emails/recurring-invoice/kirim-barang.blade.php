@@ -7,7 +7,9 @@
 
 				<p>Hallo {{ $user_info['firstname'].' '.$user_info['lastname'] }},</p>
 
-        <p>Masa penyimpanan anda untuk invoice #{{ $invoice_code }} sudah berakhir pada <strong>{{ $expired_date->format('d M Y') }}</strong>. Dan sekarang sudah lewat 3 hari dari tanggal expired. kami akan segera mengembalikan box/item anda.</p>
+        <p>Masa penyimpanan anda untuk invoice <strong>#{{ $invoice_code }}</strong> sudah berakhir pada <strong>{{ $expired_date->format('d M Y') }}</strong>. Dan sekarang sudah lewat 3 hari dari tanggal expired. kami akan segera mengembalikan box/item anda.</p>
+
+				<br />
 
         <p><b>Jumlah Barang</b></p>
 				<table width="100%">
@@ -22,6 +24,8 @@
 						</tr>
 					@endforeach
 				</table>
+
+				<br />
 
 				<p>Demikian informasi dari kami mengenai invoice atas layanan yang Anda digunakan.</p>
 

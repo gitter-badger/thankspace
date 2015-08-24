@@ -7,14 +7,16 @@
 
 				<p>Hallo {{ $user_info['firstname'].' '.$user_info['lastname'] }},</p>
 
-				@if ( $expired_on == -7 || $expired_on == -3 )
-				<p>Masa penyimpanan anda untuk invoice #{{ $invoice_code }} akan segera berakhir dalam <strong>{{ abs( $expired_on ) }}</strong> hari. Mohon segera lakukan perpanjangan dengan melakukan pembayaran dengan invoice <strong>#{{ $next_invoice }}</strong>.</p>
-				@elseif ( $expired_on == 0 )
-        <p>Masa penyimpanan anda untuk invoice #{{ $invoice_code }} berakhir hari ini. Mohon segera lakukan perpanjangan dengan melakukan pembayaran dengan invoice <strong>#{{ $next_invoice }}</strong>.</p>
+				@if ( $expired_on == 0 )
+        <p>Masa penyimpanan anda untuk invoice <strong>#{{ $invoice_code }}</strong> berakhir hari ini. Mohon segera lakukan perpanjangan dengan melakukan pembayaran dengan invoice <strong>#{{ $next_invoice }}</strong>.</p>
 				@elseif ( $expired_on == 1 )
-        <p>Masa penyimpanan anda untuk invoice #{{ $invoice_code }} sudah berakhir pada <strong>{{ $expired_date->format('d M Y') }}</strong>. Mohon segera lakukan perpanjangan dengan melakukan pembayaran dengan invoice <strong>#{{ $next_invoice }}</strong>. Anda diberi waktu 3 hari untuk melakukan pembayaran.</p>
-        @endif
-				<p>Jika anda tidak ingin memperpanjang masa penyimpanan, abaikan saja pesan ini</p>
+        <p>Masa penyimpanan anda untuk invoice <strong>#{{ $invoice_code }}</strong> sudah berakhir pada <strong>{{ $expired_date->format('d M Y') }}</strong>. Mohon segera lakukan perpanjangan dengan melakukan pembayaran dengan invoice <strong>#{{ $next_invoice }}</strong>. Anda diberi waktu 3 hari untuk melakukan pembayaran.</p>
+        @else
+				<p>Masa penyimpanan anda untuk invoice <strong>#{{ $invoice_code }}</strong> akan segera berakhir dalam <strong>{{ abs( $expired_on ) }}</strong> hari. Mohon segera lakukan perpanjangan dengan melakukan pembayaran dengan invoice <strong>#{{ $next_invoice }}</strong>.</p>
+				@endif
+				<p>Jika anda tidak ingin memperpanjang masa penyimpanan, abaikan saja pesan ini.</p>
+
+				<br />
 
         <p><b>Jumlah Barang</b></p>
 				<table width="100%">
@@ -71,9 +73,25 @@
 					A / N : Deny Setiawan
 				</p>
 
+				<br />
+
+				{{--*/
+						$total = getTotalFromNewInvoiceObject( $new_invoice, true );
+				/*--}}
+
+				@if( $new_invoice->space_credit_used != 0 )
 				<p>
-					<b>Total Biaya : </b>Rp {{ getTotalTransactions( $next_invoice ) }}
+					<b>Total Asli : </b>Rp {{ $total->originalTotal }}
 				</p>
+				<p>
+					<b>Space Credit : </b>Rp {{ number_format( $new_invoice->space_credit_used ). ',-' }}
+				</p>
+				@endif
+				<p>
+					<b>Total Biaya : </b>Rp {{ $total->totalWithCredit }}
+				</p>
+
+				<br />
 
 				<p>Setelah Anda melakukan pembayaran, silahkan melakukan konfirmasi melalui beberapa cara berikut :</p>
 				<p>

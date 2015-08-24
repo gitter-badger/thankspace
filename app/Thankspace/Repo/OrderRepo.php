@@ -17,48 +17,17 @@ class OrderRepo extends BaseRepo
 	 */
 	public function getStorageList(array $option = array())
 	{
-		$user_type = \Auth::user()->type;
 		$user_id = ( isset($option['user_id']) ? $option['user_id'] : \Auth::user()->id );
 
-		$order = \Order::with('OrderSchedule', 'OrderStuff', 'ReturnSchedule')
-					->join('order_payment', 'order_payment.order_id', '=', 'order.id')
-					->where('order_payment.status', 2);
+		$custom_select = [
+			'order.is_returned',
+			'payment_1.status as payment_status',
+			'order_schedule.status as order_schedule_status',
+		];
 
-		/**
-		 * For user list page
-		 */
-		if( $user_type == 'user' )
-		{
-			$order = $order->where('order.user_id', $user_id);
-		}
-
-		/**
-		 * For driver list page
-		 */
-		elseif( $user_type == 'driver' )
-		{
-			if (!empty($option['page_name']))
-			{
-				\Paginator::setPageName($option['page_name']);
-			}
-			$order = $order->with('User', 'DeliverySchedule')->orderBy('order.created_at', 'desc');
-		}
-
-		/**
-		 * For admin list page
-		 */
-		else
-		{
-			$order = $order->with('User', 'deliverySchedule.user');
-		}
-
-		$order = $order->where('order.status', 1)->paginate(20);
-
-		if ( $order ) {
-			return $order;
-		} else {
-			return false;
-		}
+		return $this->_GetStorages( $custom_select )
+			->where('order.user_id', $user_id)
+			->paginate(20);
 	}
 
 
@@ -91,28 +60,30 @@ class OrderRepo extends BaseRepo
 	 * @param  array  $option
 	 * @return \Illuminate\Database\Eloquent\Model
 	 */
-	public function getOrderList(array $option = array())
+	public function GetInvoiceList(array $option = array())
 	{
-		$user_id = ( isset($option['user_id']) ? $option['user_id'] : \Auth::user()->id );
+		$user = \Auth::user();
 
-		$order = \Order::with('OrderSchedule', 'OrderPayment', 'ReturnSchedule')->orderBy('id', 'desc');
+		$data = \OrderPayment::with([
+				'Order' => function( $query ){
+					$query->with('User','OrderSchedule','DeliverySchedule', 'ReturnSchedule');
+				}
+		]);
 
-		if( \Auth::user()->type == 'user' )
-		{
-			$order = $order->where('user_id', $user_id);
-		} else {
-			$order = $order->with('User');
+		if ( $user->type == "user" ){
+			$data->whereHas('Order', function($query) use ($user) {
+				$query->where('user_id', $user->id);
+			});
+		} elseif ($user->type == "driver") {
+			if (!empty($option['page_name']))
+			{
+				\Paginator::setPageName($option['page_name']);
+			}
+			$data->where('status', 2)->orderBy('created_at', 'desc');
 		}
 
-		$order = $order->where('order.status', 1)->paginate(20);
-
-		if ( $order ) {
-			return $order;
-		} else {
-			return false;
-		}
+		return $data->paginate(20);
 	}
-
 
 	/**
 	 * For confirmation payment user and admin
@@ -630,34 +601,58 @@ class OrderRepo extends BaseRepo
 		}
 	}
 
-	public function GetInvoiceAlmostExpired()
+	/**
+	 * Get Storage Query, for get available storage in whare house
+	 * @param  array  $custom_select
+	 * @return \Illuminate\Database\Eloquent\Model
+	 */
+	protected function _GetStorages(array $custom_select = array())
 	{
-		$orderPayments = \DB::table('order_payment as payment_1')
+		$select = [
+			'order.user_id',
+			'payment_1.order_id',
+			'payment_1.code AS invoice_code',
+			'payment_1.used_start',
+			'payment_2.code AS next_invoice',
+			'order_schedule.pickup_date',
+			'order_schedule.delivery_date',
+			\DB::raw('DATEDIFF(CURDATE(),DATE_ADD(DATE_FORMAT(IF(payment_1.used_start IS NULL,
+					IF(order_schedule.pickup_date IS NULL, order_schedule.delivery_date,order_schedule.pickup_date),
+					payment_1.used_start),"%Y-%m-%d"),INTERVAL 31 DAY))AS expired_on'),
+		];
+
+		$select = array_merge($select, $custom_select);
+
+		$db = \DB::table('order_payment as payment_1')
 			->leftJoin('order_payment as payment_2', 'payment_1.code', '=', 'payment_2.payment_reff')
 			->join('order_schedule', 'payment_1.order_id', '=', 'order_schedule.order_id')
-			->join('order_stuff', 'payment_1.order_id', '=', 'order_stuff.order_id')
 			->join('order', 'payment_1.order_id', '=', 'order.id')
-			->where('payment_1.status', '=', '2')
+			->join('order_stuff', 'order.id', '=', 'order_stuff.order_id')
+			->where('payment_1.status', 2)
 			->where(function($query){
 				$query->where('payment_2.status', '!=', '2')
 							->orWhereNull('payment_2.status');
 			})
-			->where('order_schedule.status', '=', '1')
+			->where('order_schedule.status', 1)
+			->where('order.is_returned', 0)
+			->select($select)
+			->groupBy('payment_1.order_id');
+
+			return $db;
+	}
+
+	/**
+	 * Get Storage Query, for get available storage in whare house
+	 * and create new invoice for almost expired storage period,
+	 * send mail and return stuff. this function processed with cron job
+	 *
+	 * @return array $data
+	 */
+	public function GetInvoiceAlmostExpired()
+	{
+		$orderPayments = $this->_GetStorages()
 			->whereNull('order_stuff.return_schedule_id')
-			->select([
-				'order.user_id',
-				'payment_1.order_id',
-				'payment_1.code AS invoice_code',
-				'payment_1.used_start',
-				'payment_2.code AS next_invoice',
-				'order_schedule.pickup_date',
-				'order_schedule.delivery_date',
-				\DB::raw('DATEDIFF(CURDATE(),DATE_ADD(DATE_FORMAT(IF(payment_1.used_start IS NULL,
-				    IF(order_schedule.pickup_date IS NULL, order_schedule.delivery_date,order_schedule.pickup_date),
-				    payment_1.used_start),"%Y-%m-%d"),INTERVAL 31 DAY))AS expired_on'),
-			])
-			->groupBy('payment_1.order_id')
-			->having('expired_on','>=',-50)
+			->having('expired_on', '>=', -50)
 			->get();
 
 			$data = $this->_getInvoiceInfo($orderPayments);
@@ -665,15 +660,15 @@ class OrderRepo extends BaseRepo
 			foreach ( $data as $d ) {
 				$temp = $d;
 
-				$interaval_info = [ -7, -3, 0, 1 ];
-				if ( in_array($temp['expired_on'], $interaval_info ) ){
+				$interval_info = [ -7, -3, 0, 1 ];
+				if ( in_array( $temp['expired_on'], $interval_info ) ){
 					$lunas = false; // langsung lunas
-					// cek, apakah sudah punya invoice apa tidak. jika tidak, buatkan !
+					// cek, apakah sudah punya invoice baru apa tidak. jika tidak, buatkan !
 					if( $temp['next_invoice'] == null ) {
 						// ambil space credit user_id
 						$space_credit = app('UserRepo')->getCustomerSpaceCredit( $temp['user_id'] );
 						// ambil total biaya
-						$totalBiaya = array_sum( array_column( $temp['stuff'], 'subtotal' ) );
+						$totalBiaya = getTotalFromCountStuff( $temp['stuff'] );
 						// ambil input new_invoice_input ( order_payment )
 						$newPayment = $temp['new_invoice_input'];
 
@@ -691,10 +686,12 @@ class OrderRepo extends BaseRepo
 							}
 						}
 
+						// buat order baru
 						$newInvoice = $this->_save_orderPayment($temp['order_id'], $newPayment);
 						$temp['next_invoice'] = $newInvoice->code;
 						$temp['new_invoice'] = $newInvoice;
 
+						// insert space debet jika $space_credit_used != 0
 						if ( $newInvoice->space_credit_used != 0 ){
 							\Space::create([
 									'user_id'	=> $temp['user_id'],
@@ -715,6 +712,7 @@ class OrderRepo extends BaseRepo
 				} elseif ( $temp['expired_on'] == 3 ) {
 					// lakukan pengembalian barang
 					$returnScheduleInput = [
+						'user_id'				=> $temp['user_id'],
 						'order_id'			=> $temp['order_id'],
 						'return_date'		=> $temp['expired_date']->addDays(4)->format('Y-m-d'),
 						'return_time' 	=> '08:00am - 10:00am',
@@ -725,10 +723,14 @@ class OrderRepo extends BaseRepo
 					];
 					$this->createReturnSchedule( $returnScheduleInput );
 
-					// cek apakah invoice baru menggunakan space credit, jika iya, hapus space debet nya untuk invoice ini.
 					$_newInvoice = $temp['new_invoice'];
+
+					 //hapus invoice baru yang dibuat
+					\OrderPayment::where('code', $_newInvoice->code)->delete();
+
+					// cek apakah invoice baru menggunakan space credit, jika iya, hapus space debet nya untuk invoice ini.
 					if ( $_newInvoice->space_credit_used != 0 ) {
-						\Space::where('keterangan', 'like ', '%#'.$_newInvoice->code.'%')->delete();
+						\Space::where('keterangan', 'like', '%#'.$_newInvoice->code.'%')->delete();
 					}
 
 					// kirim email pengembalian barang
@@ -739,6 +741,12 @@ class OrderRepo extends BaseRepo
 			return $data;
 	}
 
+	/**
+	 * Get Invoice Info
+	 *
+	 * @param \Illuminate\Database\Eloquent\Model
+	 * @return array $data
+	 */
 	protected function _getInvoiceInfo($orderPayments)
 	{
 		$data = [];
@@ -752,6 +760,7 @@ class OrderRepo extends BaseRepo
 			/**
 			** Menentukan date invoice used, expired date dan expired on dengan Carbon
 			*/
+
 			// get date of invoice used
 			if ( $payment->used_start == null ) {
 				if ( $payment->pickup_date == null ){
@@ -769,7 +778,6 @@ class OrderRepo extends BaseRepo
 			// get interval day to expired date
 			$now = \Carbon\Carbon::parse( date('Y-m-d') );
 			$temp['expired_on'] = \Carbon\Carbon::parse( $temp['expired_date'] )->diffInDays( $now, false );
-
 
 			// get stuff invoice
 			$temp['stuff'] = \OrderStuff::where('order_id', $payment->order_id)
@@ -796,7 +804,7 @@ class OrderRepo extends BaseRepo
 			// new invoice
 			$temp['new_invoice'] = null;
 			if ( $temp['next_invoice'] != null ) {
-				$temp['new_invoice'] = OrderPayment::where('code', $temp['next_invoice'])->first();
+				$temp['new_invoice'] = \OrderPayment::where('code', $temp['next_invoice'])->first();
 			}
 
 			// push to array for return data

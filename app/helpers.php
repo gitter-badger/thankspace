@@ -21,76 +21,73 @@ function getTotalCustomers() {
 	return DB::table('user')->where('type', 'user')->count();
 }
 
-function getTotalTransactions( $id = NULL ) {
-
-	$OrderPayment = null;
-
-	if( $id ) {
-		$OrderPayment = OrderPayment::find($id);
-	}
-
-	$opr = ( $id ? '<=' : '=' );
-
-	$box = DB::table('order');
-
+function getTotalTransactions( $id = NULL, $useCode = false )
+{
 	if ( $id ) {
-		$box = $box->where('order.id', $OrderPayment->order_id);
-	}
+		$key = 'id';
 
-	$box = $box->join('order_payment', function($join) use ($opr)
-				{
-					$join->on('order.id', '=', 'order_payment.order_id')
-						->where('order_payment.status', $opr, 2);
-				})
-				->join('order_stuff', function($join)
-				{
-					$join->on('order.id', '=', 'order_stuff.order_id')
-						->where('order_stuff.type', '=', 'box');
-				})
-				->count() * Config::get('thankspace.box.price');
-
-	$item = DB::table('order');
-
-	if ( $id ) {
-		$item = $item->where('order.id', $OrderPayment->order_id);
-	}
-
-	$item = $item->join('order_payment', function($join) use ($opr)
-				{
-					$join->on('order.id', '=', 'order_payment.order_id')
-						->where('order_payment.status', $opr, 2);
-				})
-				->join('order_stuff', function($join)
-				{
-					$join->on('order.id', '=', 'order_stuff.order_id')
-						->where('order_stuff.type', '=', 'item');
-				})
-				->count() * Config::get('thankspace.item.price');
-
-	$total = ( $box + $item );
-
-	if ( $id ) {
-		if ( $OrderPayment->box == 0 && $OrderPayment->item == 0 ) {
-		} else {
-			$box = $OrderPayment->box * Config::get('thankspace.box.price');
-			$item = $OrderPayment->item * Config::get('thankspace.item.price');
-			$total = ( $box + $item );
+		if( $useCode ) {
+			$key = "code";
 		}
 
-		$total -= $OrderPayment->space_credit_used;
-	};
-
-	if ( $id ) {
-		$ucode = $OrderPayment->unique;
+		$orderPayment = OrderPayment::where($key, $id)
+			->select(['unique', 'box', 'item', 'space_credit_used']);
 	} else {
-		$ucode = 0;
+		$orderPayment = OrderPayment::select([
+				DB::raw("SUM(box) box"),
+				DB::raw("SUM(item) item"),
+				DB::raw("SUM(space_credit_used) space_credit_used")
+			]);
 	}
 
-	$grand_total = $total + $ucode;
+	$orderPayment = $orderPayment->first();
 
-	return number_format($grand_total, 0, '', '.');
+	$box = $orderPayment->box * Config::get('thankspace.box.price');
+	$item = $orderPayment->item * Config::get('thankspace.item.price');
+	$space_credit_used = $orderPayment->space_credit_used;
+
+	$total = ( $box + $item ) - $space_credit_used;
+
+	if ( $id ) {
+		if ( $total != 0 )
+		{
+			$total += $orderPayment->unique;
+		}
+	}
+
+	return number_format($total, 0, '', '.');
 }
 
+function getTotalFromCountStuff ($stuff, $withCurrency = false)
+{
+	$totalBiaya = array_sum( array_column( $stuff, 'subtotal' ) );
+
+	if ( $withCurrency ) {
+		return 'Rp. '. number_format( $totalBiaya ) .',-';
+	}
+
+	return $totalBiaya;
+}
+
+function getTotalFromNewInvoiceObject ( $newInvoice, $withCurrency = false)
+{
+	$box = $newInvoice->box * Config::get('thankspace.box.price');
+	$item = $newInvoice->item * Config::get('thankspace.item.price');
+	$space_credit_used = $newInvoice->space_credit_used;
+
+	$originalTotal = $box + $item;
+	$totalWithCredit = ( $box + $item ) - $space_credit_used;
+
+	if ( $withCurrency ) {
+		$originalTotal = number_format( $originalTotal ) .',-';
+		$totalWithCredit = number_format( $totalWithCredit ) .',-';
+	}
+
+	return (object)[
+		'originalTotal'	=> $originalTotal,
+		'totalWithCredit'	=> $totalWithCredit,
+	];
+}
 
 function makeFormatTime($y, $m = null, $d = null)
 {

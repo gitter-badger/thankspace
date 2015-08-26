@@ -371,13 +371,12 @@ class UserController extends BaseController {
 	 */
 	public function storageReturnProcess($id)
 	{
-		if ( ! Request::ajax()) {
+		if ( ! Request::ajax() ) {
 			return App::abort(404);
 		}
 
 		$input = Input::get();
 		$input['status'] = 0;
-		return $input;
 		$orderRepo = app('OrderRepo');
 		if ( $orderRepo->createReturnSchedule($input))
 		{

@@ -26,6 +26,11 @@ class OrderRepo extends BaseRepo
 		];
 
 		return $this->_GetStorages( $custom_select )
+				->where( function( $query ) {
+						$query->where('payment_1.status', 2)
+								->orWhereNull('payment_1.payment_reff');
+					}
+				)
 			->where('order.user_id', $user_id)
 			->paginate(20);
 	}
@@ -261,7 +266,8 @@ class OrderRepo extends BaseRepo
 
 	protected function _sendInvoiceDetailMail($id)
 	{
-		$order = \Order::with('orderPayment', 'orderSchedule', 'orderStuff', 'user')->find($id);
+		$order = \Order::with('orderSchedule', 'orderStuff', 'user')->find($id);
+		$order['order_payment'] = GetLastInvoiceOrder($id);
 
 		$name	= \Auth::user()->fullname;
 		$email	= \Auth::user()->email;
@@ -283,7 +289,8 @@ class OrderRepo extends BaseRepo
 
 	protected function _sendAdminNewOrderMail($id)
 	{
-		$order = \Order::with('orderPayment', 'orderSchedule', 'orderStuff', 'user')->find($id);
+		$order = \Order::with('orderSchedule', 'orderStuff', 'user')->find($id);
+		$order['order_payment'] = GetLastInvoiceOrder($id);
 
 		$name	= "ThankSpace Support";
 		$email	= "support@thankspace.com";
@@ -437,7 +444,8 @@ class OrderRepo extends BaseRepo
 
 	protected function _sendDeliveryStoredInfo($id)
 	{
-		$order = \Order::with('orderPayment', 'orderSchedule', 'orderStuff', 'user')->find($id);
+		$order = \Order::with('orderSchedule', 'orderStuff', 'user')->find($id);
+		$order['order_payment'] = GetLastInvoiceOrder($id);
 
 		$to = [
 			'code'		=>	$order['order_payment']['code'],
@@ -628,13 +636,10 @@ class OrderRepo extends BaseRepo
 			->join('order_schedule', 'payment_1.order_id', '=', 'order_schedule.order_id')
 			->join('order', 'payment_1.order_id', '=', 'order.id')
 			->join('order_stuff', 'order.id', '=', 'order_stuff.order_id')
-			->where('payment_1.status', 2)
 			->where(function($query){
 				$query->where('payment_2.status', '!=', '2')
 							->orWhereNull('payment_2.status');
 			})
-			->where('order_schedule.status', 1)
-			->where('order.is_returned', 0)
 			->select($select)
 			->groupBy('payment_1.order_id');
 
@@ -654,6 +659,9 @@ class OrderRepo extends BaseRepo
 		$interval_returned 	= 3;
 
 		$orderPayments = $this->_GetStorages()
+			->where('order.is_returned', 0)
+			->where('payment_1.status', 2)
+			->where('order_schedule.status', 1)
 			->whereNull('order_stuff.return_schedule_id')
 			->having('expired_on', '>=', $interval_info[0])
 			->get();

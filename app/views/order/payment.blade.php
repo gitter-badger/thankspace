@@ -37,10 +37,10 @@
 								</center>
 								<div class="form-group">
 									<label class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label">Payment Method?</label>
-									<div class="col-lg-9 col-md-9col-sm-9 col-xs-9">
+									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
 										<div class="radio radio-primary">
 											<label>
-												{{ Form::radio('method', 'bank', true, ['id' => 'payment1']) }} Bank Transfer
+												{{ Form::radio('method', 'Bank Transfer', true, ['id' => 'payment1']) }} Bank Transfer
 											</label>
 										</div>   
 									</div>

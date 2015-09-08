@@ -85,6 +85,12 @@
 			{{ Form::password('credentials[password]', ['class' => 'form-control floating-label', 'placeholder' => 'Password anda']) }}
 		</div>
 	</div>
+	<div class="form-group">
+		<label for="select" class="col-lg-3 col-md-3 col-sm-3 col-xs-3 control-label"></label>
+		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" style="padding-bottom:20px;"></div>
+		<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5" style="padding-bottom:20px;"><a href="#forgot-modal" data-toggle="modal" data-dismiss="modal">Forgot Password?</a> 
+		</div>
+	</div>
 </div>
 
 @section('foot')

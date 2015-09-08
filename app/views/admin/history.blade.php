@@ -47,7 +47,7 @@
 						</p>
 						@endif
 
-						<!--<div class="table-responsive">-->
+						<div class="table-responsive">
 						@if( count($invoices) > 0 )
 
 							{{ Form::open([ 'method' => 'POST', 'class' => 'invoice-form-list' ]) }}
@@ -123,6 +123,10 @@
 											<div class="checkbox">
 												<label><input name="order_payment_id[]" type="checkbox" value="{{ $invoice['id'] }}" /></label>
 											</div>
+											@elseif( $invoice['status'] == 0 )
+											<div class="checkbox">
+												<label><input name="order_payment_id[]" type="checkbox" value="{{ $invoice['id'] }}" /></label>
+											</div>
 											@endif
 										</td>
 									</tr>
@@ -160,7 +164,8 @@
 							<div class="alert alert-info">Whoops, there are no transactions yet!</div>
 
 						@endif
-						<!--</div>-->
+						</div><!--table-responsive-->
+
 					</div>
 				</div>
 			</div>

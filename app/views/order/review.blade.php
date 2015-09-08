@@ -87,7 +87,7 @@
 										<tr>
 											<th>
 											Space Credit
-											<span data-toggle="tooltip" data-placement="top" title="Refer Your Friends & Get Paid! Even better, your friends will get paid too!">
+											<span data-toggle="tooltip" data-placement="top" title="Refer your friends & earn some credit! Even better, your friends will get credit too!">
 											<img width="15px" src="{{ url('assets/img/info.png') }}">
 											</span>
 											</span>

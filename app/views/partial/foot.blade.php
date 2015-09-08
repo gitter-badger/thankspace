@@ -30,7 +30,7 @@ $javaScript = Config::get('assets.script');
 
 <script type="text/javascript">
 
-	var code = {{ Input::get('ref') }};
+	var code = "{{ Input::get('ref') }}";
 	$.ajax({
 		type : "GET",
 		url  : "{{ route('user.referral_check', Input::get('ref')) }}",

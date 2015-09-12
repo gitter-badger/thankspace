@@ -51,11 +51,11 @@
 						<div class="options">
 							<h3>ThankSpace Surabaya</h3>
 							<p>
-								Jl. Panggung No.18, Pabean Cantian, Surabaya, Jawa Timur. 60162<br>
-								surabaya@thankspace.com	
+								Jl. Gembong Sawah No.6, Surabaya, Jawa Timur. 60141<br>
+								support@thankspace.com	
 							</p>													
-								<h4>Telepon kami? </h4>
-								<h3>(031) 7562649</h3>
+								<h4>Call us now </h4>
+								<h3>(031) 3713603</h3>
 						</div>
 					</div>
 				</div>
@@ -66,16 +66,16 @@
 						</div>
 						<div class="options">
 							<h3>ThankSpace Denpasar</h3>
-							<p>
+							<!--<p>
 								Jl. Mahendradatta Selatan 7A, Denpasar, Bali, 80361 <br>
-								denpasar@thankspace.com<br>	
+								support@thankspace.com<br>	
 							</p>													
-								<h4>Telepon kami? </h4>
-								<h3>(031) 7562649</h3>
+								<h4>Hubungi kami? </h4>-->
+								<h3>(Soon)</h3>
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-12"><center>
+				<div class="col-lg-6"><center>
 					<p class="lead">
 						Ingin membuka layanan Storage on Demand di kota Anda? <a href="{{ route('page.partnership') }}">Kerjasama</a> dengan ThankSpace sekarang!
 					</p>
@@ -133,7 +133,7 @@
 									<li>Kami kirim dan ambil <i>Storage Box</i> di tempat Anda gratis</li>
 									<li>Butuh bantuan pengepakan? Tim kami bantu dengan senang hati</li>
 									<li>Kirim kembali beberapa atau semua Box tanpa biaya, Gratis!</li>
-									<li><i>Warehouse</i> yang keren, terjamin dan aman</li>
+									<li><i>Warehouse</i> yang aman</li>
 								</ul>
 							</p>
 						</div>
@@ -153,7 +153,7 @@
 									<li>Wow! ingin menyimpan Vespa Anda? No problem</li>
 									<li>Kami juga menerima barang-barang oversized Anda</li>
 									<li>Berat barang maksimal 25kg dan panjang maksimal 2 meter</li>
-									<li><i>Warehouse</i> yang keren, terjamin dan aman</li>
+									<li><i>Warehouse</i> yang  aman</li>
 								</ul>
 							</p>
 						</div>
@@ -173,7 +173,7 @@
 									<li>Kami menerima penyimpanan barang oversized /over length /over width /over height  Anda</li>
 									<li>Penanganan khusus dari sisi operasional</li>
 									<li>Minimal 3 bulan</li>
-									<li><i>Warehouse</i> yang keren, terjamin dan aman</li>
+									<li><i>Warehouse</i> yang aman</li>
 								</ul>
 							</p>
 						</div>

@@ -49,10 +49,10 @@
 						</p>
 						@endif
 						
-						<!--<div class="table-responsive">-->
+						<div class="table-responsive">
 						@if( count($members) > 0 )
 						
-							<table id="sortirtable" class="tablesorter table-striped table-hover text-center">
+							<table id="sortirtable" class="tablesorter table table-striped table-hover text-center">
 								<thead>
 									<tr>
 										<th>No.</th>
@@ -60,6 +60,7 @@
 										<th>Email</th>
 										<th>Phone</th>
 										<th>Address</th>
+										<th>City</th>
 										<th>Gender</th>
 										<th>Type</th>
 										<th>Action</th>
@@ -73,6 +74,7 @@
 										<td>{{ $member->email }}</td>
 										<td>{{ $member->phone }}</td>
 										<td>{{ $member->address ? : '---' }}</td>
+										<td>{{ $member['city']['name'] }}</td>
 										<td>{{ $member->gender == 'f' ? 'Female' : 'Male' }}</td>
 										<td>
 											@if( $member->type == 'driver' )
@@ -115,7 +117,7 @@
 							<div class="alert alert-info">Whoops, there are no members yet!</div>
 							
 						@endif
-						<!--</div>-->
+						</div><!-- rsponsive tble-->
 					</div>
 				</div>
 			</div>

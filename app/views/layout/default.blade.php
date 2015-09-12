@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>ThankSpace - More space for you | Storage on Demand in Indonesia</title>
 
-	<meta name="description" content="ThankSpace.com adalah penyedia pendaftaran domain dan web hosting Indonesia. Rajanya.com berusaha memberikan pelayanan yang terbaik bagi pelanggan di Indonesia. Services, support dan experience selalu menjadi keutamaan kami! Rajanya Domain dan Webhosting Indonesia">
+	<meta name="description" content="ThankSpace adalah layanan Storage on Demand yang menawarkan jasa penyimpanan barang yang fleksibel berdasarkan jangka waktu, ruang dan harga yang sesuai dengan kebutuhan pelanggan">
 
 	<meta name="keywords" content="ThankSpace.com, ThankSpace, Storage on Demand in Indonesia, Storage on Demand in Surabaya, Storage on Demand in Denpasar,  Storage on Demand in Bali, Jasa Penyimpanan Barang Indonesia, Jasa Penyimpanan Barang Surabaya, Jasa Penyimpanan Barang Denpasar, Jasa Penyimpanan Barang Bali, Jasa Penyimpanan Barang">
 

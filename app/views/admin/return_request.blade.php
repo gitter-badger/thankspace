@@ -20,7 +20,7 @@
 		<div class="col-lg-12 col-centered">
 			<div class="panel panel-default">
 				<div class="panel-body">
-
+					
 					@if ( Session::has('message.success') )
 						<div class="alert alert-success text-center">
 							<p>{{ Session::get('message.success') }}</p>
@@ -31,7 +31,7 @@
 					<div class="row">
 						<div class="col-lg-12">
 							<h3 class="text-center">Returning Request</h3>
-
+							
 							<div class="table-responsive">
 								<table class="table table-striped table-hover">
 									<thead>
@@ -50,7 +50,7 @@
 											<tr>
 												<td>
 													<a data-toggle="modal" href="{{ route('ajax.modalInvoiceDetail', $return['order']['id']) }}?without_detail_stuff=1" data-target="#ajaxModal">
-														#{{ GetLastInvoiceOrder($return['order']['id'])->code }}
+														#{{ $return['order']['order_payment']['code'] }}
 													</a>
 												</td>
 												<td>

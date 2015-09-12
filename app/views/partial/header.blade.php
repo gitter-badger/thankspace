@@ -89,7 +89,6 @@
 									<a href="{{ route('admin.returnRequest') }}">
 										<i class="fa fa-truck" style="font-size: 14pt;"></i>
 										Returning Request
-										<span class="label label-danger">20</span> 
 									</a>
 								</li>
 								<li>

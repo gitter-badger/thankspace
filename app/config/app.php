@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://thankspace.com',
+	'url' => 'http://www.thankspace.com',
 
 	/*
 	|--------------------------------------------------------------------------

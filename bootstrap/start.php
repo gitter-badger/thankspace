@@ -28,9 +28,9 @@ $env = $app->detectEnvironment(array(
 
 	// 'local'	=> array('ubuntu'), // homestead
 
-	'local' => array('WHITERUN', 'antoni-K46CB', 'Human', 'DESKTOP-UQFPG3P'),
+	'local' => array('WHITERUN', 'Human', 'DESKTOP-UQFPG3P'),
 
-	'production' => array('server1'),
+	'production' => array('app1'),
 
 ));
 
